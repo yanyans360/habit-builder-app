@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Habit Builder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #4caf50;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    main {
+      padding: 2rem;
+    }
+    section {
+      margin-bottom: 2rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    input, select {
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      width: 100%;
+      max-width: 400px;
+    }
+    .dashboard {
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .habit {
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Habit Builder</h1>
+    <p>Visualize. Build. Track. Grow.</p>
+  </header>
+
+  <main>
+    <section id="onboarding">
+      <h2>Welcome!</h2>
+      <p>Describe your lifestyle and goals to get started.</p>
+      <input type="text" id="username" placeholder="Enter your name" />
+      <br />
+      <select id="goal">
+        <option value="">Select a goal</option>
+        <option value="exercise">Exercise More</option>
+        <option value="study">Study Smarter</option>
+        <option value="focus">Reduce Screen Time</option>
+      </select>
+      <br /><br />
+      <button onclick="startJourney()">Start Your Journey</button>
+    </section>
+
+    <section id="dashboard" class="dashboard" style="display: none">
+      <h2>Your Dashboard</h2>
+      <div id="avatar">👤</div>
+      <p><strong>Name:</strong> <span id="displayName"></span></p>
+      <p><strong>Goal:</strong> <span id="displayGoal"></span></p>
+
+      <div class="habit">
+        <h3>Your Habit</h3>
+        <input type="text" id="habitInput" placeholder="e.g., Take a walk daily" />
+        <button onclick="addHabit()">Add Habit</button>
+      </div>
+
+      <ul id="habitList"></ul>
+    </section>
+
+    <section id="chatbot">
+      <h2>Chat with HabitBot 🤖</h2>
+      <p>(Placeholder: GPT integration here)</p>
+    </section>
+  </main>
+
+  <script>
+    function startJourney() {
+      const name = document.getElementById("username").value;
+      const goal = document.getElementById("goal").value;
+
+      if (!name || !goal) {
+        alert("Please fill out both fields!");
+        return;
+      }
+
+      document.getElementById("onboarding").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+      document.getElementById("displayName").innerText = name;
+      document.getElementById("displayGoal").innerText = goal;
+    }
+
+    function addHabit() {
+      const habitInput = document.getElementById("habitInput");
+      const habit = habitInput.value.trim();
+
+      if (habit) {
+        const habitList = document.getElementById("habitList");
+        const li = document.createElement("li");
+        li.textContent = habit;
+        habitList.appendChild(li);
+        habitInput.value = "";
+      }
+    }
+  </script>
+</body>
+</html>
