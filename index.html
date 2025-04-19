@@ -64,12 +64,29 @@
       <p>Describe your lifestyle and goals to get started.</p>
       <input type="text" id="username" placeholder="Enter your name" />
       <br />
-      <select id="goal">
-        <option value="">Select a goal</option>
-        <option value="exercise">Exercise More</option>
-        <option value="study">Study Smarter</option>
-        <option value="focus">Reduce Screen Time</option>
-      </select>
+   <section id="onboarding">
+  <h2>Welcome!</h2>
+  <p>Let’s figure out your goals step by step.</p>
+  <input type="text" id="username" placeholder="Enter your name" /><br /><br />
+
+  <div id="quiz-step-1">
+    <p>What’s your main long-term priority?</p>
+    <button onclick="setLongTermGoal('health')">Improving health</button>
+    <button onclick="setLongTermGoal('productivity')">Boosting productivity</button>
+    <button onclick="setLongTermGoal('wellbeing')">Enhancing mental wellbeing</button>
+  </div>
+
+  <div id="quiz-step-2" style="display: none;">
+    <p>What’s one thing you’d like to improve *this week*?</p>
+    <button onclick="setShortTermGoal('exercise')">Exercise 3x this week</button>
+    <button onclick="setShortTermGoal('focus')">Use phone less</button>
+    <button onclick="setShortTermGoal('sleep')">Go to bed on time</button>
+  </div>
+
+  <br />
+  <button id="startBtn" style="display: none;" onclick="startJourney()">Start Your Journey</button>
+</section>
+
       <br /><br />
       <button onclick="startJourney()">Start Your Journey</button>
     </section>
