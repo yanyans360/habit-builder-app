@@ -246,6 +246,11 @@ button:hover {
 
   <script>
     let selectedLongTermGoal = "";
+    const fakeUserDB = [];
+    function hashPassword(password) {
+      // Simple fake hash for demonstration
+      return btoa(password); // NEVER use this in production! Use bcrypt or similar.
+    }
     let selectedShortTermGoal = "";
     let userName = "";
 
@@ -258,18 +263,27 @@ button:hover {
         return;
       }
     
-      userName = nameInput;
-      document.getElementById("popupGreeting").innerText = `Hi, ${userName}!`;
-      document.getElementById("welcomePopup").style.display = "block";
-    
-      // 🎉 Confetti burst!
-      confetti({
-        particleCount: 100,
-        spread: 80,
-        origin: { y: 0.6 }
-      });
-    }
+      const userExists = fakeUserDB.some(user => user.name === nameInput);
+      if (userExists) {
+        alert("Username already taken.");
+        return;
+      }
 
+  // Store hashed password
+  fakeUserDB.push({ name: nameInput, password: hashPassword(password) });
+
+  userName = nameInput;
+  document.getElementById("popupGreeting").innerText = `Hi, ${userName}!`;
+  document.getElementById("welcomePopup").style.display = "block";
+
+  confetti({
+    particleCount: 100,
+    spread: 80,
+    origin: { y: 0.6 }
+  });
+}
+
+    
     function closeWelcome() {
       document.getElementById("welcomePopup").classList.add("fade-out");
       setTimeout(() => {
