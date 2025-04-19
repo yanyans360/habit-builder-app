@@ -154,6 +154,8 @@ button:hover {
         <p>Create an account to start your journey:</p>
         <input type="text" id="auth-name" placeholder="Your name" /><br />
         <input type="password" id="auth-password" placeholder="Create a password" /><br />
+        <input type="text" id="security-question" placeholder="Security question (e.g., Your pet's name?)" /><br />
+        <input type="text" id="security-answer" placeholder="Answer to your question" /><br />
         <button onclick="completeSignup()">Create Account</button>
         <p style="text-align: center;">
           Already have an account? <a href="#" onclick="showLogin()">Log in</a>
@@ -169,10 +171,29 @@ button:hover {
         <input type="password" id="login-password" placeholder="Your password" /><br />
         <button onclick="loginUser()">Log In</button>
         <p style="text-align: center;">
+          <a href="#" onclick="showPasswordReset()">Forgot your password?</a>
+        </p>
+        <p style="text-align: center;">
           New here? <a href="#" onclick="showSignup()">Create an account</a>
         </p>
       </div>
     </section>
+    
+    <section id="reset-section" style="display: none;">
+      <div class="dashboard">
+        <h2>Reset Your Password 🔑</h2>
+        <input type="text" id="reset-name" placeholder="Your username" /><br />
+        <p id="securityQuestionDisplay" style="font-style: italic; color: #555;"></p>
+        <input type="text" id="reset-answer" placeholder="Answer to your security question" style="display: none;" /><br />
+        <input type="password" id="new-password" placeholder="New password" style="display: none;" /><br />
+        <button onclick="startPasswordReset()">Start Reset</button>
+        <button onclick="submitPasswordReset()" style="display: none;" id="resetSubmitBtn">Reset Password</button><br />
+        <p style="text-align: center;">
+          <a href="#" onclick="backToLogin()">Back to login</a>
+        </p>
+      </div>
+    </section>
+    
 
 
     <section id="onboarding" style="display: none;">
@@ -336,7 +357,21 @@ button:hover {
     return;
   }
 
-  users.push({ name: nameInput, password: hashPassword(password) });
+  const question = document.getElementById("security-question").value.trim();
+  const answer = document.getElementById("security-answer").value.trim();
+  
+  if (!question || !answer) {
+    alert("Please fill out your security question and answer.");
+    return;
+  }
+  
+  users.push({
+    name: nameInput,
+    password: hashPassword(password),
+    question,
+    answer: hashPassword(answer.toLowerCase())
+  });
+
   saveUserDB(users);
 
   userName = nameInput;
