@@ -1,83 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Habit Builder</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f2f5;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #4caf50;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-    main {
-      padding: 2rem;
-    }
-    section {
-      margin-bottom: 2rem;
-    }
-    button {
-      padding: 0.5rem 1rem;
-      background-color: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-right: 0.5rem;
-      margin-top: 0.5rem;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    input, select {
-      padding: 0.5rem;
-      margin-top: 0.5rem;
-      width: 100%;
-      max-width: 400px;
-    }
-    .dashboard {
-      background-color: #fff;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .habit {
-      margin-bottom: 1rem;
-    }
-    #progressBar {
-      height: 8px;
-      background-color: #ddd;
-      border-radius: 4px;
-      margin-bottom: 1rem;
-    }
-    #progressFill {
-      height: 100%;
-      width: 33%;
-      background-color: #4caf50;
-      border-radius: 4px;
-    }
-    .fade-out {
-      opacity: 0;
-      transition: opacity 0.6s ease-out;
-    }
-    .fade-in {
-      opacity: 0;
-      animation: fadeIn 0.6s forwards;
-    }
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
-    }
-  </style>
-</head>
 <body>
   <header>
     <h1>Habit Builder</h1>
@@ -85,7 +5,19 @@
   </header>
 
   <main>
-    <section id="onboarding">
+    <!-- New login/signup section -->
+    <section id="auth-section">
+      <div class="dashboard">
+        <h2>Welcome!</h2>
+        <p>Please create an account to get started.</p>
+        <input type="text" id="auth-name" placeholder="Enter your name" /><br /><br />
+        <input type="password" id="auth-password" placeholder="Create a password" /><br /><br />
+        <button onclick="completeSignup()">Create Account</button>
+      </div>
+    </section>
+
+    <!-- Onboarding (hidden initially) -->
+    <section id="onboarding" style="display: none;">
       <div id="progressBar">
         <div id="progressFill"></div>
       </div>
@@ -112,7 +44,8 @@
       <button id="startBtn" style="display: none;" onclick="startJourney()">Start Your Journey</button>
     </section>
 
-    <section id="dashboard" class="dashboard" style="display: none">
+    <!-- Dashboard -->
+    <section id="dashboard" class="dashboard" style="display: none;">
       <h2>Your Dashboard</h2>
       <div id="avatar">👤</div>
       <p><strong>Name:</strong> <span id="displayName"></span></p>
@@ -127,7 +60,8 @@
       <ul id="habitList"></ul>
     </section>
 
-    <section id="chatbot">
+    <!-- Chatbot -->
+    <section id="chatbot" style="display: none;">
       <h2>Chat with HabitBot 🤖</h2>
       <p>(Placeholder: GPT integration here)</p>
     </section>
@@ -137,6 +71,24 @@
     let selectedLongTermGoal = "";
     let selectedShortTermGoal = "";
 
+    function completeSignup() {
+      const name = document.getElementById("auth-name").value;
+      const password = document.getElementById("auth-password").value;
+
+      if (!name || !password) {
+        alert("Please enter both a name and password.");
+        return;
+      }
+
+      // Save name into onboarding input
+      document.getElementById("username").value = name;
+
+      // Hide auth section, show onboarding
+      document.getElementById("auth-section").style.display = "none";
+      document.getElementById("onboarding").style.display = "block";
+      document.getElementById("onboarding").classList.add("fade-in");
+    }
+
     function updateProgress(percent) {
       document.getElementById("progressFill").style.width = percent + "%";
     }
@@ -144,13 +96,11 @@
     function setLongTermGoal(goal) {
       selectedLongTermGoal = goal;
       updateProgress(66);
-
       if (goal === "health") {
         document.getElementById("customGoal").style.display = "block";
       } else {
         document.getElementById("customGoal").style.display = "none";
       }
-
       document.getElementById("quiz-step-1").style.display = "none";
       document.getElementById("quiz-step-2").style.display = "block";
     }
@@ -176,6 +126,7 @@
         document.getElementById("onboarding").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
         document.getElementById("dashboard").classList.add("fade-in");
+        document.getElementById("chatbot").style.display = "block";
         document.getElementById("displayName").innerText = name;
         document.getElementById("displayGoal").innerText =
           `Long-term: ${selectedLongTermGoal}${customGoalInput ? ` (${customGoalInput})` : ''}, Short-term: ${selectedShortTermGoal}`;
@@ -188,10 +139,8 @@
         const listItem = document.createElement("li");
         listItem.textContent = habit;
         document.getElementById("habitList").appendChild(listItem);
-        
         document.getElementById("habitInput").value = "";
       }
     }
   </script>
 </body>
-</html>
