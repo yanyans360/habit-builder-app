@@ -189,85 +189,84 @@
   </main>
 
   <script>
-    let selectedLongTermGoal = "";
-    let selectedShortTermGoal = "";
+  let selectedLongTermGoal = "";
+  let selectedShortTermGoal = "";
+  let userName = ""; // store name globally
 
-    function completeSignup() {
-      const name = document.getElementById("auth-name").value;
-      const password = document.getElementById("auth-password").value;
+  function completeSignup() {
+    const nameInput = document.getElementById("auth-name").value;
+    const password = document.getElementById("auth-password").value;
 
-      if (!name || !password) {
-        alert("Please enter both a name and password.");
-        return;
-      }
-
-      document.getElementById("username").value = name;
-      document.getElementById("auth-section").style.display = "none";
-      document.getElementById("onboarding").style.display = "block";
-      document.getElementById("onboarding").classList.add("fade-in");
+    if (!nameInput || !password) {
+      alert("Please enter both a name and password.");
+      return;
     }
 
-    function updateProgress(percent) {
-      document.getElementById("progressFill").style.width = percent + "%";
+    userName = nameInput; // store name for later use
+    document.getElementById("auth-section").style.display = "none";
+    document.getElementById("onboarding").style.display = "block";
+    document.getElementById("onboarding").classList.add("fade-in");
+  }
+
+  function updateProgress(percent) {
+    document.getElementById("progressFill").style.width = percent + "%";
+  }
+
+  function setLongTermGoal(goal) {
+    selectedLongTermGoal = goal;
+    updateProgress(66);
+    if (goal === "health") {
+      document.getElementById("customGoal").style.display = "block";
+    } else {
+      document.getElementById("customGoal").style.display = "none";
+    }
+    document.getElementById("quiz-step-1").style.display = "none";
+    document.getElementById("quiz-step-2").style.display = "block";
+  }
+
+  function setShortTermGoal(goal) {
+    selectedShortTermGoal = goal;
+    updateProgress(100);
+    document.getElementById("quiz-step-2").style.display = "none";
+    document.getElementById("startBtn").style.display = "inline-block";
+  }
+
+  function startJourney() {
+    const customGoalInput = document.getElementById("customGoal").value;
+
+    if (!userName || !selectedLongTermGoal || !selectedShortTermGoal) {
+      alert("Please complete all steps!");
+      return;
     }
 
-    function setLongTermGoal(goal) {
-      selectedLongTermGoal = goal;
-      updateProgress(66);
-      if (goal === "health") {
-        document.getElementById("customGoal").style.display = "block";
-      } else {
-        document.getElementById("customGoal").style.display = "none";
-      }
-      document.getElementById("quiz-step-1").style.display = "none";
-      document.getElementById("quiz-step-2").style.display = "block";
+    alert(`Hi, ${userName}! Welcome to your habit journey 🎉`);
+
+    document.getElementById("onboarding").classList.add("fade-out");
+    setTimeout(() => {
+      document.getElementById("onboarding").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+      document.getElementById("dashboard").classList.add("fade-in");
+      document.getElementById("chatbot").style.display = "block";
+
+      document.getElementById("displayName").innerText = userName;
+      document.getElementById("displayGoal").innerText =
+        `Long-term: ${selectedLongTermGoal}${customGoalInput ? ` (${customGoalInput})` : ''}, Short-term: ${selectedShortTermGoal}`;
+
+      const userTitle = document.getElementById("userTitle");
+      userTitle.innerText = `${userName}'s habits`;
+      userTitle.style.display = "block";
+    }, 600);
+  }
+
+  function addHabit() {
+    const habit = document.getElementById("habitInput").value;
+    if (habit) {
+      const listItem = document.createElement("li");
+      listItem.textContent = habit;
+      document.getElementById("habitList").appendChild(listItem);
+      document.getElementById("habitInput").value = "";
     }
-
-    function setShortTermGoal(goal) {
-      selectedShortTermGoal = goal;
-      updateProgress(100);
-      document.getElementById("quiz-step-2").style.display = "none";
-      document.getElementById("startBtn").style.display = "inline-block";
-    }
-
-    function startJourney() {
-      const name = document.getElementById("username").value;
-      const customGoalInput = document.getElementById("customGoal").value;
-
-      if (!name || !selectedLongTermGoal || !selectedShortTermGoal) {
-        alert("Please complete all steps!");
-        return;
-      }
-
-      alert(`Hi, ${name}! Welcome to your habit journey 🎉`);
-
-      document.getElementById("onboarding").classList.add("fade-out");
-      setTimeout(() => {
-        document.getElementById("onboarding").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        document.getElementById("dashboard").classList.add("fade-in");
-        document.getElementById("chatbot").style.display = "block";
-
-        document.getElementById("displayName").innerText = name;
-        document.getElementById("displayGoal").innerText =
-          `Long-term: ${selectedLongTermGoal}${customGoalInput ? ` (${customGoalInput})` : ''}, Short-term: ${selectedShortTermGoal}`;
-
-        // Set top-left name
-        const userTitle = document.getElementById("userTitle");
-        userTitle.innerText = `${name}'s habits`;
-        userTitle.style.display = "block";
-      }, 600);
-    }
-
-    function addHabit() {
-      const habit = document.getElementById("habitInput").value;
-      if (habit) {
-        const listItem = document.createElement("li");
-        listItem.textContent = habit;
-        document.getElementById("habitList").appendChild(listItem);
-        document.getElementById("habitInput").value = "";
-      }
-    }
-  </script>
+  }
+</script>
 </body>
 </html>
