@@ -5,160 +5,158 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Habit Builder</title>
   <style>
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: #fffaf5;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #fdfbf8;
+    color: #2f2f2f;
+    margin: 0;
+    padding: 0;
+  }
 
-    header {
-      text-align: center;
-      padding: 2rem;
-      background: #ffe8d6;
-      border-bottom: 2px solid #ffd7ba;
-    }
+  header {
+    text-align: center;
+    padding: 2rem;
+    background: #e9f1ec;
+    border-bottom: 2px solid #d3e3dc;
+  }
 
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-      color: #6b4c3b;
-    }
+  header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    color: #42594a;
+  }
 
-    header p {
-      font-size: 1.2rem;
-      color: #8d6e63;
-    }
+  header p {
+    font-size: 1.2rem;
+    color: #5e6f64;
+  }
 
-    main {
-      padding: 2rem;
-      max-width: 600px;
-      margin: 0 auto;
-    }
+  main {
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
 
-    section {
-      margin-bottom: 2rem;
-    }
+  section {
+    margin-bottom: 2rem;
+  }
 
-    input, button {
-      font-size: 1rem;
-      padding: 0.75rem;
-      margin: 0.5rem 0;
-      border-radius: 10px;
-      border: 1px solid #ddd;
-      width: 100%;
-      box-sizing: border-box;
-    }
+  input, button {
+    font-size: 1rem;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border-radius: 10px;
+    border: 1px solid #d6d6d6;
+    width: 100%;
+    box-sizing: border-box;
+  }
 
-    button {
-      background: #ffbfae;
-      border: none;
-      color: #3e2723;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
+  button {
+    background: #b7dfc7;
+    border: none;
+    color: #2f3e34;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
 
-    button:hover {
-      background: #ffa78f;
-    }
+  button:hover {
+    background: #9fd7b6;
+  }
 
-    #progressBar {
-      height: 10px;
-      background: #ffe0cc;
-      border-radius: 5px;
-      overflow: hidden;
-      margin: 1rem 0;
-    }
+  #progressBar {
+    height: 10px;
+    background: #e2ede7;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 1rem 0;
+  }
 
-    #progressFill {
-      height: 100%;
-      background: #ffa78f;
-      width: 0;
-      transition: width 0.5s ease;
-    }
+  #progressFill {
+    height: 100%;
+    background: #93c8af;
+    width: 0;
+    transition: width 0.5s ease;
+  }
 
-    .dashboard {
-      background: #fff5eb;
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      position: relative;
-    }
+  .dashboard {
+    background: #f6f9f6;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    position: relative;
+  }
 
-    #habitList {
-      padding-left: 1rem;
-    }
+  #habitList {
+    padding-left: 1rem;
+  }
 
-    .fade-in {
-      animation: fadeIn 0.5s ease-in;
-    }
+  .fade-in {
+    animation: fadeIn 0.5s ease-in;
+  }
 
-    .fade-out {
-      animation: fadeOut 0.5s ease-out;
-    }
+  .fade-out {
+    animation: fadeOut 0.5s ease-out;
+  }
 
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
 
-    @keyframes fadeOut {
-      from {opacity: 1;}
-      to {opacity: 0;}
-    }
+  @keyframes fadeOut {
+    from {opacity: 1;}
+    to {opacity: 0;}
+  }
 
-    #userTitle {
-      position: fixed;
-      top: 10px;
-      left: 20px;
-      font-size: 1.2rem;
-      color: #6b4c3b;
-      font-weight: bold;
-      display: none;
-      z-index: 1000;
-    }
+  #userTitle {
+    position: fixed;
+    top: 10px;
+    left: 20px;
+    font-size: 1.2rem;
+    color: #42594a;
+    font-weight: bold;
+    display: none;
+    z-index: 1000;
+  }
 
-    /* Fullscreen welcome screen */
-    #welcomeScreen {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: #fff8f3;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 2rem;
-    }
+  #welcomeScreen {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #f0f8f4;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+  }
 
-    #welcomeScreen h2 {
-      color: #6b4c3b;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
+  #welcomeScreen h2 {
+    color: #42594a;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
 
-    #welcomeScreen p {
-      color: #8d6e63;
-      font-size: 1.1rem;
-      max-width: 400px;
-    }
+  #welcomeScreen p {
+    color: #5e6f64;
+    font-size: 1.1rem;
+    max-width: 400px;
+  }
 
-    #welcomeScreen button {
-      margin-top: 2rem;
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      background: #ffbfae;
-      color: #3e2723;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-  </style>
+  #welcomeScreen button {
+    margin-top: 2rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    background: #b7dfc7;
+    color: #2f3e34;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+</style>
 </head>
 <body>
   <div id="userTitle"></div>
