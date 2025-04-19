@@ -1,3 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Habit Builder</title>
+  <style>
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: #fffaf5;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem;
+      background: #ffe8d6;
+      border-bottom: 2px solid #ffd7ba;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      color: #6b4c3b;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      color: #8d6e63;
+    }
+
+    main {
+      padding: 2rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    section {
+      margin-bottom: 2rem;
+    }
+
+    input, button {
+      font-size: 1rem;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      background: #ffbfae;
+      border: none;
+      color: #3e2723;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #ffa78f;
+    }
+
+    #progressBar {
+      height: 10px;
+      background: #ffe0cc;
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    #progressFill {
+      height: 100%;
+      background: #ffa78f;
+      width: 0;
+      transition: width 0.5s ease;
+    }
+
+    .dashboard {
+      background: #fff5eb;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    #habitList {
+      padding-left: 1rem;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .fade-out {
+      animation: fadeOut 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    @keyframes fadeOut {
+      from {opacity: 1;}
+      to {opacity: 0;}
+    }
+  </style>
+</head>
 <body>
   <header>
     <h1>Habit Builder</h1>
@@ -5,20 +116,18 @@
   </header>
 
   <main>
-    <!-- New login/signup section -->
-  <section id="auth-section">
-  <div class="dashboard">
-    <h2>Welcome to Habit Builder 👋</h2>
-    <p>Create an account to start your journey:</p>
-    <input type="text" id="auth-name" placeholder="Your name" /><br />
-    <input type="password" id="auth-password" placeholder="Create a password" /><br />
-    <button onclick="completeSignup()">Create Account</button>
-  </div>
-</section>
-
+    <!-- Login/Signup -->
+    <section id="auth-section">
+      <div class="dashboard">
+        <h2>Welcome to Habit Builder 👋</h2>
+        <p>Create an account to start your journey:</p>
+        <input type="text" id="auth-name" placeholder="Your name" /><br />
+        <input type="password" id="auth-password" placeholder="Create a password" /><br />
+        <button onclick="completeSignup()">Create Account</button>
+      </div>
     </section>
 
-    <!-- Onboarding (hidden initially) -->
+    <!-- Onboarding -->
     <section id="onboarding" style="display: none;">
       <div id="progressBar">
         <div id="progressFill"></div>
@@ -82,10 +191,7 @@
         return;
       }
 
-      // Save name into onboarding input
       document.getElementById("username").value = name;
-
-      // Hide auth section, show onboarding
       document.getElementById("auth-section").style.display = "none";
       document.getElementById("onboarding").style.display = "block";
       document.getElementById("onboarding").classList.add("fade-in");
@@ -146,3 +252,4 @@
     }
   </script>
 </body>
+</html>
