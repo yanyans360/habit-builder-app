@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Habit Builder</title>
@@ -233,15 +234,22 @@
     function completeSignup() {
       const nameInput = document.getElementById("auth-name").value;
       const password = document.getElementById("auth-password").value;
-
+    
       if (!nameInput || !password) {
         alert("Please enter both a name and password.");
         return;
       }
-
+    
       userName = nameInput;
       document.getElementById("popupGreeting").innerText = `Hi, ${userName}!`;
       document.getElementById("welcomePopup").style.display = "block";
+    
+      // 🎉 Confetti burst!
+      confetti({
+        particleCount: 100,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
     }
 
     function closeWelcome() {
