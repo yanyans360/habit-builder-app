@@ -186,8 +186,7 @@ button:hover {
         <p id="securityQuestionDisplay" style="font-style: italic; color: #555;"></p>
         <input type="text" id="reset-answer" placeholder="Answer to your security question" style="display: none;" /><br />
         <input type="password" id="new-password" placeholder="New password" style="display: none;" /><br />
-        <button onclick="startPasswordReset()">Start Reset</button>
-        <button onclick="submitPasswordReset()" style="display: none;" id="resetSubmitBtn">Reset Password</button><br />
+        <button onclick="handleReset()" id="resetActionBtn">Next</button><br />
         <p style="text-align: center;">
           <a href="#" onclick="backToLogin()">Back to login</a>
         </p>
@@ -283,38 +282,30 @@ button:hover {
   </main>
 
   <script>
-    let resetUserMatch = null;
-
-    function showPasswordReset() {
-      document.getElementById("login-section").style.display = "none";
-      document.getElementById("reset-section").style.display = "block";
-    }
-    
-    function backToLogin() {
-      document.getElementById("reset-section").style.display = "none";
-      document.getElementById("login-section").style.display = "block";
-    }
-    
-    function startPasswordReset() {
-      const resetName = document.getElementById("reset-name").value.trim().toLowerCase();
-      const users = getUserDB();
-      resetUserMatch = users.find(user => user.name.toLowerCase() === resetName);
-    
-      if (!resetUserMatch) {
-        alert("No user found with that name.");
-        return;
-      }
-    
-      document.getElementById("securityQuestionDisplay").textContent = resetUserMatch.question;
-      document.getElementById("reset-answer").style.display = "block";
-      document.getElementById("new-password").style.display = "block";
-      document.getElementById("resetSubmitBtn").style.display = "inline-block";
-    }
-    
-    function submitPasswordReset() {
+    function handleReset() {
+      const btn = document.getElementById("resetActionBtn");
+      const name = document.getElementById("reset-name").value.trim().toLowerCase();
       const answer = document.getElementById("reset-answer").value.trim().toLowerCase();
       const newPassword = document.getElementById("new-password").value;
     
+      // Step 1: Lookup user and show question
+      if (!resetUserMatch) {
+        const users = getUserDB();
+        resetUserMatch = users.find(user => user.name.toLowerCase() === name);
+    
+        if (!resetUserMatch) {
+          alert("No user found with that name.");
+          return;
+        }
+    
+        document.getElementById("securityQuestionDisplay").textContent = resetUserMatch.question;
+        document.getElementById("reset-answer").style.display = "block";
+        document.getElementById("new-password").style.display = "block";
+        btn.textContent = "Reset Password";
+        return;
+      }
+    
+      // Step 2: Validate answer and reset password
       if (hashPassword(answer) !== resetUserMatch.answer) {
         alert("Incorrect answer to the security question.");
         return;
@@ -331,7 +322,28 @@ button:hover {
       saveUserDB(users);
     
       alert("Password successfully reset! Please log in.");
+      resetUserMatch = null;
+      document.getElementById("resetActionBtn").textContent = "Next";
+      document.getElementById("reset-answer").style.display = "none";
+      document.getElementById("new-password").style.display = "none";
+      document.getElementById("securityQuestionDisplay").textContent = "";
+      document.getElementById("reset-name").value = "";
+      document.getElementById("reset-answer").value = "";
+      document.getElementById("new-password").value = "";
+    
       backToLogin();
+    }
+
+    let resetUserMatch = null;
+
+    function showPasswordReset() {
+      document.getElementById("login-section").style.display = "none";
+      document.getElementById("reset-section").style.display = "block";
+    }
+    
+    function backToLogin() {
+      document.getElementById("reset-section").style.display = "none";
+      document.getElementById("login-section").style.display = "block";
     }
 
     function showLogin() {
