@@ -246,31 +246,40 @@ button:hover {
 
   <script>
     let selectedLongTermGoal = "";
-    const fakeUserDB = [];
     function hashPassword(password) {
-      // Simple fake hash for demonstration
-      return btoa(password); // NEVER use this in production! Use bcrypt or similar.
+      return btoa(password); // Just for demo – not secure
     }
+    
+    function getUserDB() {
+      return JSON.parse(localStorage.getItem("habitUsers") || "[]");
+    }
+    
+    function saveUserDB(users) {
+      localStorage.setItem("habitUsers", JSON.stringify(users));
+    }
+
     let selectedShortTermGoal = "";
     let userName = "";
 
     function completeSignup() {
-      const nameInput = document.getElementById("auth-name").value;
-      const password = document.getElementById("auth-password").value;
-    
-      if (!nameInput || !password) {
-        alert("Please enter both a name and password.");
-        return;
-      }
-    
-      const userExists = fakeUserDB.some(user => user.name === nameInput);
-      if (userExists) {
-        alert("Username already taken.");
-        return;
-      }
+  const nameInput = document.getElementById("auth-name").value.trim();
+  const password = document.getElementById("auth-password").value;
 
-  // Store hashed password
-  fakeUserDB.push({ name: nameInput, password: hashPassword(password) });
+  if (!nameInput || !password) {
+    alert("Please enter both a name and password.");
+    return;
+  }
+
+  const users = getUserDB();
+  const userExists = users.some(user => user.name.toLowerCase() === nameInput.toLowerCase());
+
+  if (userExists) {
+    alert("Username already taken.");
+    return;
+  }
+
+  users.push({ name: nameInput, password: hashPassword(password) });
+  saveUserDB(users);
 
   userName = nameInput;
   document.getElementById("popupGreeting").innerText = `Hi, ${userName}!`;
@@ -282,6 +291,7 @@ button:hover {
     origin: { y: 0.6 }
   });
 }
+
 
     
     function closeWelcome() {
