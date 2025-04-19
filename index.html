@@ -84,6 +84,7 @@
       padding: 2rem;
       border-radius: 20px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      position: relative;
     }
 
     #habitList {
@@ -107,9 +108,22 @@
       from {opacity: 1;}
       to {opacity: 0;}
     }
+
+    #userTitle {
+      position: fixed;
+      top: 10px;
+      left: 20px;
+      font-size: 1.2rem;
+      color: #6b4c3b;
+      font-weight: bold;
+      display: none;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
+  <div id="userTitle"></div>
+
   <header>
     <h1>Habit Builder</h1>
     <p>Visualize. Build. Track. Grow.</p>
@@ -154,7 +168,6 @@
     </section>
 
     <section id="dashboard" class="dashboard" style="display: none;">
-      <h2 id="userTitle" style="position: absolute; top: 10px; left: 10px; font-weight: normal; color: #6b4c3b;"></h2>
       <h2>Your Dashboard</h2>
       <div id="avatar">👤</div>
       <p><strong>Name:</strong> <span id="displayName"></span></p>
@@ -218,35 +231,15 @@
     }
 
     function startJourney() {
-  const name = document.getElementById("username").value;
-  const customGoalInput = document.getElementById("customGoal").value;
+      const name = document.getElementById("username").value;
+      const customGoalInput = document.getElementById("customGoal").value;
 
-  if (!name || !selectedLongTermGoal || !selectedShortTermGoal) {
-    alert("Please complete all steps!");
-    return;
-  }
+      if (!name || !selectedLongTermGoal || !selectedShortTermGoal) {
+        alert("Please complete all steps!");
+        return;
+      }
 
-  // 👋 Friendly popup
-  alert(`Hi, ${name}! Welcome to your habit journey 🎉`);
-
-  // Continue with transition
-  document.getElementById("onboarding").classList.add("fade-out");
-  setTimeout(() => {
-    document.getElementById("onboarding").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-    document.getElementById("dashboard").classList.add("fade-in");
-    document.getElementById("chatbot").style.display = "block";
-
-    // 💬 Fill in dashboard info
-    document.getElementById("displayName").innerText = name;
-    document.getElementById("displayGoal").innerText =
-      `Long-term: ${selectedLongTermGoal}${customGoalInput ? ` (${customGoalInput})` : ''}, Short-term: ${selectedShortTermGoal}`;
-
-    // ✨ Show name in corner
-    document.getElementById("userTitle").innerText = `${name}'s habits`;
-  }, 600);
-}
-
+      alert(`Hi, ${name}! Welcome to your habit journey 🎉`);
 
       document.getElementById("onboarding").classList.add("fade-out");
       setTimeout(() => {
@@ -254,9 +247,15 @@
         document.getElementById("dashboard").style.display = "block";
         document.getElementById("dashboard").classList.add("fade-in");
         document.getElementById("chatbot").style.display = "block";
+
         document.getElementById("displayName").innerText = name;
         document.getElementById("displayGoal").innerText =
           `Long-term: ${selectedLongTermGoal}${customGoalInput ? ` (${customGoalInput})` : ''}, Short-term: ${selectedShortTermGoal}`;
+
+        // Set top-left name
+        const userTitle = document.getElementById("userTitle");
+        userTitle.innerText = `${name}'s habits`;
+        userTitle.style.display = "block";
       }, 600);
     }
 
