@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,6 +30,8 @@
       border: none;
       border-radius: 4px;
       cursor: pointer;
+      margin-right: 0.5rem;
+      margin-top: 0.5rem;
     }
     button:hover {
       background-color: #45a049;
@@ -50,6 +51,31 @@
     .habit {
       margin-bottom: 1rem;
     }
+    #progressBar {
+      height: 8px;
+      background-color: #ddd;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+    #progressFill {
+      height: 100%;
+      width: 33%;
+      background-color: #4caf50;
+      border-radius: 4px;
+    }
+    .fade-out {
+      opacity: 0;
+      transition: opacity 0.6s ease-out;
+    }
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 0.6s forwards;
+    }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
   </style>
 </head>
 <body>
@@ -59,32 +85,31 @@
   </header>
 
   <main>
+    <section id="onboarding">
+      <div id="progressBar">
+        <div id="progressFill"></div>
+      </div>
+      <h2>Hi there!</h2>
+      <p>Let’s make a plan just for you. What’s something you want to build into your life?</p>
+      <input type="text" id="username" placeholder="Enter your name" /><br /><br />
 
-   <section id="onboarding">
-  <h2>Welcome!</h2>
-  <p>Let’s figure out your goals step by step.</p>
-  <input type="text" id="username" placeholder="Enter your name" /><br /><br />
+      <div id="quiz-step-1">
+        <p>What’s your main long-term priority?</p>
+        <button onclick="setLongTermGoal('health')">💪 Improve Health</button>
+        <button onclick="setLongTermGoal('productivity')">📈 Be More Productive</button>
+        <button onclick="setLongTermGoal('wellbeing')">🧘‍♀️ Boost Wellbeing</button>
+        <input type="text" id="customGoal" placeholder="e.g., Wake up earlier" style="display: none; margin-top: 1rem;" />
+      </div>
 
-  <div id="quiz-step-1">
-    <p>What’s your main long-term priority?</p>
-    <button onclick="setLongTermGoal('health')">Improving health</button>
-    <button onclick="setLongTermGoal('productivity')">Boosting productivity</button>
-    <button onclick="setLongTermGoal('wellbeing')">Enhancing mental wellbeing</button>
-  </div>
+      <div id="quiz-step-2" style="display: none;">
+        <p>What’s one thing you’d like to improve *this week*?</p>
+        <button onclick="setShortTermGoal('exercise')">🏋️‍♀️ Exercise 3x this week</button>
+        <button onclick="setShortTermGoal('focus')">📱 Use phone less</button>
+        <button onclick="setShortTermGoal('sleep')">🛌 Go to bed on time</button>
+      </div>
 
-  <div id="quiz-step-2" style="display: none;">
-    <p>What’s one thing you’d like to improve *this week*?</p>
-    <button onclick="setShortTermGoal('exercise')">Exercise 3x this week</button>
-    <button onclick="setShortTermGoal('focus')">Use phone less</button>
-    <button onclick="setShortTermGoal('sleep')">Go to bed on time</button>
-  </div>
-
-  <br />
-  <button id="startBtn" style="display: none;" onclick="startJourney()">Start Your Journey</button>
-</section>
-
-      <br /><br />
-      <button onclick="startJourney()">Start Your Journey</button>
+      <br />
+      <button id="startBtn" style="display: none;" onclick="startJourney()">Start Your Journey</button>
     </section>
 
     <section id="dashboard" class="dashboard" style="display: none">
@@ -110,33 +135,60 @@
 
   <script>
     let selectedLongTermGoal = "";
-let selectedShortTermGoal = "";
+    let selectedShortTermGoal = "";
 
-function setLongTermGoal(goal) {
-  selectedLongTermGoal = goal;
-  document.getElementById("quiz-step-1").style.display = "none";
-  document.getElementById("quiz-step-2").style.display = "block";
-}
+    function updateProgress(percent) {
+      document.getElementById("progressFill").style.width = percent + "%";
+    }
 
-function setShortTermGoal(goal) {
-  selectedShortTermGoal = goal;
-  document.getElementById("quiz-step-2").style.display = "none";
-  document.getElementById("startBtn").style.display = "inline-block";
-}
+    function setLongTermGoal(goal) {
+      selectedLongTermGoal = goal;
+      updateProgress(66);
 
-function startJourney() {
-  const name = document.getElementById("username").value;
-  if (!name || !selectedLongTermGoal || !selectedShortTermGoal) {
-    alert("Please complete all steps!");
-    return;
-  }
+      if (goal === "health") {
+        document.getElementById("customGoal").style.display = "block";
+      } else {
+        document.getElementById("customGoal").style.display = "none";
+      }
 
-  document.getElementById("onboarding").style.display = "none";
-  document.getElementById("dashboard").style.display = "block";
-  document.getElementById("displayName").innerText = name;
-  document.getElementById("displayGoal").innerText =
-    `Long-term: ${selectedLongTermGoal}, Short-term: ${selectedShortTermGoal}`;
-}
+      document.getElementById("quiz-step-1").style.display = "none";
+      document.getElementById("quiz-step-2").style.display = "block";
+    }
+
+    function setShortTermGoal(goal) {
+      selectedShortTermGoal = goal;
+      updateProgress(100);
+      document.getElementById("quiz-step-2").style.display = "none";
+      document.getElementById("startBtn").style.display = "inline-block";
+    }
+
+    function startJourney() {
+      const name = document.getElementById("username").value;
+      const customGoalInput = document.getElementById("customGoal").value;
+
+      if (!name || !selectedLongTermGoal || !selectedShortTermGoal) {
+        alert("Please complete all steps!");
+        return;
+      }
+
+      document.getElementById("onboarding").classList.add("fade-out");
+      setTimeout(() => {
+        document.getElementById("onboarding").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        document.getElementById("dashboard").classList.add("fade-in");
+        document.getElementById("displayName").innerText = name;
+        document.getElementById("displayGoal").innerText =
+          `Long-term: ${selectedLongTermGoal}${customGoalInput ? ` (${customGoalInput})` : ''}, Short-term: ${selectedShortTermGoal}`;
+      }, 600);
+    }
+
+    function addHabit() {
+      const habit = document.getElementById("habitInput").value;
+      if (habit) {
+        const listItem = document.createElement("li");
+        listItem.textContent = habit;
+        document.getElementById("habitList").appendChild(listItem);
+        document.getElementById("habitInput").value = "";
       }
     }
   </script>
