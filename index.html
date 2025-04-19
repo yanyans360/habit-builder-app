@@ -5,159 +5,133 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Habit Builder</title>
   <style>
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: #fffaf5;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
+   body {
+  font-family: 'Nunito', sans-serif;
+  background: #fefdfb;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
 
-    header {
-      text-align: center;
-      padding: 2rem;
-      background: #ffe8d6;
-      border-bottom: 2px solid #ffd7ba;
-    }
+header {
+  text-align: center;
+  padding: 2rem;
+  background: #f2e8cf;
+  border-bottom: 2px solid #d4cbb3;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-      color: #6b4c3b;
-    }
+header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  color: #4a4a3f;
+}
 
-    header p {
-      font-size: 1.2rem;
-      color: #8d6e63;
-    }
+header p {
+  font-size: 1.2rem;
+  color: #66614b;
+}
 
-    main {
-      padding: 2rem;
-      max-width: 600px;
-      margin: 0 auto;
-    }
+main {
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
 
-    section {
-      margin-bottom: 2rem;
-    }
+input, button {
+  font-size: 1rem;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-    input, button {
-      font-size: 1rem;
-      padding: 0.75rem;
-      margin: 0.5rem 0;
-      border-radius: 10px;
-      border: 1px solid #ddd;
-      width: 100%;
-      box-sizing: border-box;
-    }
+button {
+  background: #b5c99a;
+  border: none;
+  color: #2d2d24;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
 
-    button {
-      background: #ffbfae;
-      border: none;
-      color: #3e2723;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
+button:hover {
+  background: #9bbf7f;
+}
 
-    button:hover {
-      background: #ffa78f;
-    }
+#progressBar {
+  height: 10px;
+  background: #e4e1d4;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 1rem 0;
+}
 
-    #progressBar {
-      height: 10px;
-      background: #ffe0cc;
-      border-radius: 5px;
-      overflow: hidden;
-      margin: 1rem 0;
-    }
+#progressFill {
+  height: 100%;
+  background: #b5c99a;
+  width: 0;
+  transition: width 0.5s ease;
+}
 
-    #progressFill {
-      height: 100%;
-      background: #ffa78f;
-      width: 0;
-      transition: width 0.5s ease;
-    }
+.dashboard {
+  background: #f9f6f1;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  position: relative;
+}
 
-    .dashboard {
-      background: #fff5eb;
-      padding: 2rem;
-      border-radius: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      position: relative;
-    }
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
 
-    #habitList {
-      padding-left: 1rem;
-    }
+.fade-out {
+  animation: fadeOut 0.5s ease-out;
+}
 
-    .fade-in {
-      animation: fadeIn 0.5s ease-in;
-    }
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
 
-    .fade-out {
-      animation: fadeOut 0.5s ease-out;
-    }
+@keyframes fadeOut {
+  from {opacity: 1;}
+  to {opacity: 0;}
+}
 
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
+#welcomeScreen {
+  background: #f3f1eb;
+}
 
-    @keyframes fadeOut {
-      from {opacity: 1;}
-      to {opacity: 0;}
-    }
+#welcomeScreen h2 {
+  color: #4a4a3f;
+}
 
-    #userTitle {
-      position: fixed;
-      top: 10px;
-      left: 20px;
-      font-size: 1.2rem;
-      color: #6b4c3b;
-      font-weight: bold;
-      display: none;
-      z-index: 1000;
-    }
+#welcomeScreen p {
+  color: #66614b;
+}
 
-    /* Fullscreen welcome screen */
-    #welcomeScreen {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: #fff8f3;
-      z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 2rem;
-    }
+#welcomeScreen button {
+  background: #b5c99a;
+}
 
-    #welcomeScreen h2 {
-      color: #6b4c3b;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
+#welcomeScreen button:hover {
+  background: #9bbf7f;
+}
 
-    #welcomeScreen p {
-      color: #8d6e63;
-      font-size: 1.1rem;
-      max-width: 400px;
-    }
+#userTitle {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  font-size: 1.2rem;
+  color: #4a4a3f;
+  font-weight: bold;
+  display: none;
+  z-index: 1000;
+}
 
-    #welcomeScreen button {
-      margin-top: 2rem;
-      padding: 0.75rem 1.5rem;
-      font-size: 1rem;
-      background: #ffbfae;
-      color: #3e2723;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-    }
   </style>
 </head>
 <body>
