@@ -186,87 +186,132 @@
       <h2>Chat with HabitBot 🤖</h2>
       <p>(Placeholder: GPT integration here)</p>
     </section>
+
+    <!-- 🌟 Welcome Popup -->
+    <div id="welcomePopup" style="display: none;" class="fade-in">
+      <div style="
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      ">
+        <div style="
+          background: #fff8f3;
+          padding: 2rem 3rem;
+          border-radius: 20px;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+          text-align: center;
+          max-width: 90%;
+          font-family: 'Nunito', sans-serif;
+        ">
+          <h2 id="popupGreeting" style="color: #6b4c3b;">Hi there!</h2>
+          <p style="color: #8d6e63;">We’re so glad you’re here. Let’s build something great together ✨</p>
+          <button onclick="closeWelcome()" style="
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            background: #ffbfae;
+            color: #3e2723;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+          ">Let’s go!</button>
+        </div>
+      </div>
+    </div>
   </main>
 
   <script>
-  let selectedLongTermGoal = "";
-  let selectedShortTermGoal = "";
-  let userName = ""; // store name globally
+    let selectedLongTermGoal = "";
+    let selectedShortTermGoal = "";
+    let userName = "";
 
-  function completeSignup() {
-    const nameInput = document.getElementById("auth-name").value;
-    const password = document.getElementById("auth-password").value;
+    function completeSignup() {
+      const nameInput = document.getElementById("auth-name").value;
+      const password = document.getElementById("auth-password").value;
 
-    if (!nameInput || !password) {
-      alert("Please enter both a name and password.");
-      return;
+      if (!nameInput || !password) {
+        alert("Please enter both a name and password.");
+        return;
+      }
+
+      userName = nameInput;
+      document.getElementById("popupGreeting").innerText = `Hi, ${userName}!`;
+      document.getElementById("welcomePopup").style.display = "block";
     }
 
-    userName = nameInput; // store name for later use
-    document.getElementById("auth-section").style.display = "none";
-    document.getElementById("onboarding").style.display = "block";
-    document.getElementById("onboarding").classList.add("fade-in");
-  }
-
-  function updateProgress(percent) {
-    document.getElementById("progressFill").style.width = percent + "%";
-  }
-
-  function setLongTermGoal(goal) {
-    selectedLongTermGoal = goal;
-    updateProgress(66);
-    if (goal === "health") {
-      document.getElementById("customGoal").style.display = "block";
-    } else {
-      document.getElementById("customGoal").style.display = "none";
-    }
-    document.getElementById("quiz-step-1").style.display = "none";
-    document.getElementById("quiz-step-2").style.display = "block";
-  }
-
-  function setShortTermGoal(goal) {
-    selectedShortTermGoal = goal;
-    updateProgress(100);
-    document.getElementById("quiz-step-2").style.display = "none";
-    document.getElementById("startBtn").style.display = "inline-block";
-  }
-
-  function startJourney() {
-    const customGoalInput = document.getElementById("customGoal").value;
-
-    if (!userName || !selectedLongTermGoal || !selectedShortTermGoal) {
-      alert("Please complete all steps!");
-      return;
+    function closeWelcome() {
+      document.getElementById("welcomePopup").classList.add("fade-out");
+      setTimeout(() => {
+        document.getElementById("welcomePopup").style.display = "none";
+        document.getElementById("auth-section").style.display = "none";
+        document.getElementById("onboarding").style.display = "block";
+        document.getElementById("onboarding").classList.add("fade-in");
+        document.getElementById("username").value = userName;
+      }, 500);
     }
 
-    alert(`Hi, ${userName}! Welcome to your habit journey 🎉`);
-
-    document.getElementById("onboarding").classList.add("fade-out");
-    setTimeout(() => {
-      document.getElementById("onboarding").style.display = "none";
-      document.getElementById("dashboard").style.display = "block";
-      document.getElementById("dashboard").classList.add("fade-in");
-      document.getElementById("chatbot").style.display = "block";
-
-      document.getElementById("displayName").innerText = userName;
-      document.getElementById("displayGoal").innerText =
-        `Long-term: ${selectedLongTermGoal}${customGoalInput ? ` (${customGoalInput})` : ''}, Short-term: ${selectedShortTermGoal}`;
-
-      const userTitle = document.getElementById("userTitle");
-      userTitle.innerText = `${userName}'s habits`;
-      userTitle.style.display = "block";
-    }, 600);
-  }
-
-  function addHabit() {
-    const habit = document.getElementById("habitInput").value;
-    if (habit) {
-      const listItem = document.createElement("li");
-      listItem.textContent = habit;
-      document.getElementById("habitList").appendChild(listItem);
-      document.getElementById("habitInput").value = "";
+    function updateProgress(percent) {
+      document.getElementById("progressFill").style.width = percent + "%";
     }
-  }
-</script>
+
+    function setLongTermGoal(goal) {
+      selectedLongTermGoal = goal;
+      updateProgress(66);
+      if (goal === "health") {
+        document.getElementById("customGoal").style.display = "block";
+      } else {
+        document.getElementById("customGoal").style.display = "none";
+      }
+      document.getElementById("quiz-step-1").style.display = "none";
+      document.getElementById("quiz-step-2").style.display = "block";
+    }
+
+    function setShortTermGoal(goal) {
+      selectedShortTermGoal = goal;
+      updateProgress(100);
+      document.getElementById("quiz-step-2").style.display = "none";
+      document.getElementById("startBtn").style.display = "inline-block";
+    }
+
+    function startJourney() {
+      const customGoalInput = document.getElementById("customGoal").value;
+
+      if (!userName || !selectedLongTermGoal || !selectedShortTermGoal) {
+        alert("Please complete all steps!");
+        return;
+      }
+
+      document.getElementById("onboarding").classList.add("fade-out");
+      setTimeout(() => {
+        document.getElementById("onboarding").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+        document.getElementById("dashboard").classList.add("fade-in");
+        document.getElementById("chatbot").style.display = "block";
+
+        document.getElementById("displayName").innerText = userName;
+        document.getElementById("displayGoal").innerText =
+          `Long-term: ${selectedLongTermGoal}${customGoalInput ? ` (${customGoalInput})` : ''}, Short-term: ${selectedShortTermGoal}`;
+
+        const userTitle = document.getElementById("userTitle");
+        userTitle.innerText = `${userName}'s habits`;
+        userTitle.style.display = "block";
+      }, 600);
+    }
+
+    function addHabit() {
+      const habit = document.getElementById("habitInput").value;
+      if (habit) {
+        const listItem = document.createElement("li");
+        listItem.textContent = habit;
+        document.getElementById("habitList").appendChild(listItem);
+        document.getElementById("habitInput").value = "";
+      }
+    }
+  </script>
 </body>
 </html>
