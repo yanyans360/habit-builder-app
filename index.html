@@ -109,31 +109,34 @@
   </main>
 
   <script>
-    function startJourney() {
-      const name = document.getElementById("username").value;
-      const goal = document.getElementById("goal").value;
+    let selectedLongTermGoal = "";
+let selectedShortTermGoal = "";
 
-      if (!name || !goal) {
-        alert("Please fill out both fields!");
-        return;
-      }
+function setLongTermGoal(goal) {
+  selectedLongTermGoal = goal;
+  document.getElementById("quiz-step-1").style.display = "none";
+  document.getElementById("quiz-step-2").style.display = "block";
+}
 
-      document.getElementById("onboarding").style.display = "none";
-      document.getElementById("dashboard").style.display = "block";
-      document.getElementById("displayName").innerText = name;
-      document.getElementById("displayGoal").innerText = goal;
-    }
+function setShortTermGoal(goal) {
+  selectedShortTermGoal = goal;
+  document.getElementById("quiz-step-2").style.display = "none";
+  document.getElementById("startBtn").style.display = "inline-block";
+}
 
-    function addHabit() {
-      const habitInput = document.getElementById("habitInput");
-      const habit = habitInput.value.trim();
+function startJourney() {
+  const name = document.getElementById("username").value;
+  if (!name || !selectedLongTermGoal || !selectedShortTermGoal) {
+    alert("Please complete all steps!");
+    return;
+  }
 
-      if (habit) {
-        const habitList = document.getElementById("habitList");
-        const li = document.createElement("li");
-        li.textContent = habit;
-        habitList.appendChild(li);
-        habitInput.value = "";
+  document.getElementById("onboarding").style.display = "none";
+  document.getElementById("dashboard").style.display = "block";
+  document.getElementById("displayName").innerText = name;
+  document.getElementById("displayGoal").innerText =
+    `Long-term: ${selectedLongTermGoal}, Short-term: ${selectedShortTermGoal}`;
+}
       }
     }
   </script>
