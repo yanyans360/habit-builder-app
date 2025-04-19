@@ -154,7 +154,20 @@ button:hover {
         <p>Create an account to start your journey:</p>
         <input type="text" id="auth-name" placeholder="Your name" /><br />
         <input type="password" id="auth-password" placeholder="Create a password" /><br />
-        <input type="text" id="security-question" placeholder="Security question (e.g., Your pet's name?)" /><br />
+        <select id="security-question">
+          <option value="" disabled selected>Select a security question</option>
+          <option value="What was your childhood nickname?">What was your childhood nickname?</option>
+          <option value="In what city were you born?">In what city were you born?</option>
+          <option value="What is your favorite movie?">What is your favorite movie?</option>
+          <option value="What was your first pet’s name?">What was your first pet’s name?</option>
+          <option value="What elementary school did you attend?">What elementary school did you attend?</option>
+          <option value="What is your mother’s maiden name?">What is your mother’s maiden name?</option>
+          <option value="What was your dream job as a child?">What was your dream job as a child?</option>
+          <option value="What is your favorite food?">What is your favorite food?</option>
+          <option value="What is your favorite book?">What is your favorite book?</option>
+          <option value="What was the make of your first car?">What was the make of your first car?</option>
+        </select><br />
+
         <input type="text" id="security-answer" placeholder="Answer to your question" /><br />
         <button onclick="completeSignup()">Create Account</button>
         <p style="text-align: center;">
@@ -423,10 +436,11 @@ button:hover {
   const question = document.getElementById("security-question").value.trim();
   const answer = document.getElementById("security-answer").value.trim();
   
-  if (!question || !answer) {
-    alert("Please fill out your security question and answer.");
+  if (question === "" || !answer) {
+    alert("Please select a security question and provide an answer.");
     return;
   }
+
   
   users.push({
     name: nameInput,
