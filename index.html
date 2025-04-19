@@ -155,8 +155,25 @@ button:hover {
         <input type="text" id="auth-name" placeholder="Your name" /><br />
         <input type="password" id="auth-password" placeholder="Create a password" /><br />
         <button onclick="completeSignup()">Create Account</button>
+        <p style="text-align: center;">
+          Already have an account? <a href="#" onclick="showLogin()">Log in</a>
+        </p>
       </div>
     </section>
+    
+    <section id="login-section" style="display: none;">
+      <div class="dashboard">
+        <h2>Welcome Back 👋</h2>
+        <p>Log in to continue building your habits:</p>
+        <input type="text" id="login-name" placeholder="Your name" /><br />
+        <input type="password" id="login-password" placeholder="Your password" /><br />
+        <button onclick="loginUser()">Log In</button>
+        <p style="text-align: center;">
+          New here? <a href="#" onclick="showSignup()">Create an account</a>
+        </p>
+      </div>
+    </section>
+
 
     <section id="onboarding" style="display: none;">
       <div id="progressBar">
@@ -245,6 +262,47 @@ button:hover {
   </main>
 
   <script>
+    function showLogin() {
+      document.getElementById("auth-section").style.display = "none";
+      document.getElementById("login-section").style.display = "block";
+    }
+    
+    function showSignup() {
+      document.getElementById("login-section").style.display = "none";
+      document.getElementById("auth-section").style.display = "block";
+    }
+    
+    function loginUser() {
+      const loginName = document.getElementById("login-name").value.trim();
+      const loginPassword = document.getElementById("login-password").value;
+    
+      if (!loginName || !loginPassword) {
+        alert("Please enter both username and password.");
+        return;
+      }
+    
+      const users = getUserDB();
+      const match = users.find(user => 
+        user.name.toLowerCase() === loginName.toLowerCase() &&
+        user.password === hashPassword(loginPassword)
+      );
+    
+      if (!match) {
+        alert("Invalid username or password.");
+        return;
+      }
+    
+      userName = loginName;
+      document.getElementById("popupGreeting").innerText = `Welcome back, ${userName}!`;
+      document.getElementById("welcomePopup").style.display = "block";
+    
+      confetti({
+        particleCount: 100,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
+    }
+
     let selectedLongTermGoal = "";
     function hashPassword(password) {
       return btoa(password); // Just for demo – not secure
@@ -299,6 +357,7 @@ button:hover {
       setTimeout(() => {
         document.getElementById("welcomePopup").style.display = "none";
         document.getElementById("auth-section").style.display = "none";
+        document.getElementById("login-section").style.display = "none";
         document.getElementById("onboarding").style.display = "block";
         document.getElementById("onboarding").classList.add("fade-in");
         document.getElementById("username").value = userName;
