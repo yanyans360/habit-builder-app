@@ -419,6 +419,17 @@ button:hover {
       }
     
       userName = loginName;
+    
+      // 🧠 DEV TOOLS INJECTION HERE
+      if (userName === "Aiyanna") {
+        const devTools = document.createElement("div");
+        devTools.innerHTML = `
+          <h4>Developer Controls</h4>
+          <button onclick="clearAllUsers()">🗑️ Clear All Users</button>
+        `;
+        document.getElementById("dashboard").appendChild(devTools);
+      }
+    
       document.getElementById("popupGreeting").innerText = `Welcome back, ${userName}!`;
       document.getElementById("welcomePopup").style.display = "block";
     
@@ -428,6 +439,7 @@ button:hover {
         origin: { y: 0.6 }
       });
     }
+
 
     let selectedLongTermGoal = "";
     function hashPassword(password) {
