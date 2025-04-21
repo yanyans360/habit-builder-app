@@ -176,8 +176,9 @@ button:hover {
       <div class="dashboard">
         <h2>Welcome to Habit Builder 👋</h2>
         <p>Create an account to start your journey:</p>
-        <input type="text" id="auth-name" placeholder="Your name" /><br />
+        <input type="text" id="auth-name" placeholder="Username" /><br />
         <input type="password" id="auth-password" placeholder="Create a password" /><br />
+        <input type="password" id="auth-confirm-password" placeholder="Confirm your password" /><br />
         <select id="security-question">
           <option value="" disabled selected>Select a security question</option>
           <option value="What was your childhood nickname?">What was your childhood nickname?</option>
@@ -460,9 +461,15 @@ button:hover {
     function completeSignup() {
       const nameInput = document.getElementById("auth-name").value.trim();
       const password = document.getElementById("auth-password").value;
-    
-      if (!nameInput || !password) {
-        alert("Please enter both a name and password.");
+      const confirmPassword = document.getElementById("auth-confirm-password").value;
+      
+      if (!nameInput || !password || !confirmPassword) {
+        alert("Please complete all fields.");
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        alert("Passwords do not match.");
         return;
       }
     
