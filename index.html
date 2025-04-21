@@ -458,50 +458,59 @@ button:hover {
     let userName = "";
 
     function completeSignup() {
-  const nameInput = document.getElementById("auth-name").value.trim();
-  const password = document.getElementById("auth-password").value;
-
-  if (!nameInput || !password) {
-    alert("Please enter both a name and password.");
-    return;
-  }
-
-  const users = getUserDB();
-  const userExists = users.some(user => user.name.toLowerCase() === nameInput.toLowerCase());
-
-  if (userExists) {
-    alert("Username already taken.");
-    return;
-  }
-
-  const question = document.getElementById("security-question").value.trim();
-  const answer = document.getElementById("security-answer").value.trim();
-  
-  if (question === "" || !answer) {
-    alert("Please select a security question and provide an answer.");
-    return;
-  }
-
-  
-  users.push({
-    name: nameInput,
-    password: hashPassword(password),
-    question,
-    answer: hashPassword(answer.toLowerCase())
-  });
-
-  saveUserDB(users);
-
-  userName = nameInput;
-  document.getElementById("popupGreeting").innerText = `Hi, ${userName}!`;
-  document.getElementById("welcomePopup").style.display = "block";
-
-  confetti({
-    particleCount: 100,
-    spread: 80,
-    origin: { y: 0.6 }
-  });
-}
+      const nameInput = document.getElementById("auth-name").value.trim();
+      const password = document.getElementById("auth-password").value;
+    
+      if (!nameInput || !password) {
+        alert("Please enter both a name and password.");
+        return;
+      }
+    
+      const users = getUserDB();
+      const userExists = users.some(user => user.name.toLowerCase() === nameInput.toLowerCase());
+    
+      if (userExists) {
+        alert("Username already taken.");
+        return;
+      }
+    
+      const question = document.getElementById("security-question").value.trim();
+      const answer = document.getElementById("security-answer").value.trim();
+      
+      if (question === "" || !answer) {
+        alert("Please select a security question and provide an answer.");
+        return;
+      }
+    
+      
+      users.push({
+        name: nameInput,
+        password: hashPassword(password),
+        question,
+        answer: hashPassword(answer.toLowerCase())
+      });
+      
+    
+      saveUserDB(users);
+    
+      userName = nameInput;
+      if (userName === "Aiyanna") {
+        const devTools = document.createElement("div");
+        devTools.innerHTML = `
+          <h4>Developer Controls</h4>
+          <button onclick="clearAllUsers()">🗑️ Clear All Users</button>
+        `;
+        document.getElementById("dashboard").appendChild(devTools);
+      }
+      document.getElementById("popupGreeting").innerText = `Hi, ${userName}!`;
+      document.getElementById("welcomePopup").style.display = "block";
+    
+      confetti({
+        particleCount: 100,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
+    }
 
 
     
