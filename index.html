@@ -260,6 +260,11 @@ button:hover {
     </section>
 
     <section id="dashboard" class="dashboard" style="display: none;">
+      <div style="margin-top: 2rem; padding: 1rem; border-top: 1px dashed #ccc;">
+        <h4>Developer Controls</h4>
+        <button onclick="clearAllUsers()">🗑️ Clear All Users</button>
+      </div>
+
       <h2>Your Dashboard</h2>
       <div id="avatar">👤</div>
       <p><strong>Name:</strong> <span id="displayName"></span></p>
@@ -557,6 +562,14 @@ button:hover {
         document.getElementById("habitInput").value = "";
       }
     }
+    function clearAllUsers() {
+  const confirmClear = confirm("Are you sure you want to delete all users? This cannot be undone.");
+  if (confirmClear) {
+    localStorage.removeItem("habitUsers");
+    alert("All user accounts have been cleared.");
+    location.reload(); // Optional: reload page to reset everything
+  }
+}
   </script>
 </body>
 </html>
