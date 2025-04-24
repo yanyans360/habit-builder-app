@@ -550,16 +550,22 @@ button:hover {
 
 function toggleMotivation(button, motivation) {
   const index = selectedMotivations.indexOf(motivation);
+
   if (index > -1) {
     selectedMotivations.splice(index, 1);
     button.classList.remove("selected");
   } else {
+    if (selectedMotivations.length >= 2) {
+      alert("Please pick up to 2 motivation styles.");
+      return;
+    }
     selectedMotivations.push(motivation);
     button.classList.add("selected");
   }
 
   document.getElementById("toShortTermBtn").style.display = selectedMotivations.length > 0 ? "inline-block" : "none";
 }
+
 
 function addCustomMotivation() {
   const input = document.getElementById("customMotivationInput");
@@ -572,6 +578,10 @@ function addCustomMotivation() {
     alert("You already added this motivation.");
     return;
   }
+  if (selectedMotivations.length >= 2) {
+    alert("Please pick up to 2 motivation styles.");
+    return;
+  }
 
   const newBtn = document.createElement("button");
   newBtn.textContent = `✨ ${motivation}`;
@@ -581,6 +591,14 @@ function addCustomMotivation() {
     newBtn.remove();
     document.getElementById("toShortTermBtn").style.display = selectedMotivations.length > 0 ? "inline-block" : "none";
   };
+
+  document.getElementById("motivation-buttons").appendChild(newBtn);
+  selectedMotivations.push(motivation);
+  input.value = "";
+
+  document.getElementById("toShortTermBtn").style.display = "inline-block";
+}
+
 
   document.getElementById("motivation-buttons").appendChild(newBtn);
   selectedMotivations.push(motivation);
@@ -724,7 +742,9 @@ function goToShortTerm() {
 
         document.getElementById("displayName").innerText = userName;
         document.getElementById("displayGoal").innerText =
-          `Long-term: ${selectedGoals.join(", ")}${customGoalInput ? ` (${customGoalInput})` : ''}, Short-term: ${selectedShortTermGoal}`;
+          `Long-term: ${selectedGoals.join(", ")}${customGoalInput ? ` (${customGoalInput})` : ''}, ` +
+          `Motivation: ${selectedMotivations.join(", ")}, ` +
+          `Short-term: ${selectedShortTermGoal}`;
 
         const userTitle = document.getElementById("userTitle");
         userTitle.innerText = `${userName}'s habits`;
