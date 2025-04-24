@@ -603,13 +603,6 @@ function addCustomMotivation() {
 }
 
 
-  document.getElementById("motivation-buttons").appendChild(newBtn);
-  selectedMotivations.push(motivation);
-  input.value = "";
-
-  document.getElementById("toShortTermBtn").style.display = "inline-block";
-}
-
 function goToShortTerm() {
   updateProgress(85);
   document.getElementById("quiz-step-2").style.display = "none";
