@@ -163,10 +163,13 @@ button:hover {
   z-index: 1000;
 }
 #goal-buttons button.selected {
-  background-color: #249e76;
-  color: #fff;
+  background-color: #ffc107; /* brighter yellow */
+  color: #1a1a1a;
   font-weight: bold;
+  border: 2px solid #ffa000;
+  transform: scale(1.03);
 }
+
 
   </style>
 </head>
@@ -260,8 +263,9 @@ button:hover {
           <button onclick="toggleGoal(this, 'Minimize Stress & Simplify Life')">🌿 Minimize Stress & Simplify Life</button>
           <button onclick="toggleGoal(this, 'Grow Spiritually or Philosophically')">🕊️ Grow Spiritually or Philosophically</button>
           <button onclick="toggleGoal(this, 'Make a Big Life Change')">🔄 Make a Big Life Change</button>
-        </div>
-        <input type="text" id="customGoal" placeholder="e.g., Wake up earlier" style="margin-top: 1rem; display: none;" />
+       </div>
+        <input type="text" id="customGoalInput" placeholder="Write your own goal..." style="margin-top: 1rem;" />
+        <button style="margin-top: 0.5rem;" onclick="addCustomGoal()">➕ Add Custom Goal</button>
         <br />
         <button id="toStep2Btn" style="display: none; margin-top: 1rem;" onclick="goToStep2()">Next</button>
       </div>
@@ -489,6 +493,34 @@ button:hover {
         selectedGoals.push(goal);
         button.classList.add("selected");
       }
+    function addCustomGoal() {
+      const input = document.getElementById("customGoalInput");
+      const goal = input.value.trim();
+      if (!goal) {
+        alert("Please enter a custom goal.");
+        return;
+      }
+      if (selectedGoals.length >= 3) {
+        alert("You can only choose up to 3 goals.");
+        return;
+      }
+    
+      const newBtn = document.createElement("button");
+      newBtn.textContent = `✨ ${goal}`;
+      newBtn.classList.add("selected");
+      newBtn.onclick = () => {
+        selectedGoals = selectedGoals.filter(g => g !== goal);
+        newBtn.remove();
+        document.getElementById("toStep2Btn").style.display = selectedGoals.length > 0 ? "inline-block" : "none";
+      };
+    
+      document.getElementById("goal-buttons").appendChild(newBtn);
+      selectedGoals.push(goal);
+      input.value = "";
+    
+      document.getElementById("toStep2Btn").style.display = "inline-block";
+    }
+
     
       // Show custom input if any selected goal matches a certain condition
       document.getElementById("customGoal").style.display =
