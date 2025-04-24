@@ -242,9 +242,16 @@ button:hover {
 
       <div id="quiz-step-1">
         <p>What’s your main long-term priority?</p>
-        <button onclick="setLongTermGoal('health')">💪 Improve Health</button>
-        <button onclick="setLongTermGoal('productivity')">📈 Be More Productive</button>
-        <button onclick="setLongTermGoal('wellbeing')">🧘‍♀️ Boost Wellbeing</button>
+        <button onclick="setLongTermGoal('Improve Physical Health')">💪 Improve Physical Health</button>
+        <button onclick="setLongTermGoal('Boost Mental Well-Being')">🧠 Boost Mental Well-Being</button>
+        <button onclick="setLongTermGoal('Advance Career or Education')">🎓 Advance Career or Education</button>
+        <button onclick="setLongTermGoal('Build Financial Stability')">💰 Build Financial Stability</button>
+        <button onclick="setLongTermGoal('Strengthen Relationships')">🤝 Strengthen Relationships</button>
+        <button onclick="setLongTermGoal('Enhance Creativity or Hobbies')">🎨 Enhance Creativity or Hobbies</button>
+        <button onclick="setLongTermGoal('Establish a Daily Routine')">📅 Establish a Daily Routine</button>
+        <button onclick="setLongTermGoal('Minimize Stress & Simplify Life')">🌿 Minimize Stress & Simplify Life</button>
+        <button onclick="setLongTermGoal('Grow Spiritually or Philosophically')">🕊️ Grow Spiritually or Philosophically</button>
+        <button onclick="setLongTermGoal('Make a Big Life Change')">🔄 Make a Big Life Change</button>
         <input type="text" id="customGoal" placeholder="e.g., Wake up earlier" style="display: none; margin-top: 1rem;" />
       </div>
 
@@ -539,11 +546,8 @@ button:hover {
     function setLongTermGoal(goal) {
       selectedLongTermGoal = goal;
       updateProgress(66);
-      if (goal === "health") {
-        document.getElementById("customGoal").style.display = "block";
-      } else {
-        document.getElementById("customGoal").style.display = "none";
-      }
+      
+      document.getElementById("customGoal").style.display = "block";
       document.getElementById("quiz-step-1").style.display = "none";
       document.getElementById("quiz-step-2").style.display = "block";
     }
