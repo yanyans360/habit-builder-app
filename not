@@ -514,9 +514,6 @@ button:hover {
       }
   
     
-      document.getElementById("goal-buttons").appendChild(newBtn);
-      selectedGoals.push(goal);
-      input.value = "";
       
       document.getElementById("toStep2Btn").style.display = selectedGoals.length > 0 ? "inline-block" : "none";
     }
@@ -796,3 +793,8 @@ function goToShortTerm() {
   </script>
 </body>
 </html>
+
+window.onerror = function (msg, url, line, col, error) {
+  alert("⚠️ JS Error: " + msg + " on line " + line);
+};
+
