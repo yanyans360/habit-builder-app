@@ -493,11 +493,24 @@ button:hover {
         selectedGoals.push(goal);
         button.classList.add("selected");
       }
+  
+    
+      document.getElementById("goal-buttons").appendChild(newBtn);
+      selectedGoals.push(goal);
+      input.value = "";
+      
+      document.getElementById("toStep2Btn").style.display = selectedGoals.length > 0 ? "inline-block" : "none";
+    }
+
     function addCustomGoal() {
       const input = document.getElementById("customGoalInput");
       const goal = input.value.trim();
       if (!goal) {
         alert("Please enter a custom goal.");
+        return;
+      }
+      if (selectedGoals.includes(goal)) {
+        alert("You already added this goal.");
         return;
       }
       if (selectedGoals.length >= 3) {
@@ -521,13 +534,6 @@ button:hover {
       document.getElementById("toStep2Btn").style.display = "inline-block";
     }
 
-    
-      // Show custom input if any selected goal matches a certain condition
-      document.getElementById("customGoal").style.display =
-        selectedGoals.includes("Improve Physical Health") ? "block" : "none";
-    
-      document.getElementById("toStep2Btn").style.display = selectedGoals.length > 0 ? "inline-block" : "none";
-    }
     
     function goToStep2() {
       updateProgress(66);
