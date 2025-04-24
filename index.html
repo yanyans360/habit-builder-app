@@ -162,13 +162,15 @@ button:hover {
   display: none;
   z-index: 1000;
 }
-#goal-buttons button.selected {
-  background-color: #ffc107; /* brighter yellow */
+#goal-buttons button.selected,
+#motivation-buttons button.selected {
+  background-color: #ffc107;
   color: #1a1a1a;
   font-weight: bold;
   border: 2px solid #ffa000;
   transform: scale(1.03);
 }
+
 
 
   </style>
@@ -270,12 +272,23 @@ button:hover {
         <button id="toStep2Btn" style="display: none; margin-top: 1rem;" onclick="goToStep2()">Next</button>
       </div>
 
-      <div id="quiz-step-2" style="display: none;">
-        <p>What’s one thing you’d like to improve *this week*?</p>
-        <button onclick="setShortTermGoal('exercise')">🏋️‍♀️ Exercise 3x this week</button>
-        <button onclick="setShortTermGoal('focus')">📱 Use phone less</button>
-        <button onclick="setShortTermGoal('sleep')">🛌 Go to bed on time</button>
+     <div id="quiz-step-2" style="display: none;">
+        <p>What keeps you motivated to stick with your habits?</p>
+        <div id="motivation-buttons" style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <button onclick="toggleMotivation(this, 'Tracking my progress visually')">🔍 Tracking my progress visually</button>
+          <button onclick="toggleMotivation(this, 'Accountability from others')">🤝 Accountability from others</button>
+          <button onclick="toggleMotivation(this, 'Clear rewards or milestones')">🎯 Clear rewards or milestones</button>
+          <button onclick="toggleMotivation(this, 'Visualizing success')">🌟 Visualizing success</button>
+          <button onclick="toggleMotivation(this, 'Encouragement and affirmations')">💬 Encouragement and affirmations</button>
+          <button onclick="toggleMotivation(this, 'Building habits into my routine')">🧘‍♀️ Building habits into my routine</button>
+          <button onclick="toggleMotivation(this, 'Still figuring it out')">🤷 I haven’t figured it out yet</button>
+        </div>
+        <input type="text" id="customMotivationInput" placeholder="Add your own motivation..." style="margin-top: 1rem;" />
+        <button style="margin-top: 0.5rem;" onclick="addCustomMotivation()">➕ Add Custom Motivation</button>
+        <br />
+        <button id="toShortTermBtn" style="display: none; margin-top: 1rem;" onclick="goToShortTerm()">Next</button>
       </div>
+
 
       <br />
       <button id="startBtn" style="display: none;" onclick="startJourney()">Start Your Journey</button>
@@ -533,6 +546,64 @@ button:hover {
     
       document.getElementById("toStep2Btn").style.display = "inline-block";
     }
+    let selectedMotivations = [];
+
+function toggleMotivation(button, motivation) {
+  const index = selectedMotivations.indexOf(motivation);
+  if (index > -1) {
+    selectedMotivations.splice(index, 1);
+    button.classList.remove("selected");
+  } else {
+    selectedMotivations.push(motivation);
+    button.classList.add("selected");
+  }
+
+  document.getElementById("toShortTermBtn").style.display = selectedMotivations.length > 0 ? "inline-block" : "none";
+}
+
+function addCustomMotivation() {
+  const input = document.getElementById("customMotivationInput");
+  const motivation = input.value.trim();
+  if (!motivation) {
+    alert("Please enter a custom motivation.");
+    return;
+  }
+  if (selectedMotivations.includes(motivation)) {
+    alert("You already added this motivation.");
+    return;
+  }
+
+  const newBtn = document.createElement("button");
+  newBtn.textContent = `✨ ${motivation}`;
+  newBtn.classList.add("selected");
+  newBtn.onclick = () => {
+    selectedMotivations = selectedMotivations.filter(m => m !== motivation);
+    newBtn.remove();
+    document.getElementById("toShortTermBtn").style.display = selectedMotivations.length > 0 ? "inline-block" : "none";
+  };
+
+  document.getElementById("motivation-buttons").appendChild(newBtn);
+  selectedMotivations.push(motivation);
+  input.value = "";
+
+  document.getElementById("toShortTermBtn").style.display = "inline-block";
+}
+
+function goToShortTerm() {
+  updateProgress(85);
+  document.getElementById("quiz-step-2").style.display = "none";
+  
+  const shortTermSection = document.createElement("div");
+  shortTermSection.id = "quiz-step-3";
+  shortTermSection.innerHTML = `
+    <p>What’s one thing you’d like to improve *this week*?</p>
+    <button onclick="setShortTermGoal('exercise')">🏋️‍♀️ Exercise 3x this week</button>
+    <button onclick="setShortTermGoal('focus')">📱 Use phone less</button>
+    <button onclick="setShortTermGoal('sleep')">🛌 Go to bed on time</button>
+  `;
+  document.getElementById("onboarding").appendChild(shortTermSection);
+}
+
 
     
     function goToStep2() {
