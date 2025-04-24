@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Habit Builder</title>
   <style>
+  
   body {
   font-family: 'Nunito', sans-serif;
   background: #ffffff;
@@ -161,6 +162,12 @@ button:hover {
   display: none;
   z-index: 1000;
 }
+#goal-buttons button.selected {
+  background-color: #249e76;
+  color: #fff;
+  font-weight: bold;
+}
+
   </style>
 </head>
 <body>
@@ -241,18 +248,22 @@ button:hover {
       <p>Let’s make a plan just for you. What’s something you want to build into your life?</p>
 
       <div id="quiz-step-1">
-        <p>What’s your main long-term priority?</p>
-        <button onclick="setLongTermGoal('Improve Physical Health')">💪 Improve Physical Health</button>
-        <button onclick="setLongTermGoal('Boost Mental Well-Being')">🧠 Boost Mental Well-Being</button>
-        <button onclick="setLongTermGoal('Advance Career or Education')">🎓 Advance Career or Education</button>
-        <button onclick="setLongTermGoal('Build Financial Stability')">💰 Build Financial Stability</button>
-        <button onclick="setLongTermGoal('Strengthen Relationships')">🤝 Strengthen Relationships</button>
-        <button onclick="setLongTermGoal('Enhance Creativity or Hobbies')">🎨 Enhance Creativity or Hobbies</button>
-        <button onclick="setLongTermGoal('Establish a Daily Routine')">📅 Establish a Daily Routine</button>
-        <button onclick="setLongTermGoal('Minimize Stress & Simplify Life')">🌿 Minimize Stress & Simplify Life</button>
-        <button onclick="setLongTermGoal('Grow Spiritually or Philosophically')">🕊️ Grow Spiritually or Philosophically</button>
-        <button onclick="setLongTermGoal('Make a Big Life Change')">🔄 Make a Big Life Change</button>
-        <input type="text" id="customGoal" placeholder="e.g., Wake up earlier" style="display: none; margin-top: 1rem;" />
+        <p>Choose up to 3 long-term priorities:</p>
+        <div id="goal-buttons" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+          <button onclick="toggleGoal(this, 'Improve Physical Health')">💪 Improve Physical Health</button>
+          <button onclick="toggleGoal(this, 'Boost Mental Well-Being')">🧠 Boost Mental Well-Being</button>
+          <button onclick="toggleGoal(this, 'Advance Career or Education')">🎓 Advance Career or Education</button>
+          <button onclick="toggleGoal(this, 'Build Financial Stability')">💰 Build Financial Stability</button>
+          <button onclick="toggleGoal(this, 'Strengthen Relationships')">🤝 Strengthen Relationships</button>
+          <button onclick="toggleGoal(this, 'Enhance Creativity or Hobbies')">🎨 Enhance Creativity or Hobbies</button>
+          <button onclick="toggleGoal(this, 'Establish a Daily Routine')">📅 Establish a Daily Routine</button>
+          <button onclick="toggleGoal(this, 'Minimize Stress & Simplify Life')">🌿 Minimize Stress & Simplify Life</button>
+          <button onclick="toggleGoal(this, 'Grow Spiritually or Philosophically')">🕊️ Grow Spiritually or Philosophically</button>
+          <button onclick="toggleGoal(this, 'Make a Big Life Change')">🔄 Make a Big Life Change</button>
+        </div>
+        <input type="text" id="customGoal" placeholder="e.g., Wake up earlier" style="margin-top: 1rem; display: none;" />
+        <br />
+        <button id="toStep2Btn" style="display: none; margin-top: 1rem;" onclick="goToStep2()">Next</button>
       </div>
 
       <div id="quiz-step-2" style="display: none;">
@@ -463,6 +474,34 @@ button:hover {
 
     let selectedShortTermGoal = "";
     let userName = "";
+    let selectedGoals = [];
+
+    function toggleGoal(button, goal) {
+      const index = selectedGoals.indexOf(goal);
+      if (index > -1) {
+        selectedGoals.splice(index, 1);
+        button.classList.remove("selected");
+      } else {
+        if (selectedGoals.length >= 3) {
+          alert("You can only choose up to 3 goals.");
+          return;
+        }
+        selectedGoals.push(goal);
+        button.classList.add("selected");
+      }
+    
+      // Show custom input if any selected goal matches a certain condition
+      document.getElementById("customGoal").style.display =
+        selectedGoals.includes("Improve Physical Health") ? "block" : "none";
+    
+      document.getElementById("toStep2Btn").style.display = selectedGoals.length > 0 ? "inline-block" : "none";
+    }
+    
+    function goToStep2() {
+      updateProgress(66);
+      document.getElementById("quiz-step-1").style.display = "none";
+      document.getElementById("quiz-step-2").style.display = "block";
+    }
 
     function completeSignup() {
       const nameInput = document.getElementById("auth-name").value.trim();
@@ -576,7 +615,7 @@ button:hover {
 
         document.getElementById("displayName").innerText = userName;
         document.getElementById("displayGoal").innerText =
-          `Long-term: ${selectedLongTermGoal}${customGoalInput ? ` (${customGoalInput})` : ''}, Short-term: ${selectedShortTermGoal}`;
+          `Long-term: ${selectedGoals.join(", ")}${customGoalInput ? ` (${customGoalInput})` : ''}, Short-term: ${selectedShortTermGoal}`;
 
         const userTitle = document.getElementById("userTitle");
         userTitle.innerText = `${userName}'s habits`;
