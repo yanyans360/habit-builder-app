@@ -789,12 +789,11 @@ function goToShortTerm() {
     document.getElementById("userTitle").style.display = "block";
   }
 };
-
+  window.onerror = function (msg, url, line, col, error) {
+    alert("⚠️ JS Error: " + msg + " on line " + line);
+  };
   </script>
 </body>
 </html>
 
-window.onerror = function (msg, url, line, col, error) {
-  alert("⚠️ JS Error: " + msg + " on line " + line);
-};
 
