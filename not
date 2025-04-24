@@ -456,16 +456,6 @@ button:hover {
     
       userName = loginName;
     
-      // 🧠 DEV TOOLS INJECTION HERE
-      if (userName === "Aiyanna") {
-        const devTools = document.createElement("div");
-        devTools.innerHTML = `
-          <h4>Developer Controls</h4>
-          <button onclick="clearAllUsers()">🗑️ Clear All Users</button>
-        `;
-        document.getElementById("dashboard").appendChild(devTools);
-      }
-    
       document.getElementById("popupGreeting").innerText = `Welcome back, ${userName}!`;
       document.getElementById("welcomePopup").style.display = "block";
     
@@ -474,17 +464,22 @@ button:hover {
         spread: 80,
         origin: { y: 0.6 }
       });
+
+      localStorage.setItem("hasOnboarded_" + userName, "true");
+      localStorage.setItem("lastUser", userName);
+
+    
+      setTimeout(() => {
+        document.getElementById("welcomePopup").style.display = "none";
+        document.getElementById("auth-section").style.display = "none";
+        document.getElementById("login-section").style.display = "none";
+        document.getElementById("onboarding").style.display = "block";
+        document.getElementById("onboarding").classList.add("fade-in");
+        document.getElementById("username").value = userName;
+      }, 1500);
     }
     
-    setTimeout(() => {
-      document.getElementById("welcomePopup").style.display = "none";
-      document.getElementById("auth-section").style.display = "none";
-      document.getElementById("login-section").style.display = "none";
-      document.getElementById("onboarding").style.display = "block";
-      document.getElementById("onboarding").classList.add("fade-in");
-      document.getElementById("username").value = userName;
-    }, 1500); // or trigger this via a close button in the popup
-
+        
 
 
     let selectedLongTermGoal = "";
@@ -773,13 +768,31 @@ function goToShortTerm() {
       }
     }
     function clearAllUsers() {
-  const confirmClear = confirm("Are you sure you want to delete all users? This cannot be undone.");
-  if (confirmClear) {
-    localStorage.removeItem("habitUsers");
-    alert("All user accounts have been cleared.");
-    location.reload(); // Optional: reload page to reset everything
+      const confirmClear = confirm("Are you sure you want to delete all users? This cannot be undone.");
+      if (confirmClear) {
+        localStorage.removeItem("habitUsers");
+        alert("All user accounts have been cleared.");
+        location.reload(); // Optional: reload page to reset everything
+      }
+    }
+  window.onload = function () {
+  const storedUser = localStorage.getItem("lastUser");
+  if (storedUser && localStorage.getItem("hasOnboarded_" + storedUser) === "true") {
+    userName = storedUser;
+
+    document.getElementById("auth-section").style.display = "none";
+    document.getElementById("login-section").style.display = "none";
+    document.getElementById("onboarding").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    document.getElementById("chatbot").style.display = "block";
+
+    document.getElementById("displayName").innerText = userName;
+    document.getElementById("displayGoal").innerText = "Welcome back!";
+    document.getElementById("userTitle").innerText = `${userName}'s habits`;
+    document.getElementById("userTitle").style.display = "block";
   }
-}
+};
+
   </script>
 </body>
 </html>
