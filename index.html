@@ -641,6 +641,10 @@ function toggleMotivation(button, motivation) {
     selectedMotivations.push(motivation);
     button.classList.add("selected");
   }
+
+  document.getElementById("toShortTermBtn").style.display = selectedMotivations.length > 0 ? "inline-block" : "none";
+}
+
 function toggleShortTerm(button, goal) {
   const index = selectedShortTermGoals.indexOf(goal);
 
@@ -659,9 +663,6 @@ function toggleShortTerm(button, goal) {
   document.getElementById("toStartBtn").style.display = selectedShortTermGoals.length > 0 ? "inline-block" : "none";
 }
 
-
-  document.getElementById("toShortTermBtn").style.display = selectedMotivations.length > 0 ? "inline-block" : "none";
-}
 
 
 function addCustomMotivation() {
