@@ -499,6 +499,79 @@ button:hover {
     let userName = "";
     let selectedGoals = [];
 
+    const shortTermGoalsMap = {
+      "Improve Physical Health": [
+        "🚶 Walk 7,000+ steps today",
+        "🥦 Eat a veggie with every meal",
+        "💧 Drink 8 cups of water",
+        "🏋️ Do a 20-minute workout",
+        "🧘 Stretch for 10 minutes"
+      ],
+      "Boost Mental Well-Being": [
+        "📓 Journal for 5 minutes tonight",
+        "🧘 Meditate for 10 minutes",
+        "🌅 Go for a mindful morning walk",
+        "📵 Unplug from screens 1 hour before bed",
+        "🎧 Listen to calming music during lunch"
+      ],
+      "Advance Career or Education": [
+        "📚 Study or read for 30 minutes",
+        "📅 Plan your week in Google Calendar",
+        "📝 Apply to one opportunity",
+        "👨‍🏫 Attend a virtual webinar or event",
+        "✅ Check off one thing on your to-do list"
+      ],
+      "Build Financial Stability": [
+        "💸 Track today’s spending",
+        "🏦 Transfer $5 to savings",
+        "🧾 Review 3 recent transactions",
+        "📈 Update your budget or spreadsheet",
+        "🛍️ Skip a non-essential purchase today"
+      ],
+      "Strengthen Relationships": [
+        "📱 Text or call a friend/family member",
+        "👥 Schedule a hangout",
+        "💌 Send a thoughtful message",
+        "🧠 Remember a friend’s upcoming event",
+        "🎁 Plan a small surprise for someone"
+      ],
+      "Enhance Creativity or Hobbies": [
+        "🎨 Create for 20 minutes",
+        "📷 Take a creative photo today",
+        "📝 Write something short (poem, journal)",
+        "🎧 Listen to an inspiring podcast",
+        "📚 Read or watch something for inspiration"
+      ],
+      "Establish a Daily Routine": [
+        "🛏️ Wake up at a consistent time",
+        "📅 Fill out your daily plan",
+        "🍽️ Eat meals at regular times",
+        "🧼 Do one routine chore (dishes, laundry)",
+        "🔁 Repeat one habit from yesterday"
+      ],
+      "Minimize Stress & Simplify Life": [
+        "🗑️ Declutter one space (desk, bag, folder)",
+        "🧘 Breathe deeply for 3 minutes",
+        "📵 Turn off notifications for 1 hour",
+        "📝 Do a 5-minute brain dump",
+        "🕰️ Time-block your next 2 hours"
+      ],
+      "Grow Spiritually or Philosophically": [
+        "📖 Read a page of a spiritual or wisdom text",
+        "🙏 Reflect on 1 thing you're grateful for",
+        "🌌 Watch the sunset or stargaze",
+        "🧘 Meditate with intention (even 5 min)",
+        "🪞 Ask yourself a deep question & journal"
+      ],
+      "Make a Big Life Change": [
+        "🧭 Write out your ideal day 1 year from now",
+        "📋 List 3 next steps for your goal",
+        "📅 Schedule time to work on a transition",
+        "📞 Call someone who’s done it before",
+        "🧼 Let go of one thing that’s holding you back"
+      ]
+    };
+
     function toggleGoal(button, goal) {
       const index = selectedGoals.indexOf(goal);
       if (index > -1) {
@@ -550,6 +623,7 @@ button:hover {
       document.getElementById("toStep2Btn").style.display = "inline-block";
     }
     let selectedMotivations = [];
+    
 
 function toggleMotivation(button, motivation) {
   const index = selectedMotivations.indexOf(motivation);
@@ -606,15 +680,27 @@ function addCustomMotivation() {
 function goToShortTerm() {
   updateProgress(85);
   document.getElementById("quiz-step-2").style.display = "none";
-  
+
   const shortTermSection = document.createElement("div");
   shortTermSection.id = "quiz-step-3";
+
+  let suggestions = [];
+  selectedGoals.forEach(goal => {
+    if (shortTermGoalsMap[goal]) {
+      suggestions = suggestions.concat(shortTermGoalsMap[goal]);
+    }
+  });
+
+  // Remove duplicates and pick max 6 random ones
+  const uniqueSuggestions = [...new Set(suggestions)].sort(() => Math.random() - 0.5).slice(0, 6);
+
   shortTermSection.innerHTML = `
     <p>What’s one thing you’d like to improve *this week*?</p>
-    <button onclick="setShortTermGoal('exercise')">🏋️‍♀️ Exercise 3x this week</button>
-    <button onclick="setShortTermGoal('focus')">📱 Use phone less</button>
-    <button onclick="setShortTermGoal('sleep')">🛌 Go to bed on time</button>
+    ${uniqueSuggestions.map(goal => `<button onclick="setShortTermGoal('${goal.replace(/'/g, "\\'")}')">${goal}</button>`).join('')}
+    <input type="text" id="customShortTermInput" placeholder="Or write your own..." style="margin-top: 1rem;" />
+    <button style="margin-top: 0.5rem;" onclick="addCustomShortTermGoal()">➕ Add Custom Goal</button>
   `;
+
   document.getElementById("onboarding").appendChild(shortTermSection);
 }
 
@@ -720,6 +806,17 @@ function goToShortTerm() {
       document.getElementById("quiz-step-2").style.display = "none";
       document.getElementById("startBtn").style.display = "inline-block";
     }
+
+    function addCustomShortTermGoal() {
+      const input = document.getElementById("customShortTermInput");
+      const goal = input.value.trim();
+      if (!goal) {
+        alert("Please enter a short-term goal.");
+        return;
+      }
+      setShortTermGoal(goal);
+    }
+
 
     function startJourney() {
       const customGoalInput = document.getElementById("customGoal").value;
