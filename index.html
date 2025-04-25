@@ -302,6 +302,7 @@ button:hover {
       </div>
 
       <h2>Your Dashboard</h2>
+      <button onclick="logoutUser()" style="background-color: #f44336; margin-bottom: 1rem;">🚪 Log Out</button>
       <div id="avatar">👤</div>
       <p><strong>Name:</strong> <span id="displayName"></span></p>
       <p><strong>Goal:</strong> <span id="displayGoal"></span></p>
@@ -819,7 +820,9 @@ function goToShortTerm() {
 
 
     function startJourney() {
-      const customGoalInput = document.getElementById("customGoal").value;
+      const customGoalElement = document.getElementById("customGoalInput");
+      const customGoalInput = customGoalElement ? customGoalElement.value : "";
+
 
       if (!userName || !selectedLongTermGoal || !selectedShortTermGoal) {
         alert("Please complete all steps!");
@@ -854,6 +857,27 @@ function goToShortTerm() {
         document.getElementById("habitInput").value = "";
       }
     }
+    function logoutUser() {
+      const confirmLogout = confirm("Are you sure you want to log out?");
+      if (confirmLogout) {
+        localStorage.removeItem("lastUser");
+        userName = "";
+        // You could also clear selected goals if you want:
+        selectedGoals = [];
+        selectedMotivations = [];
+        selectedShortTermGoal = "";
+        selectedLongTermGoal = "";
+    
+        // Hide dashboard, show login
+        document.getElementById("dashboard").style.display = "none";
+        document.getElementById("chatbot").style.display = "none";
+        document.getElementById("userTitle").style.display = "none";
+        document.getElementById("login-section").style.display = "block";
+    
+        alert("You have been logged out!");
+      }
+    }
+
     function clearAllUsers() {
       const confirmClear = confirm("Are you sure you want to delete all users? This cannot be undone.");
       if (confirmClear) {
