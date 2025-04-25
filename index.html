@@ -640,6 +640,24 @@ function toggleMotivation(button, motivation) {
     selectedMotivations.push(motivation);
     button.classList.add("selected");
   }
+function toggleShortTerm(button, goal) {
+  const index = selectedShortTermGoals.indexOf(goal);
+
+  if (index > -1) {
+    selectedShortTermGoals.splice(index, 1);
+    button.classList.remove("selected");
+  } else {
+    if (selectedShortTermGoals.length >= 3) {
+      alert("You can only pick up to 3 short-term habits.");
+      return;
+    }
+    selectedShortTermGoals.push(goal);
+    button.classList.add("selected");
+  }
+
+  document.getElementById("toStartBtn").style.display = selectedShortTermGoals.length > 0 ? "inline-block" : "none";
+}
+
 
   document.getElementById("toShortTermBtn").style.display = selectedMotivations.length > 0 ? "inline-block" : "none";
 }
@@ -678,6 +696,8 @@ function addCustomMotivation() {
 }
 
 
+let selectedShortTermGoals = [];
+
 function goToShortTerm() {
   updateProgress(85);
   document.getElementById("quiz-step-2").style.display = "none";
@@ -692,18 +712,22 @@ function goToShortTerm() {
     }
   });
 
-  // Remove duplicates and pick max 6 random ones
   const uniqueSuggestions = [...new Set(suggestions)].sort(() => Math.random() - 0.5).slice(0, 6);
 
   shortTermSection.innerHTML = `
-    <p>What’s one thing you’d like to improve *this week*?</p>
-    ${uniqueSuggestions.map(goal => `<button onclick="setShortTermGoal('${goal.replace(/'/g, "\\'")}')">${goal}</button>`).join('')}
+    <p>Pick up to <strong>3 short-term habits</strong> to work on this week:</p>
+    <div id="shortterm-buttons" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+      ${uniqueSuggestions.map(goal => `<button onclick="toggleShortTerm(this, '${goal.replace(/'/g, "\\'")}')">${goal}</button>`).join('')}
+    </div>
     <input type="text" id="customShortTermInput" placeholder="Or write your own..." style="margin-top: 1rem;" />
     <button style="margin-top: 0.5rem;" onclick="addCustomShortTermGoal()">➕ Add Custom Goal</button>
+    <br />
+    <button id="toStartBtn" style="display: none; margin-top: 1rem;" onclick="prepareStart()">Next</button>
   `;
 
   document.getElementById("onboarding").appendChild(shortTermSection);
 }
+
 
 
     
@@ -815,19 +839,39 @@ function goToShortTerm() {
         alert("Please enter a short-term goal.");
         return;
       }
-      setShortTermGoal(goal);
-    }
-
-
-    function startJourney() {
-      const customGoalElement = document.getElementById("customGoalInput");
-      const customGoalInput = customGoalElement ? customGoalElement.value : "";
-
-
-      if (!userName || !selectedLongTermGoal || !selectedShortTermGoal) {
-        alert("Please complete all steps!");
+      if (selectedShortTermGoals.includes(goal)) {
+        alert("You already added this goal.");
         return;
       }
+      if (selectedShortTermGoals.length >= 3) {
+        alert("You can only pick up to 3 short-term habits.");
+        return;
+      }
+    
+      const newBtn = document.createElement("button");
+      newBtn.textContent = `✨ ${goal}`;
+      newBtn.classList.add("selected");
+      newBtn.onclick = function() {
+        toggleShortTerm(newBtn, goal);
+      };
+    
+      document.getElementById("shortterm-buttons").appendChild(newBtn);
+      selectedShortTermGoals.push(goal);
+      input.value = "";
+    
+      document.getElementById("toStartBtn").style.display = "inline-block";
+    }
+    
+    
+        function startJourney() {
+          const customGoalElement = document.getElementById("customGoalInput");
+          const customGoalInput = customGoalElement ? customGoalElement.value : "";
+    
+    
+          if (!userName || !selectedGoals.length || !selectedShortTermGoals.length) {
+            alert("Please complete all steps!");
+            return;
+          }
 
       document.getElementById("onboarding").classList.add("fade-out");
       setTimeout(() => {
@@ -840,7 +884,8 @@ function goToShortTerm() {
         document.getElementById("displayGoal").innerText =
           `Long-term: ${selectedGoals.join(", ")}${customGoalInput ? ` (${customGoalInput})` : ''}, ` +
           `Motivation: ${selectedMotivations.join(", ")}, ` +
-          `Short-term: ${selectedShortTermGoal}`;
+          Short-term: ${selectedShortTermGoals.join(", ")}
+
 
         const userTitle = document.getElementById("userTitle");
         userTitle.innerText = `${userName}'s habits`;
