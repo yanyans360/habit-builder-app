@@ -858,10 +858,20 @@ function goToShortTerm() {
       const confirmClear = confirm("Are you sure you want to delete all users? This cannot be undone.");
       if (confirmClear) {
         localStorage.removeItem("habitUsers");
-        alert("All user accounts have been cleared.");
-        location.reload(); // Optional: reload page to reset everything
+        localStorage.removeItem("lastUser");
+    
+        // Clear all hasOnboarded_ keys
+        Object.keys(localStorage).forEach(key => {
+          if (key.startsWith("hasOnboarded_")) {
+            localStorage.removeItem(key);
+          }
+        });
+    
+        alert("All user accounts and session data have been cleared.");
+        location.reload(); // reload page to reset everything
       }
     }
+
     window.onload = function () {
     const storedUser = localStorage.getItem("lastUser");
     if (storedUser && localStorage.getItem("hasOnboarded_" + storedUser) === "true") {
