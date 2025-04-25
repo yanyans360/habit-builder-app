@@ -698,11 +698,11 @@ function addCustomMotivation() {
 }
     
 async function getShortTermGoalsFromGPT(longTermGoals) {
- const response = await fetch("https://your-replit-url.repl.co/generate-goals", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ goals: selectedGoals })
-});
+  const response = await fetch("https://habit-builder-gpt-server.aojukwu.repl.co/generate-goals", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ goals: selectedGoals })
+  });
 
 
   const data = await response.json();
