@@ -907,7 +907,8 @@ async function goToShortTerm() {
         document.getElementById("displayGoal").innerText =
           `Long-term: ${selectedGoals.join(", ")}${customGoalInput ? ` (${customGoalInput})` : ''}, ` +
           `Motivation: ${selectedMotivations.join(", ")}, ` +
-          Short-term: ${selectedShortTermGoals.join(", ")}
+          `Short-term: ${selectedShortTermGoals.join(", ")}`;
+
 
 
         const userTitle = document.getElementById("userTitle");
