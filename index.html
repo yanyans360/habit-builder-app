@@ -705,9 +705,16 @@ async function getShortTermGoalsFromGPT(longTermGoals) {
   });
 
   const data = await response.json();
+
+  // ✅ SAFELY CHECK if choices exist
+  if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+    throw new Error("Invalid GPT response.");
+  }
+
   const text = data.choices[0].message.content;
   return text.split("\n").filter(line => line.trim()).slice(0, 3);
 }
+
 
 let selectedShortTermGoals = [];
 
