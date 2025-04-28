@@ -19,8 +19,12 @@ body {
 
 main {
   padding: 2rem;
-  max-width: 600px;
+  width: 90%;
+  max-width: 1400px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 section {
@@ -144,12 +148,13 @@ select:focus {
   margin-top: 2rem;
 }
 .card {
-  background: rgba(255,255,255,0.8);
-  backdrop-filter: blur(10px);
+  background: white;
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  padding: 24px;
+  margin: 20px;
+  flex: 1 1 350px;
+  max-width: 400px;
 }
 
 
@@ -467,7 +472,7 @@ input[type="checkbox"] { width: 16px; height: 16px; }
     <button onclick="toggleTheme()" style="display: block; width: 100%; padding: 10px; background: none; border: none; text-align: left; cursor: pointer;">🎨 Toggle Theme</button>
   </div>
 </div>
-<div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
+<div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; margin-top: 2rem;">
 
 
 <!-- Today's Habits -->
