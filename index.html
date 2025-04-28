@@ -850,6 +850,19 @@ header h1 {
       }
     
       userName = loginName;
+      if (userName === "Aiyanna") {
+        const clearButton = document.createElement("button");
+        clearButton.innerText = "🗑️ Clear All Users";
+        clearButton.onclick = clearAllUsers;
+        clearButton.style.width = "100%";
+        clearButton.style.padding = "10px";
+        clearButton.style.background = "none";
+        clearButton.style.border = "none";
+        clearButton.style.textAlign = "left";
+        clearButton.style.cursor = "pointer";
+        document.getElementById("menuDropdown").appendChild(clearButton);
+      }
+
     
       document.getElementById("popupGreeting").innerText = `Welcome back, ${userName}!`;
       document.getElementById("welcomePopup").style.display = "block";
@@ -861,6 +874,25 @@ header h1 {
         spread: 80,
         origin: { y: 0.6 }
       });
+      setTimeout(() => {
+      document.getElementById("welcomePopup").style.display = "none";
+      document.getElementById("auth-section").style.display = "none";
+      
+      if (localStorage.getItem(`goals_${userName}`)) {
+        document.getElementById("dashboard").style.display = "block";
+        document.getElementById("dashboard").classList.add("fade-in");
+        document.getElementById("displayName").innerText = userName;
+        document.getElementById("userTitle").innerText = `${userName}'s habits`;
+        document.getElementById("userTitle").style.display = "block";
+      } else {
+        document.getElementById("onboarding").style.display = "block";
+        document.getElementById("onboarding").classList.add("fade-in");
+      }
+      
+      document.getElementById("username").value = userName;
+      document.getElementById("menuButton").style.display = "block";
+    }, 1500);
+
 
       localStorage.setItem("hasOnboarded_" + userName, "true");
       localStorage.setItem("lastUser", userName);
