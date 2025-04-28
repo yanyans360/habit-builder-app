@@ -1301,6 +1301,11 @@ shortTermSection.innerHTML = `
             return;
           }
 
+          localStorage.setItem(`goals_${userName}`, JSON.stringify(selectedGoals));
+          localStorage.setItem(`motivations_${userName}`, JSON.stringify(selectedMotivations));
+          localStorage.setItem(`shortterm_${userName}`, JSON.stringify(selectedShortTermGoals));
+
+
       document.getElementById("onboarding").classList.add("fade-out");
       setTimeout(() => {
         document.getElementById("onboarding").style.display = "none";
@@ -1336,6 +1341,10 @@ shortTermSection.innerHTML = `
       if (confirmLogout) {
         localStorage.removeItem("lastUser");
         userName = "";
+        selectedGoals = [];
+        selectedMotivations = [];
+  1     selectedShortTermGoals = [];
+
         // You could also clear selected goals if you want:
         selectedGoals = [];
         selectedMotivations = [];
@@ -1557,18 +1566,27 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById("menuButton").style.display = "none";
   const storedUser = localStorage.getItem("lastUser");
   if (storedUser && localStorage.getItem("hasOnboarded_" + storedUser) === "true") {
-    userName = storedUser;
+      userName = storedUser;
+    
+      // Load stored goals/motivation/shortterm habits
+      selectedGoals = JSON.parse(localStorage.getItem(`goals_${userName}`) || "[]");
+      selectedMotivations = JSON.parse(localStorage.getItem(`motivations_${userName}`) || "[]");
+      selectedShortTermGoals = JSON.parse(localStorage.getItem(`shortterm_${userName}`) || "[]");
+    
+      document.getElementById("auth-section").style.display = "none";
+      document.getElementById("login-section").style.display = "none";
+      document.getElementById("onboarding").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+      
+      document.getElementById("displayName").innerText = userName;
+      document.getElementById("displayGoal").innerText = `
+        Long-term: ${selectedGoals.join(", ")},
+        Motivation: ${selectedMotivations.join(", ")},
+        Short-term: ${selectedShortTermGoals.join(", ")}
+      `;
+      document.getElementById("userTitle").innerText = `${userName}'s habits`;
+      document.getElementById("userTitle").style.display = "block";
 
-    document.getElementById("auth-section").style.display = "none";
-    document.getElementById("login-section").style.display = "none";
-    document.getElementById("onboarding").style.display = "none";
-    document.getElementById("dashboard").style.display = "block";
-  
-
-    document.getElementById("displayName").innerText = userName;
-    document.getElementById("displayGoal").innerText = "Welcome back!";
-    document.getElementById("userTitle").innerText = `${userName}'s habits`;
-    document.getElementById("userTitle").style.display = "block";
 
     // ✅ Safer show-input button
     const showInputButton = document.getElementById('show-input');
