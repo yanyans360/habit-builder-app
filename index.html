@@ -60,6 +60,22 @@
   align-items: center;
 }
 
+.low-light .calendar td {
+  background: #6b21a8; /* Deeper, stronger purple */
+  color: #f5f5ff; /* Bright white for numbers */
+}
+.low-light .today {
+  background: #a78bfa; /* Softer lilac highlight for today */
+  color: #1a1a1a; /* Dark text on light highlight */
+}
+.low-light .btn-small {
+  background: #a78bfa; /* Softer lilac */
+  color: #1a1a1a; /* Dark icon color */
+  border: 1px solid #c4b5fd; /* Optional: subtle border */
+}
+.low-light .btn-small:hover {
+  background: #c4b5fd;
+}
 
 
 @font-face {
@@ -1479,10 +1495,7 @@ shortTermSection.innerHTML = `
       
 
         document.getElementById("displayName").innerText = userName;
-        document.getElementById("displayGoal").innerText =
-          `Long-term: ${selectedGoals.join(", ")}${customGoalInput ? ` (${customGoalInput})` : ''}, ` +
-          `Motivation: ${selectedMotivations.join(", ")}, ` +
-          `Short-term: ${selectedShortTermGoals.join(", ")}`;
+      
 
 
 
@@ -1744,11 +1757,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById("dashboard").style.display = "block";
       
       document.getElementById("displayName").innerText = userName;
-      document.getElementById("displayGoal").innerText = `
-        Long-term: ${selectedGoals.join(", ")},
-        Motivation: ${selectedMotivations.join(", ")},
-        Short-term: ${selectedShortTermGoals.join(", ")}
-      `;
+  
       document.getElementById("userTitle").innerText = `${userName}'s habits`;
       document.getElementById("userTitle").style.display = "block";
 
