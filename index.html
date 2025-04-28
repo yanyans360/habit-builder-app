@@ -696,12 +696,22 @@ header h1 {
 <h2>Welcome back! You're doing amazing today 💪</h2>
 <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; margin-top: 2rem;">
 <!-- Goals Card -->
+<!-- Long-Term Goals Card -->
 <div class="card" style="flex: 1 1 300px;">
   <div class="flex justify-center mb-2">
-    🎯 <h3 class="ml-2">Your Goals</h3>
+    🎯 <h3 class="ml-2">Long-Term Goals</h3>
   </div>
   <ul id="goal-list" style="list-style: disc inside; margin-top: 1rem;"></ul>
 </div>
+
+<!-- Motivation Corner -->
+<div class="card" style="flex: 1 1 250px; max-width: 300px;">
+  <div class="flex justify-center mb-2">
+    🔥 <h3 class="ml-2">Motivation</h3>
+  </div>
+  <ul id="motivation-list" style="list-style: disc inside; margin-top: 1rem;"></ul>
+</div>
+
 
 
 
@@ -1757,6 +1767,24 @@ document.addEventListener('DOMContentLoaded', function () {
   const storedUser = localStorage.getItem("lastUser");
   if (storedUser && localStorage.getItem("hasOnboarded_" + storedUser) === "true") {
       userName = storedUser;
+      // Fill long-term goals
+      const goalList = document.getElementById("goal-list");
+      goalList.innerHTML = "";
+      selectedGoals.forEach(goal => {
+        const li = document.createElement("li");
+        li.textContent = goal;
+        goalList.appendChild(li);
+      });
+      
+      // Fill motivations
+      const motivationList = document.getElementById("motivation-list");
+      motivationList.innerHTML = "";
+      selectedMotivations.forEach(motivation => {
+        const li = document.createElement("li");
+        li.textContent = motivation;
+        motivationList.appendChild(li);
+      });
+
     
       // Load stored goals/motivation/shortterm habits
       selectedGoals = JSON.parse(localStorage.getItem(`goals_${userName}`) || "[]");
