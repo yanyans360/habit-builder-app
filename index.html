@@ -257,19 +257,42 @@ body {
   transition: background 0.5s ease, color 0.5s ease;
 }
 .low-light {
-  background: linear-gradient(to bottom right, #3a3a5a, #524f7d);
-  color: #e0e0e0;
+  background: linear-gradient(to bottom right, #2c2c54, #40407a);
+  color: #f5f5f5;
 }
 
 .low-light .dashboard, .low-light .card {
-  background: rgba(60,60,80,0.7);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+  background: #353567;
+  border: 1px solid #55558c;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.6);
 }
 
 .low-light button {
-  background: #7770b3;
-  color: white;
+  background: #575fcf;
+  color: #ffffff;
 }
+
+.low-light button:hover {
+  background: #4e54c8;
+}
+
+.low-light input, .low-light select {
+  background-color: #45457a;
+  color: #f5f5f5;
+  border: 1px solid #6666aa;
+}
+
+.low-light input::placeholder, .low-light select::placeholder {
+  color: #bbbbdd;
+}
+
+.low-light a {
+  color: #b4b4ff;
+}
+.low-light a:hover {
+  color: #ffffff;
+}
+
 body {
   min-height: 100vh;
   background: linear-gradient(to bottom right, #cfe0fc, #e2d4f9);
