@@ -750,6 +750,8 @@ async function goToShortTerm() {
       updateProgress(66);
       document.getElementById("quiz-step-1").style.display = "none";
       document.getElementById("quiz-step-2").style.display = "block";
+      document.querySelector("#onboarding h2").innerText = "Let's personalize your journey!";
+      document.querySelector("#onboarding p").innerText = "Which methods help you stick with your habits?";
     }
 
     function completeSignup() {
