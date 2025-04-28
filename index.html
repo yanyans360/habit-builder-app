@@ -816,6 +816,8 @@ header h1 {
     
       document.getElementById("popupGreeting").innerText = `Welcome back, ${userName}!`;
       document.getElementById("welcomePopup").style.display = "block";
+      document.getElementById("menuButton").style.display = "block";
+
     
       confetti({
         particleCount: 100,
@@ -1214,6 +1216,8 @@ shortTermSection.innerHTML = `
       }
       document.getElementById("popupGreeting").innerText = `Hi, ${userName}!`;
       document.getElementById("welcomePopup").style.display = "block";
+      document.getElementById("menuButton").style.display = "block";
+
     
       confetti({
         particleCount: 100,
@@ -1340,6 +1344,7 @@ shortTermSection.innerHTML = `
     
         // Hide dashboard, show login
         document.getElementById("dashboard").style.display = "none";
+        document.getElementById("menuButton").style.display = "none";
         document.getElementById("userTitle").style.display = "none";
         document.getElementById("login-section").style.display = "block";
     
@@ -1546,6 +1551,7 @@ function toggleTheme() {
   document.body.classList.toggle("low-light");
 }
 document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById("menuButton").style.display = "none";
   const storedUser = localStorage.getItem("lastUser");
   if (storedUser && localStorage.getItem("hasOnboarded_" + storedUser) === "true") {
     userName = storedUser;
