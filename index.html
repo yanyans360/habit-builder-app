@@ -6,62 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Habit Builder</title>
   <style>
-    
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
 
-.button-primary {
-  background: #7c3aed;
-  color: white;
-  font-weight: bold;
-  padding: 1rem 2.5rem;
-  font-size: 1.25rem;
-  border: none;
-  border-radius: 9999px; /* Makes it fully pill-shaped */
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.button-primary:hover {
-  background: #6b21a8;
-}
-
-
-.button-secondary {
-  background: #f0f0f0;
-  color: #333;
-  border: 1px solid #ccc;
-  font-weight: bold;
-  padding: 0.75rem 1.5rem;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.3s;
-  flex: 1;
-}
-
-.button-secondary:hover {
-  background: #e0e0e0;
-}
-
-
-#onboarding h2, .dashboard h2, section h2 {
-  font-size: 2rem;
-  color: #6b21a8;
-  text-align: center;
-}
-
-#onboarding p, .dashboard p, section p {
-  font-size: 1.2rem;
-  color: #555;
-  text-align: center;
-}
-
-  
- body {
+/* Layout */
+body {
   font-family: 'Poppins', sans-serif;
   min-height: 100vh;
   background: linear-gradient(to bottom right, #cfe0fc, #e2d4f9);
@@ -70,6 +17,15 @@
   padding: 24px;
 }
 
+main {
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+section {
+  margin-bottom: 2rem;
+}
 
 header {
   text-align: center;
@@ -77,30 +33,66 @@ header {
   background: none;
   border: none;
 }
-.button-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 2rem;
+
+header h1 {
+  margin: 0;
+  font-size: 3rem;
+  color: #6b21a8;
 }
 
+header p {
+  font-size: 1.25rem;
+  color: #555;
+}
+
+/* Buttons (global base for ALL buttons) */
+button {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  padding: 1rem 2.5rem;
+  margin: 0.5rem 0;
+  border-radius: 9999px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: auto;
+  display: inline-block;
+}
+
+/* Primary (Purple) Button */
 .button-primary {
   background: #7c3aed;
   color: white;
-  font-weight: bold;
-  padding: 0.75rem 2rem;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.3s;
 }
 
 .button-primary:hover {
   background: #6b21a8;
 }
 
+/* Green Buttons (only if needed) */
+.button-green {
+  background: #28b485;
+  color: white;
+}
 
+.button-green:hover {
+  background: #249e76;
+}
+
+/* Secondary Gray Buttons (optional) */
+.button-secondary {
+  background: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  font-weight: bold;
+}
+
+.button-secondary:hover {
+  background: #e0e0e0;
+}
+
+/* Link-style Buttons */
 .button-back-link {
   background: none;
   border: none;
@@ -115,29 +107,7 @@ header {
   color: #333;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 3rem;
-  color: #6b21a8;
-}
-
-header p {
-  font-size: 1.25rem;
-  color: #555;
-}
-
-main {
-  padding: 2rem;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-section {
-  margin-bottom: 2rem;
-}
-
-
-    
+/* Inputs & Selects */
 input, select {
   font-size: 1rem;
   padding: 0.75rem;
@@ -158,27 +128,22 @@ select {
   background-size: 12px;
 }
 
-
 select:focus {
   outline: none;
-  border-color: #28b485;
-  box-shadow: 0 0 0 3px rgba(40, 180, 133, 0.15);
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
 }
 
-
-button {
-  background: #28b485;
-  border: none;
-  color: #ffffff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s;
+/* Dashboard Card */
+.dashboard {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  margin-top: 2rem;
 }
 
-button:hover {
-  background: #249e76;
-}
-
+/* Other Small Components */
 #progressBar {
   height: 10px;
   background: #e9d5ff;
@@ -192,15 +157,6 @@ button:hover {
   background: #7c3aed;
   width: 0;
   transition: width 0.5s ease;
-}
-
-
-.dashboard {
-  background: white;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-  margin-top: 2rem;
 }
 
 #habitList {
@@ -225,33 +181,37 @@ button:hover {
   to {opacity: 0;}
 }
 
+/* Popup */
 #welcomePopup h2 {
-  color: #28b485;
+  color: #7c3aed;
 }
 
 #welcomePopup p {
-  color: #666666;
+  color: #666;
 }
 
 #welcomePopup button {
-  background: #28b485;
-  color: #ffffff;
+  background: #7c3aed;
+  color: #fff;
 }
 
 #welcomePopup button:hover {
-  background: #249e76;
+  background: #6b21a8;
 }
 
+/* Mobile Floating Username */
 #userTitle {
   position: fixed;
   top: 10px;
   left: 20px;
   font-size: 1.2rem;
-  color: #28b485;
+  color: #6b21a8;
   font-weight: bold;
   display: none;
   z-index: 1000;
 }
+
+/* Selected Quiz Buttons */
 #goal-buttons button.selected,
 #motivation-buttons button.selected,
 #shortterm-buttons button.selected {
@@ -262,9 +222,8 @@ button:hover {
   transform: scale(1.05);
 }
 
+</style>
 
-
-  </style>
 </head>
 <body>
   <input type="hidden" id="username" />
@@ -311,7 +270,7 @@ button:hover {
         <p>Log in to continue building your habits:</p>
         <input type="text" id="login-name" placeholder="Your name" /><br />
         <input type="password" id="login-password" placeholder="Your password" /><br />
-        <button onclick="loginUser()">Log In</button>
+        <button class="button-primary" onclick="loginUser()">Log In</button>
         <p style="text-align: center;">
           <a href="#" onclick="showPasswordReset()">Forgot your password?</a>
         </p>
