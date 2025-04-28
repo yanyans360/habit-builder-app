@@ -498,17 +498,20 @@ header h1 {
 .low-light #menuDropdown {
   background: #353567;
   color: #f5f5f5;
+  border: 1px solid #55558c;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
 }
-
 .low-light #menuDropdown button {
+  background: none;
   color: #f5f5f5;
+  border-bottom: 1px solid #55558c;
 }
-
 .low-light #menuDropdown button:hover {
   background: #4e54c8;
 }
-
-
+#menuDropdown {
+  transition: max-height 0.4s ease, opacity 0.4s ease, background-color 0.3s ease;
+}
 
 
 </style>
