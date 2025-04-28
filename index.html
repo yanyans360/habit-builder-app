@@ -796,14 +796,21 @@ header h1 {
       // Step 1: Lookup user and show question
       if (!resetUserMatch) {
         const users = getUserDB();
-  
-   
+        resetUserMatch = users.find(user => user.name.toLowerCase() === name); // 🔥 Add this line
+        
+        if (!resetUserMatch) {
+          showToast("User not found.", "error");
+          return;
+        }
+      
         document.getElementById("securityQuestionDisplay").textContent = resetUserMatch.question;
         document.getElementById("reset-answer").style.display = "block";
         document.getElementById("new-password").style.display = "block";
         btn.textContent = "Reset Password";
         return;
       }
+
+
     
       // Step 2: Validate answer and reset password
       if (hashPassword(answer) !== resetUserMatch.answer) {
