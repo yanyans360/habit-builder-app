@@ -871,14 +871,33 @@ header h1 {
       localStorage.setItem("lastUser", userName);
 
     
-      setTimeout(() => {
-        document.getElementById("welcomePopup").style.display = "none";
-        document.getElementById("auth-section").style.display = "none";
-        document.getElementById("login-section").style.display = "none";
+     setTimeout(() => {
+      document.getElementById("welcomePopup").style.display = "none";
+      document.getElementById("auth-section").style.display = "none";
+      document.getElementById("login-section").style.display = "none";
+    
+      if (localStorage.getItem(`goals_${userName}`)) {
+        // 🧠 If user has goals saved already, skip onboarding
+        document.getElementById("dashboard").style.display = "block";
+        document.getElementById("dashboard").classList.add("fade-in");
+        document.getElementById("displayName").innerText = userName;
+        document.getElementById("displayGoal").innerText = `
+          Long-term: ${JSON.parse(localStorage.getItem(`goals_${userName}`)).join(", ")},
+          Motivation: ${JSON.parse(localStorage.getItem(`motivations_${userName}`)).join(", ")},
+          Short-term: ${JSON.parse(localStorage.getItem(`shortterm_${userName}`)).join(", ")}
+        `;
+        document.getElementById("userTitle").innerText = `${userName}'s habits`;
+        document.getElementById("userTitle").style.display = "block";
+      } else {
+        // 🧠 No goals saved yet, go through onboarding
         document.getElementById("onboarding").style.display = "block";
         document.getElementById("onboarding").classList.add("fade-in");
-        document.getElementById("username").value = userName;
-      }, 1500);
+      }
+    
+      document.getElementById("username").value = userName;
+      document.getElementById("menuButton").style.display = "block";
+    }, 1500);
+
     }
     
         
@@ -891,6 +910,20 @@ header h1 {
     
     function getUserDB() {
       return JSON.parse(localStorage.getItem("habitUsers") || "[]");
+    }
+    function fadeOutAndHide(id) {
+      const el = document.getElementById(id);
+      el.classList.add("fade-out");
+      setTimeout(() => {
+        el.style.display = "none";
+        el.classList.remove("fade-out");
+      }, 500);
+    }
+    
+    function fadeInAndShow(id) {
+      const el = document.getElementById(id);
+      el.style.display = "block";
+      el.classList.add("fade-in");
     }
     
     function saveUserDB(users) {
@@ -1389,10 +1422,10 @@ shortTermSection.innerHTML = `
       selectedMotivations = [];
       selectedShortTermGoals = [];
     
-      document.getElementById("dashboard").style.display = "none";
+      fadeOutAndHide("dashboard");
       document.getElementById("menuButton").style.display = "none";
       document.getElementById("userTitle").style.display = "none";
-      document.getElementById("login-section").style.display = "block";
+      fadeInAndShow("login-section");
       document.getElementById("menuDropdown").classList.remove("open");
       document.getElementById("menuDropdown").style.display = "none";
     
