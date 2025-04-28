@@ -1350,7 +1350,10 @@ document.getElementById('add-habit').onclick = () => {
   if (input.value.trim()) {
     habits.push({ name: input.value.trim(), completed: false });
     input.value = '';
-    document.getElementById('input-area').style.display = 'none';
+    const inputArea = document.getElementById('input-area');
+    if (inputArea) {
+      inputArea.style.display = 'none';
+    }
     renderHabits();
   }
 };
