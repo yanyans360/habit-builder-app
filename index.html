@@ -668,13 +668,17 @@ header h1 {
       </div>
     </section>
    <section id="dashboard" style="display: none;">
-     <div style="display:none;">
-      <span id="displayName"></span>
-      <span id="displayGoal"></span>
-    </div>
-
+  
 <h2>Welcome back! You're doing amazing today 💪</h2>
 <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; margin-top: 2rem;">
+<!-- Goals Card -->
+<div class="card" style="flex: 1 1 300px;">
+  <div class="flex justify-center mb-2">
+    🎯 <h3 class="ml-2">Your Goals</h3>
+  </div>
+  <ul id="goal-list" style="list-style: disc inside; margin-top: 1rem;"></ul>
+</div>
+
 
 
 <!-- Today's Habits -->
@@ -959,11 +963,14 @@ header h1 {
         document.getElementById("dashboard").style.display = "block";
         document.getElementById("dashboard").classList.add("fade-in");
         document.getElementById("displayName").innerText = userName;
-        document.getElementById("displayGoal").innerText = `
-          Long-term: ${JSON.parse(localStorage.getItem(`goals_${userName}`)).join(", ")},
-          Motivation: ${JSON.parse(localStorage.getItem(`motivations_${userName}`)).join(", ")},
-          Short-term: ${JSON.parse(localStorage.getItem(`shortterm_${userName}`)).join(", ")}
-        `;
+        const goalList = document.getElementById("goal-list");
+        goalList.innerHTML = "";
+        selectedGoals.forEach(goal => {
+          const li = document.createElement("li");
+          li.textContent = goal;
+          goalList.appendChild(li);
+        });
+
         document.getElementById("userTitle").innerText = `${userName}'s habits`;
         document.getElementById("userTitle").style.display = "block";
       } else {
