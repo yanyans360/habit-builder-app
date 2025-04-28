@@ -952,7 +952,6 @@ header h1 {
       if (localStorage.getItem(`goals_${userName}`)) {
         document.getElementById("dashboard").style.display = "block";
         document.getElementById("dashboard").classList.add("fade-in");
-        document.getElementById("displayName").innerText = userName;
         document.getElementById("userTitle").innerText = `${userName}'s habits`;
         document.getElementById("userTitle").style.display = "block";
       } else {
@@ -978,7 +977,6 @@ header h1 {
         // 🧠 If user has goals saved already, skip onboarding
         document.getElementById("dashboard").style.display = "block";
         document.getElementById("dashboard").classList.add("fade-in");
-        document.getElementById("displayName").innerText = userName;
         const goalList = document.getElementById("goal-list");
         goalList.innerHTML = "";
         selectedGoals.forEach(goal => {
@@ -1492,9 +1490,7 @@ shortTermSection.innerHTML = `
         document.getElementById("onboarding").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
         document.getElementById("dashboard").classList.add("fade-in");
-      
-
-        document.getElementById("displayName").innerText = userName;
+    
       
 
 
@@ -1610,12 +1606,7 @@ shortTermSection.innerHTML = `
 
   </script>
   <script>
-const habits = [
-  { name: "Morning Walk", completed: false },
-  { name: "Read 10 Pages", completed: false },
-  { name: "No Social Media", completed: false },
-  { name: "Meditate 10 Min", completed: false },
-];
+
 const completedDates = [];
 const quotes = [
   { text: "Small habits make a big difference. Keep going!", author: "James Clear" },
@@ -1738,7 +1729,8 @@ menuButton.addEventListener("click", function() {
 
 
 function toggleTheme() {
-  document.body.classList.toggle("low-light");
+   document.body.classList.toggle("low-light");
+  generateCalendar(); // 🔥 Force refresh the calendar styles!
 }
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById("menuButton").style.display = "none";
@@ -1750,13 +1742,18 @@ document.addEventListener('DOMContentLoaded', function () {
       selectedGoals = JSON.parse(localStorage.getItem(`goals_${userName}`) || "[]");
       selectedMotivations = JSON.parse(localStorage.getItem(`motivations_${userName}`) || "[]");
       selectedShortTermGoals = JSON.parse(localStorage.getItem(`shortterm_${userName}`) || "[]");
+      habits.length = 0;
+      selectedShortTermGoals.forEach(goal => {
+        habits.push({ name: goal, completed: false });
+      });
+      renderHabits();
+
     
       document.getElementById("auth-section").style.display = "none";
       document.getElementById("login-section").style.display = "none";
       document.getElementById("onboarding").style.display = "none";
       document.getElementById("dashboard").style.display = "block";
-      
-      document.getElementById("displayName").innerText = userName;
+    
   
       document.getElementById("userTitle").innerText = `${userName}'s habits`;
       document.getElementById("userTitle").style.display = "block";
