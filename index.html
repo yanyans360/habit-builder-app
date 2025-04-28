@@ -274,7 +274,7 @@ button:hover {
       </div>
 
      <div id="quiz-step-2" style="display: none;">
-        <p>What keeps you motivated to stick with your habits?</p>
+        <p>Which methods help you stick with your habits?</p>
         <div id="motivation-buttons" style="display: flex; flex-direction: column; gap: 0.5rem;">
           <button onclick="toggleMotivation(this, 'Tracking my progress visually')">🔍 Tracking my progress visually</button>
           <button onclick="toggleMotivation(this, 'Accountability from others')">🤝 Accountability from others</button>
@@ -284,6 +284,7 @@ button:hover {
           <button onclick="toggleMotivation(this, 'Building habits into my routine')">🧘‍♀️ Building habits into my routine</button>
           <button onclick="toggleMotivation(this, 'Still figuring it out')">🤷 I haven’t figured it out yet</button>
         </div>
+
         <input type="text" id="customMotivationInput" placeholder="Add your own motivation..." style="margin-top: 1rem;" />
         <button style="margin-top: 0.5rem;" onclick="addCustomMotivation()">➕ Add Custom Motivation</button>
         <br />
@@ -729,7 +730,7 @@ async function goToShortTerm() {
 
   const gptSuggestions = await getShortTermGoalsFromGPT(selectedGoals);
 
-  shortTermSection.innerHTML = `
+   shortTermSection.innerHTML = `
     <p>Pick up to <strong>3 short-term habits</strong> to work on this week:</p>
     <div id="shortterm-buttons" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
       ${gptSuggestions.map(goal => `<button onclick="toggleShortTerm(this, '${goal.replace(/'/g, "\\'")}')">${goal}</button>`).join('')}
@@ -739,6 +740,7 @@ async function goToShortTerm() {
     <br />
     <button id="toStartBtn" style="display: none; margin-top: 1rem;" onclick="prepareStart()">Next</button>
   `;
+
 }
 
 
@@ -863,17 +865,17 @@ async function goToShortTerm() {
     
       const newBtn = document.createElement("button");
       newBtn.textContent = `✨ ${goal}`;
-      newBtn.classList.add("selected");
       newBtn.onclick = function() {
         toggleShortTerm(newBtn, goal);
       };
-    
       document.getElementById("shortterm-buttons").appendChild(newBtn);
-      selectedShortTermGoals.push(goal);
-      input.value = "";
+      
+      // 💥 ADD THIS:
+      toggleShortTerm(newBtn, goal);
     
-      document.getElementById("toStartBtn").style.display = "inline-block";
+      input.value = "";
     }
+
     
     
         function startJourney() {
