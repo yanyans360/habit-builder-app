@@ -320,6 +320,33 @@ h2, p {
 ul { list-style: none; padding: 0; }
 input[type="checkbox"] { width: 16px; height: 16px; }
 
+.card {
+  animation: slideFadeIn 0.6s ease-out both;
+}
+
+@keyframes slideFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+#menuDropdown {
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+}
+
+#menuDropdown.open {
+  max-height: 500px; /* enough for all menu items */
+  opacity: 1;
+}
+
+
 
 
 </style>
@@ -330,7 +357,10 @@ input[type="checkbox"] { width: 16px; height: 16px; }
   <div id="userTitle"></div>
 
  <header>
-  <button id="themeToggle" style="position: absolute; top: 10px; right: 20px;">🌙</button>
+  <div style="position: absolute; top: 10px; right: 20px; display: flex; align-items: center; gap: 12px;">
+    <button id="themeToggle" style="background: none; border: none; font-size: 24px; cursor: pointer;">🌙</button>
+    <button id="menuButton" style="background: none; border: none; font-size: 28px; cursor: pointer;">☰</button>
+  </div>
   <h1>🌱 Habit Harmony <span id="time-icon">🌞</span></h1>
   <p id="datetime"></p>
 </header>
@@ -1400,8 +1430,9 @@ setInterval(updateDateTime, 60000);
 
 document.getElementById("menuButton").addEventListener("click", function() {
   const dropdown = document.getElementById("menuDropdown");
-  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  dropdown.classList.toggle("open");
 });
+
 
 function toggleTheme() {
   document.body.classList.toggle("low-light");
