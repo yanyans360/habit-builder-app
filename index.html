@@ -20,6 +20,30 @@
   font-weight: 700;
   font-style: normal;
 }
+#onboarding {
+  min-height: 600px; /* set a minimum height for onboarding */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-bottom: 2rem;
+}
+#progressBar {
+  width: 100%;
+  max-width: 600px;
+  margin: 1rem auto;
+}
+#quiz-step-1, #quiz-step-2, #quiz-step-3 {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#onboarding {
+  transition: min-height 0.3s ease;
+}
+
 
 @font-face {
   font-family: 'Mansfield';
