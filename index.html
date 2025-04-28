@@ -350,7 +350,7 @@ body {
       </div>
      <h2 id="onboarding-heading">Hi there!</h2>
       <p id="onboarding-subheading">Let’s make a plan just for you. What’s something you want to build into your life?</p>
-
+    
 
       <div id="quiz-step-1">
         <p>Choose up to 3 long-term priorities:</p>
@@ -400,36 +400,70 @@ body {
         <button id="startBtn" style="display: none;" onclick="startJourney()">Start Your Journey</button>
       </div>
     </section>
-
-    <section id="dashboard" class="dashboard" style="display: none;">
-      <div style="margin-top: 2rem; padding: 1rem; border-top: 1px dashed #ccc;">
-        <h4>Developer Controls</h4>
-        <button onclick="clearAllUsers()">🗑️ Clear All Users</button>
-      </div>
-
-     <div class="card">
-        <h2>Your Dashboard</h2>
-        <button onclick="logoutUser()">🚪 Log Out</button>
-      
-        <div id="avatar">👤</div>
-        <p><strong>Name:</strong> <span id="displayName"></span></p>
-        <p><strong>Goal:</strong> <span id="displayGoal"></span></p>
-      </div>
-
-      
-      <div class="card">
-        <h3>Your Habit</h3>
-        <input type="text" id="habitInput" placeholder="e.g., Take a walk daily" />
-        <button onclick="addHabit()">Add Habit</button>
-        <ul id="habitList"></ul>
-      </div>
-
-    </section>
-
     <section id="chatbot" style="display: none;">
       <h2>Chat with HabitBot 🤖</h2>
       <p>(Placeholder: GPT integration here)</p>
     </section>
+   <section id="dashboard" style="display: none;">
+     <div style="display:none;">
+      <span id="displayName"></span>
+      <span id="displayGoal"></span>
+    </div>
+
+<h1>🌱 Habit Harmony <span id="time-icon">🌞</span></h1>
+<p id="datetime"></p>
+<h2>Welcome back! You're doing amazing today 💪</h2>
+
+<!-- Today's Habits -->
+<div class="card">
+  <div class="flex justify-between mb-2">
+    <div class="flex items-center">
+      <h3 class="ml-2" id="today-title">Today's Habits</h3>
+    </div>
+    <button class="btn-small" id="show-input">➕</button>
+  </div>
+
+  <div id="input-area" class="flex gap-2 mb-2" style="display:none;">
+    <input type="text" id="new-habit" class="input" placeholder="New habit name" />
+    <button class="btn-small" id="add-habit">Add</button>
+  </div>
+
+  <ul id="habit-list" class="mt-2 space-y-2"></ul>
+</div>
+
+<!-- Weekly Progress -->
+<div class="card">
+  <div class="flex justify-center mb-2">
+    ✅ <h3 class="ml-2">Weekly Progress</h3>
+  </div>
+  <p id="streak" class="text-sm mb-2"></p>
+
+  <div class="bg-white rounded-md p-2 shadow-inner">
+    <table class="w-full text-xs text-center calendar">
+      <thead>
+        <tr>
+          <th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th>
+        </tr>
+      </thead>
+      <tbody id="calendar-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Motivation Corner -->
+<div class="card">
+  <div class="flex justify-center mb-2">
+    🔥 <h3 class="ml-2">Motivation Corner</h3>
+  </div>
+  <p id="quote" class="italic mb-2"></p>
+  <p id="author" class="text-sm mb-4"></p>
+  <div class="text-center text-4xl">✨</div>
+  <button class="btn" onclick="location.reload()">Refresh Quote</button>
+</div>
+
+
+   
+
 
     <!-- 🌟 Welcome Popup -->
     <div id="welcomePopup" style="display: none;" class="fade-in">
@@ -1185,5 +1219,118 @@ shortTermSection.innerHTML = `
 
 
   </script>
+  <script>
+const habits = [
+  { name: "Morning Walk", completed: false },
+  { name: "Read 10 Pages", completed: false },
+  { name: "No Social Media", completed: false },
+  { name: "Meditate 10 Min", completed: false },
+];
+const completedDates = [];
+const quotes = [
+  { text: "Small habits make a big difference. Keep going!", author: "James Clear" },
+  { text: "Progress, not perfection.", author: "Kim Collins" },
+  { text: "One day at a time.", author: "Anonymous" },
+  { text: "Your future is created by what you do today.", author: "Robert Kiyosaki" },
+];
+
+function updateDateTime() {
+  const now = new Date();
+  const date = now.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+  const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  document.getElementById('datetime').textContent = `${date} • ${time} • ${now.getHours() >= 6 && now.getHours() < 18 ? '🌤️ 72°F' : '🌙 72°F'}`;
+  document.getElementById('time-icon').textContent = now.getHours() >= 6 && now.getHours() < 18 ? '🌞' : '🌙';
+  document.getElementById('today-title').textContent = `Today's Habits • ${date}`;
+}
+
+function renderHabits() {
+  const list = document.getElementById('habit-list');
+  list.innerHTML = '';
+  habits.forEach((habit, idx) => {
+    const li = document.createElement('li');
+    li.className = 'flex justify-between items-center';
+    li.innerHTML = `<div class="flex items-center">
+      <input type="checkbox" ${habit.completed ? 'checked' : ''} onchange="toggleHabit(${idx})">
+      <span class="ml-2 ${habit.completed ? 'text-line' : ''}">${habit.name}</span>
+    </div>
+    <button class="btn-small" onclick="deleteHabit(${idx})">🗑️</button>`;
+    list.appendChild(li);
+  });
+}
+
+function toggleHabit(index) {
+  habits[index].completed = !habits[index].completed;
+  renderHabits();
+}
+
+function deleteHabit(index) {
+  habits.splice(index, 1);
+  renderHabits();
+}
+
+document.getElementById('show-input').onclick = () => {
+  document.getElementById('input-area').style.display = 'flex';
+};
+document.getElementById('add-habit').onclick = () => {
+  const input = document.getElementById('new-habit');
+  if (input.value.trim()) {
+    habits.push({ name: input.value.trim(), completed: false });
+    input.value = '';
+    document.getElementById('input-area').style.display = 'none';
+    renderHabits();
+  }
+};
+
+function updateQuote() {
+  const q = quotes[Math.floor(Math.random() * quotes.length)];
+  document.getElementById('quote').textContent = `"${q.text}"`;
+  document.getElementById('author').textContent = `– ${q.author}`;
+}
+
+function generateCalendar() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const todayStr = now.toISOString().split('T')[0];
+
+  let day = 1;
+  const tbody = document.getElementById('calendar-body');
+  tbody.innerHTML = '';
+
+  for (let i = 0; i < 6; i++) {
+    const row = document.createElement('tr');
+    for (let j = 0; j < 7; j++) {
+      const cell = document.createElement('td');
+      if ((i === 0 && j < firstDay) || day > daysInMonth) {
+        cell.textContent = '';
+      } else {
+        const key = `${year}-${(month + 1).toString().padStart(2,'0')}-${day.toString().padStart(2,'0')}`;
+        cell.textContent = day;
+        if (key === todayStr) cell.className = 'today';
+        else if (completedDates.includes(key)) cell.className = 'completed';
+        else cell.className = 'upcoming';
+        day++;
+      }
+      row.appendChild(cell);
+    }
+    tbody.appendChild(row);
+  }
+}
+
+function updateStreak() {
+  document.getElementById('streak').textContent = `You're on a ${completedDates.length}-day streak!`;
+}
+
+updateDateTime();
+renderHabits();
+updateQuote();
+generateCalendar();
+updateStreak();
+
+setInterval(updateDateTime, 60000);
+</script>
+
 </body>
 </html>
