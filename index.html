@@ -1332,7 +1332,11 @@ function deleteHabit(index) {
 }
 
 document.getElementById('show-input').onclick = () => {
-  document.getElementById('input-area').style.display = 'flex';
+ const inputArea = document.getElementById('input-area');
+  if (inputArea) {
+    inputArea.style.display = 'flex';
+}
+
 };
 document.getElementById('add-habit').onclick = () => {
   const input = document.getElementById('new-habit');
