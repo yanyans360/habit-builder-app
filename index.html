@@ -4,7 +4,7 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Habit Builder</title>
+  <title>Habit Harmony</title>
   <style>
 
 /* Layout */
@@ -265,6 +265,55 @@ body {
   background: #7770b3;
   color: white;
 }
+body {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #cfe0fc, #e2d4f9);
+  padding: 24px;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  text-align: center;
+}
+h1 {
+  font-size: 3rem;
+  color: #6b21a8;
+  margin-bottom: 0.5rem;
+}
+h2, p {
+  color: #555;
+}
+.card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  padding: 24px;
+  margin: 20px auto;
+  max-width: 500px;
+}
+.btn {
+  background: #7c3aed;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+}
+.btn-small { padding: 4px 8px; font-size: 12px; }
+.input { border: 1px solid #ccc; padding: 8px; border-radius: 6px; flex: 1; }
+.flex { display: flex; align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 8px; }
+.text-line { text-decoration: line-through; }
+.calendar {
+  margin: 0 auto;
+}
+.calendar td { padding: 8px; border-radius: 8px; }
+.today { background: #7c3aed; color: white; }
+.completed { background: #c4b5fd; color: white; }
+.upcoming { background: #e9d5ff; }
+ul { list-style: none; padding: 0; }
+input[type="checkbox"] { width: 16px; height: 16px; }
 
 
 
@@ -277,8 +326,8 @@ body {
 
  <header>
   <button id="themeToggle" style="position: absolute; top: 10px; right: 20px;">🌙</button>
-  <h1>Habit Builder</h1>
-  <p>Visualize. Build. Track. Grow.</p>
+  <h1>🌱 Habit Harmony <span id="time-icon">🌞</span></h1>
+  <p id="datetime"></p>
 </header>
 
 
