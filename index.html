@@ -1414,7 +1414,7 @@ document.getElementById("menuButton").addEventListener("click", function() {
 function toggleTheme() {
   document.body.classList.toggle("low-light");
 }
-window.onload = function () {
+document.addEventListener('DOMContentLoaded', function () {
   const storedUser = localStorage.getItem("lastUser");
   if (storedUser && localStorage.getItem("hasOnboarded_" + storedUser) === "true") {
     userName = storedUser;
@@ -1430,21 +1430,21 @@ window.onload = function () {
     document.getElementById("userTitle").innerText = `${userName}'s habits`;
     document.getElementById("userTitle").style.display = "block";
 
-       // (1) Attach show-input button
+    // ✅ Safer show-input button
     const showInputButton = document.getElementById('show-input');
     if (showInputButton) {
-      showInputButton.onclick = () => {
+      showInputButton.addEventListener('click', () => {
         const inputArea = document.getElementById('input-area');
         if (inputArea) {
           inputArea.style.display = 'flex';
         }
-      };
+      });
     }
 
-    // (2) Attach add-habit button
+    // ✅ Safer add-habit button
     const addHabitButton = document.getElementById('add-habit');
     if (addHabitButton) {
-      addHabitButton.onclick = () => {
+      addHabitButton.addEventListener('click', () => {
         const input = document.getElementById('new-habit');
         const inputArea = document.getElementById('input-area');
         if (input && input.value.trim()) {
@@ -1453,16 +1453,17 @@ window.onload = function () {
           if (inputArea) inputArea.style.display = 'none';
           renderHabits();
         }
-      };
+      });
     }
 
-    // ✅ DELAYED ANIMATION FOR EACH CARD
+    // ✅ DELAYED animation for each card
     const cards = document.querySelectorAll('.card');
     cards.forEach((card, index) => {
       card.style.animationDelay = `${index * 0.2}s`;
     });
   }
-};
+});
+
 
 
 </script>
