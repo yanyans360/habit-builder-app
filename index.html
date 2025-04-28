@@ -6,6 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Habit Builder</title>
   <style>
+    
+  .button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.button-primary {
+  background: #28b485;
+  color: #ffffff;
+  border: none;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+  flex: 1;
+}
+
+.button-primary:hover {
+  background: #249e76;
+}
+
+.button-secondary {
+  background: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+  flex: 1;
+}
+
+.button-secondary:hover {
+  background: #e0e0e0;
+}
+
 
   #onboarding h2 {
   font-size: 2rem;
@@ -304,8 +344,11 @@ button:hover {
         <input type="text" id="customMotivationInput" placeholder="Add your own motivation..." style="margin-top: 1rem;" />
         <button style="margin-top: 0.5rem;" onclick="addCustomMotivation()">➕ Add Custom Motivation</button>
         <br />
-         <button style="margin-top: 1rem;" onclick="backToStep1()">⬅️ Back</button>
-        <button id="toShortTermBtn" style="display: none; margin-top: 1rem;" onclick="goToShortTerm()">Next</button>
+         <div class="button-group">
+            <button class="button-secondary" onclick="backToStep1()">⬅️ Back</button>
+            <button id="toShortTermBtn" class="button-primary" style="display: none;" onclick="goToShortTerm()">Next ➡️</button>
+          </div>
+
       </div>
 
 
@@ -774,17 +817,17 @@ async function goToShortTerm() {
     gptSuggestions = [...new Set(gptSuggestions)].slice(0, 5);
   }
 
- shortTermSection.innerHTML = `
+shortTermSection.innerHTML = `
   <p>Pick up to <strong>3 short-term habits</strong> to work on this week:</p>
   <div id="shortterm-buttons" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
     ${gptSuggestions.map(goal => `<button onclick="toggleShortTerm(this, '${goal.replace(/'/g, "\\'")}')">${goal}</button>`).join('')}
   </div>
   <input type="text" id="customShortTermInput" placeholder="Or write your own..." style="margin-top: 1rem;" />
   <button style="margin-top: 0.5rem;" onclick="addCustomShortTermGoal()">➕ Add Custom Goal</button>
-  <br />
-  <button id="toStartBtn" style="display: none; margin-top: 1rem;" onclick="prepareStart()">Next</button>
-  <br />
-  <button style="margin-top: 1rem;" onclick="backToStep2()">⬅️ Back</button>
+  <div class="button-group">
+    <button class="button-secondary" onclick="backToStep2()">⬅️ Back</button>
+    <button id="toStartBtn" class="button-primary" style="display: none;" onclick="prepareStart()">Next ➡️</button>
+  </div>
 `;
 }
 
