@@ -7,7 +7,7 @@
   <title>Habit Builder</title>
   <style>
     
-  .button-group {
+.button-group {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
@@ -47,34 +47,34 @@
 }
 
 
-  #onboarding h2 {
+#onboarding h2, .dashboard h2, section h2 {
   font-size: 2rem;
-  margin-bottom: 0.5rem;
-  color: #333;
+  color: #6b21a8;
   text-align: center;
 }
 
-#onboarding p {
-  font-size: 1.25rem;
-  margin-bottom: 2rem;
-  color: #666;
+#onboarding p, .dashboard p, section p {
+  font-size: 1.2rem;
+  color: #555;
   text-align: center;
 }
 
   
-  body {
-  font-family: 'Nunito', sans-serif;
-  background: #ffffff;
-  color: #333333;
+ body {
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #cfe0fc, #e2d4f9);
+  color: #333;
   margin: 0;
-  padding: 0;
+  padding: 24px;
 }
+
 
 header {
   text-align: center;
   padding: 2rem;
-  background: #f8f9fa;
-  border-bottom: 2px solid #e0e0e0;
+  background: none;
+  border: none;
 }
 .button-row {
   display: flex;
@@ -84,20 +84,21 @@ header {
 }
 
 .button-primary {
-  background: #28b485;
+  background: #7c3aed;
   color: white;
   font-weight: bold;
   padding: 0.75rem 2rem;
   font-size: 1.1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background 0.3s;
 }
 
 .button-primary:hover {
-  background: #249e76;
+  background: #6b21a8;
 }
+
 
 .button-back-link {
   background: none;
@@ -115,13 +116,13 @@ header {
 
 header h1 {
   margin: 0;
-  font-size: 2.5rem;
-  color: #28b485;
+  font-size: 3rem;
+  color: #6b21a8;
 }
 
 header p {
-  font-size: 1.2rem;
-  color: #666666;
+  font-size: 1.25rem;
+  color: #555;
 }
 
 main {
@@ -134,32 +135,28 @@ section {
   margin-bottom: 2rem;
 }
 
-input, button {
+
+    
+input, select {
   font-size: 1rem;
   padding: 0.75rem;
   margin: 0.5rem 0;
-  border-radius: 10px;
-  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
   width: 100%;
   box-sizing: border-box;
 }
-    
+
 select {
-  font-size: 1rem;
-  padding: 0.75rem;
-  margin: 0.5rem 0;
-  border-radius: 10px;
-  border: 1px solid #e0e0e0;
-  width: 100%;
-  box-sizing: border-box;
   appearance: none;
   background-color: #ffffff;
-  color: #333333;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath fill='%2328b485' d='M7 10L0 0h14z'/%3E%3C/svg%3E");
+  color: #333;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath fill='%236b21a8' d='M7 10L0 0h14z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   background-size: 12px;
 }
+
 
 select:focus {
   outline: none;
@@ -183,7 +180,7 @@ button:hover {
 
 #progressBar {
   height: 10px;
-  background: #d1f2eb;
+  background: #e9d5ff;
   border-radius: 5px;
   overflow: hidden;
   margin: 1rem 0;
@@ -191,17 +188,18 @@ button:hover {
 
 #progressFill {
   height: 100%;
-  background: #28b485;
+  background: #7c3aed;
   width: 0;
   transition: width 0.5s ease;
 }
 
+
 .dashboard {
-  background: #f8f9fa;
+  background: white;
   padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  position: relative;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  margin-top: 2rem;
 }
 
 #habitList {
@@ -256,13 +254,12 @@ button:hover {
 #goal-buttons button.selected,
 #motivation-buttons button.selected,
 #shortterm-buttons button.selected {
-  background-color: #ffc107;
+  background-color: #c4b5fd;
   color: #1a1a1a;
   font-weight: bold;
-  border: 2px solid #ffa000;
-  transform: scale(1.03);
+  border: 2px solid #7c3aed;
+  transform: scale(1.05);
 }
-
 
 
 
