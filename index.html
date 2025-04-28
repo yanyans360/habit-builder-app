@@ -769,13 +769,15 @@ header h1 {
       // Step 1: Lookup user and show question
       if (!resetUserMatch) {
         const users = getUserDB();
-        resetUserMatch = users.find(user => user.name.toLowerCase() === name);
-    
-        if (!resetUserMatch) {
-          showToast("No user found with that name.", "error");
-          return;
-        }
-    
+        if (users.length > 0) {
+          const userExists = users.some(user => user.name.toLowerCase() === nameInput.toLowerCase());
+          if (userExists) {
+            showToast("Username already taken.", "error");
+            return;
+          }
+}
+
+   
         document.getElementById("securityQuestionDisplay").textContent = resetUserMatch.question;
         document.getElementById("reset-answer").style.display = "block";
         document.getElementById("new-password").style.display = "block";
