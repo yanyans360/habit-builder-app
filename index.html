@@ -153,8 +153,8 @@ select:focus {
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
   padding: 24px;
   margin: 20px;
-  flex: 1 1 350px;
-  max-width: 400px;
+  flex: 1 1 300px;
+  max-width: 360px;
 }
 
 
@@ -454,10 +454,6 @@ input[type="checkbox"] { width: 16px; height: 16px; }
         <button id="startBtn" style="display: none;" onclick="startJourney()">Start Your Journey</button>
       </div>
     </section>
-    <section id="chatbot" style="display: none;">
-      <h2>Chat with HabitBot 🤖</h2>
-      <p>(Placeholder: GPT integration here)</p>
-    </section>
    <section id="dashboard" style="display: none;">
      <div style="display:none;">
       <span id="displayName"></span>
@@ -490,6 +486,12 @@ input[type="checkbox"] { width: 16px; height: 16px; }
   </div>
 
   <ul id="habit-list" class="mt-2 space-y-2"></ul>
+</div>
+<div class="card" style="flex: 1 1 300px;">
+  <div class="flex justify-center mb-2">
+    🤖 <h3 class="ml-2">HabitBot Chat</h3>
+  </div>
+  <p>(Placeholder: GPT integration here)</p>
 </div>
 
 <!-- Weekly Progress -->
