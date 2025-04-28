@@ -491,13 +491,6 @@ input[type="checkbox"] { width: 16px; height: 16px; }
     </div>
 
 <h2>Welcome back! You're doing amazing today 💪</h2>
-<div style="position: absolute; top: 20px; right: 20px;">
-  <button id="menuButton" style="background: none; border: none; font-size: 28px; cursor: pointer;">☰</button>
-  <div id="menuDropdown" style="display: none; position: absolute; top: 40px; right: 0; background: white; border-radius: 8px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); overflow: hidden;">
-    <button onclick="logoutUser()" style="display: block; width: 100%; padding: 10px; background: none; border: none; text-align: left; cursor: pointer;">🚪 Log Out</button>
-    <button onclick="toggleTheme()" style="display: block; width: 100%; padding: 10px; background: none; border: none; text-align: left; cursor: pointer;">🎨 Toggle Theme</button>
-  </div>
-</div>
 <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; margin-top: 2rem;">
 
 
@@ -1408,10 +1401,19 @@ updateStreak();
 
 setInterval(updateDateTime, 60000);
 
-document.getElementById("menuButton").addEventListener("click", function() {
-  const dropdown = document.getElementById("menuDropdown");
-  dropdown.classList.toggle("open");
+const menuButton = document.getElementById("menuButton");
+const menuDropdown = document.getElementById("menuDropdown");
+
+menuButton.addEventListener("click", function() {
+  if (menuDropdown.classList.contains("open")) {
+    menuDropdown.classList.remove("open");
+    menuDropdown.style.display = "none";
+  } else {
+    menuDropdown.classList.add("open");
+    menuDropdown.style.display = "block";
+  }
 });
+
 
 
 function toggleTheme() {
