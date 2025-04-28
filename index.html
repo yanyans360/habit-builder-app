@@ -821,12 +821,12 @@ header h1 {
     
     function backToLogin() {
       document.getElementById("reset-section").style.display = "none";
-      document.getElementById("login-section").style.display = "block";
+      fadeInAndShow("login-section");
     }
 
     function showLogin() {
       document.getElementById("auth-section").style.display = "none";
-      document.getElementById("login-section").style.display = "block";
+      fadeInAndShow("login-section");
     }
     
     function showSignup() {
