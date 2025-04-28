@@ -6,6 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Habit Builder</title>
   <style>
+
+  #onboarding h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  text-align: center;
+}
+
+#onboarding p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  color: #666;
+  text-align: center;
+}
+
   
   body {
   font-family: 'Nunito', sans-serif;
@@ -250,8 +265,9 @@ button:hover {
       <div id="progressBar">
         <div id="progressFill"></div>
       </div>
-      <h2>Hi there!</h2>
-      <p>Let’s make a plan just for you. What’s something you want to build into your life?</p>
+     <h2 id="onboarding-heading">Hi there!</h2>
+      <p id="onboarding-subheading">Let’s make a plan just for you. What’s something you want to build into your life?</p>
+
 
       <div id="quiz-step-1">
         <p>Choose up to 3 long-term priorities:</p>
@@ -750,8 +766,9 @@ async function goToShortTerm() {
       updateProgress(66);
       document.getElementById("quiz-step-1").style.display = "none";
       document.getElementById("quiz-step-2").style.display = "block";
-      document.querySelector("#onboarding h2").innerText = "Let's personalize your journey!";
-      document.querySelector("#onboarding p").innerText = "Which methods help you stick with your habits?";
+      document.getElementById("onboarding-heading").innerText = "Let's personalize your journey!";
+      document.getElementById("onboarding-subheading").innerText = "Which methods help you stick with your habits?";
+
     }
 
     function completeSignup() {
