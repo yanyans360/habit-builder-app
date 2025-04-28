@@ -392,7 +392,9 @@ button:hover {
 
 
       <br />
-      <button id="startBtn" style="display: none;" onclick="startJourney()">Start Your Journey</button>
+      <div style="text-align: center; margin-top: 2rem;">
+        <button id="startBtn" style="display: none;" onclick="startJourney()">Start Your Journey</button>
+      </div>
     </section>
 
     <section id="dashboard" class="dashboard" style="display: none;">
@@ -1130,13 +1132,19 @@ shortTermSection.innerHTML = `
       alert("⚠️ JS Error: " + msg + " on line " + line);
     };
   function prepareStart() {
-    if (selectedShortTermGoals.length === 0) {
-      alert("Pick at least one habit to continue!");
-      return;
-    }
-    document.getElementById("quiz-step-3").style.display = "none";
-    document.getElementById("startBtn").style.display = "inline-block";
+  if (selectedShortTermGoals.length === 0) {
+    alert("Pick at least one habit to continue!");
+    return;
   }
+
+  updateProgress(100);
+
+  document.getElementById("quiz-step-3").style.display = "none";
+  document.getElementById("onboarding-heading").innerText = "You're ready!";
+  document.getElementById("onboarding-subheading").innerText = "Review and start your habit journey below:";
+  document.getElementById("startBtn").style.display = "inline-block";
+}
+
 
   </script>
 </body>
