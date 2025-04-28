@@ -431,7 +431,7 @@ select:focus {
         resetUserMatch = users.find(user => user.name.toLowerCase() === name);
     
         if (!resetUserMatch) {
-          alert("No user found with that name.");
+          showToast("No user found with that name.", "error");
           return;
         }
     
@@ -444,12 +444,12 @@ select:focus {
     
       // Step 2: Validate answer and reset password
       if (hashPassword(answer) !== resetUserMatch.answer) {
-        alert("Incorrect answer to the security question.");
+        showToast("Incorrect answer to the security question.", "error");
         return;
       }
     
       if (!newPassword) {
-        alert("Please enter a new password.");
+        showToast("Please enter a new password.", "error");
         return;
       }
     
@@ -458,7 +458,7 @@ select:focus {
       users[userIndex].password = hashPassword(newPassword);
       saveUserDB(users);
     
-      alert("Password successfully reset! Please log in.");
+      showToast("Password successfully reset! Please log in.", "info");
       resetUserMatch = null;
       document.getElementById("resetActionBtn").textContent = "Next";
       document.getElementById("reset-answer").style.display = "none";
@@ -498,7 +498,7 @@ select:focus {
       const loginPassword = document.getElementById("login-password").value;
     
       if (!loginName || !loginPassword) {
-        alert("Please enter both username and password.");
+        showToast("Please enter both username and password.", "error");
         return;
       }
     
@@ -509,7 +509,7 @@ select:focus {
       );
     
       if (!match) {
-        alert("Invalid username or password.");
+        showToast("Invalid username or password.", "error");
         return;
       }
     
@@ -638,7 +638,7 @@ select:focus {
         button.classList.remove("selected");
       } else {
         if (selectedGoals.length >= 3) {
-          alert("You can only choose up to 3 goals.");
+          showToast("You can only choose up to 3 goals.", "error");
           return;
         }
         selectedGoals.push(goal);
@@ -654,15 +654,15 @@ select:focus {
       const input = document.getElementById("customGoalInput");
       const goal = input.value.trim();
       if (!goal) {
-        alert("Please enter a custom goal.");
+        showToast("Please enter a custom goal.", "error");
         return;
       }
       if (selectedGoals.includes(goal)) {
-        alert("You already added this goal.");
+        showToast("You already added this goal.", "error");
         return;
       }
       if (selectedGoals.length >= 3) {
-        alert("You can only choose up to 3 goals.");
+        showToast("You can only choose up to 3 goals.", "error");
         return;
       }
     
@@ -693,7 +693,7 @@ function toggleMotivation(button, motivation) {
     button.classList.remove("selected");
   } else {
     if (selectedMotivations.length >= 2) {
-      alert("Please pick up to 2 motivation styles.");
+      showToast("Please pick up to 2 motivation styles.", "error");
       return;
     }
     selectedMotivations.push(motivation);
@@ -711,7 +711,7 @@ function toggleShortTerm(button, goal) {
     button.classList.remove("selected");
   } else {
     if (selectedShortTermGoals.length >= 3) {
-      alert("You can only pick up to 3 short-term habits.");
+      showToast("You can only pick up to 3 short-term habits.", "error");
       return;
     }
     selectedShortTermGoals.push(goal);
@@ -727,15 +727,15 @@ function addCustomMotivation() {
   const input = document.getElementById("customMotivationInput");
   const motivation = input.value.trim();
   if (!motivation) {
-    alert("Please enter a custom motivation.");
+    showToast("Please enter a custom motivation.", "error");
     return;
   }
   if (selectedMotivations.includes(motivation)) {
-    alert("You already added this motivation.");
+    showToast("You already added this motivation.", "error");
     return;
   }
   if (selectedMotivations.length >= 2) {
-    alert("Please pick up to 2 motivation styles.");
+    	showToast("Please pick up to 2 motivation styles", "error");
     return;
   }
 
@@ -791,7 +791,7 @@ async function goToShortTerm() {
     gptSuggestions = await getShortTermGoalsFromGPT(selectedGoals);
   } catch (error) {
     console.error("Error fetching GPT goals:", error);
-    alert("Could not load personalized goals right now — showing suggested habits instead!");
+    showToast("Could not load personalized goals right now — showing suggested habits instead!", "info");
 
 
     // 🔥 Fallback: grab default goals manually from your `shortTermGoalsMap`
@@ -868,12 +868,12 @@ shortTermSection.innerHTML = `
       const confirmPassword = document.getElementById("auth-confirm-password").value;
       
       if (!nameInput || !password || !confirmPassword) {
-        alert("Please complete all fields.");
+        showToast("Please complete all fields", "error");
         return;
       }
       
       if (password !== confirmPassword) {
-        alert("Passwords do not match.");
+        showToast("Passwords do not match.", "error");
         return;
       }
     
@@ -881,7 +881,7 @@ shortTermSection.innerHTML = `
       const userExists = users.some(user => user.name.toLowerCase() === nameInput.toLowerCase());
     
       if (userExists) {
-        alert("Username already taken.");
+        showToast("Username already taken.", "error");
         return;
       }
     
@@ -889,7 +889,7 @@ shortTermSection.innerHTML = `
       const answer = document.getElementById("security-answer").value.trim();
       
       if (question === "" || !answer) {
-        alert("Please select a security question and provide an answer.");
+        showToast("Please select a security question and provide an answer.", "error");
         return;
       }
     
@@ -961,15 +961,15 @@ shortTermSection.innerHTML = `
       const input = document.getElementById("customShortTermInput");
       const goal = input.value.trim();
       if (!goal) {
-        alert("Please enter a short-term goal.");
+        showToast("Please enter a short-term goal.", "error");
         return;
       }
       if (selectedShortTermGoals.includes(goal)) {
-        alert("You already added this goal.");
+        showToast("You already added this goal.", "error");
         return;
       }
       if (selectedShortTermGoals.length >= 3) {
-        alert("You can only pick up to 3 short-term habits.");
+        showToast("You can only pick up to 3 short-term habits.", "error");
         return;
       }
     
@@ -994,7 +994,7 @@ shortTermSection.innerHTML = `
     
     
           if (!userName || !selectedGoals.length || !selectedShortTermGoals.length) {
-            alert("Please complete all steps!");
+            showToast("Please complete all steps!", "error");
             return;
           }
 
@@ -1045,7 +1045,7 @@ shortTermSection.innerHTML = `
         document.getElementById("userTitle").style.display = "none";
         document.getElementById("login-section").style.display = "block";
     
-        alert("You have been logged out!");
+        showToast("You have been logged out!", "info");
       }
     }
 
@@ -1062,7 +1062,7 @@ shortTermSection.innerHTML = `
           }
         });
     
-        alert("All user accounts and session data have been cleared.");
+        showToast("All user accounts and session data have been cleared.", "info");
         location.reload(); // reload page to reset everything
       }
     }
@@ -1085,21 +1085,47 @@ shortTermSection.innerHTML = `
     }
   };
     window.onerror = function (msg, url, line, col, error) {
-      alert("⚠️ JS Error: " + msg + " on line " + line);
+      showToast("⚠️ JS Error: " + msg + " on line " + line, "error");
     };
   function prepareStart() {
-  if (selectedShortTermGoals.length === 0) {
-    alert("Pick at least one habit to continue!");
-    return;
+    if (selectedShortTermGoals.length === 0) {
+      showToast("Pick at least one habit to continue!", "error");
+      return;
+    }
+  
+    updateProgress(100);
+  
+    document.getElementById("quiz-step-3").style.display = "none";
+    document.getElementById("onboarding-heading").innerText = "You're ready!";
+    document.getElementById("onboarding-subheading").innerText = "Review and start your habit journey below:";
+    document.getElementById("startBtn").style.display = "inline-block";
+  }
+  // 🔥 New toast message system
+  function showToast(message, type = "info") {
+    const toast = document.createElement("div");
+    toast.innerText = message;
+    toast.style.position = "fixed";
+    toast.style.bottom = "20px";
+    toast.style.left = "50%";
+    toast.style.transform = "translateX(-50%)";
+    toast.style.backgroundColor = type === "error" ? "#f44336" : "#7c3aed";
+    toast.style.color = "white";
+    toast.style.padding = "1rem 2rem";
+    toast.style.borderRadius = "8px";
+    toast.style.boxShadow = "0 4px 12px rgba(0,0,0,0.2)";
+    toast.style.fontSize = "1rem";
+    toast.style.zIndex = 9999;
+    toast.style.opacity = 1;
+    toast.style.transition = "opacity 0.5s ease-out";
+  
+    document.body.appendChild(toast);
+  
+    setTimeout(() => {
+      toast.style.opacity = 0;
+      setTimeout(() => document.body.removeChild(toast), 500);
+    }, 3000); // Disappear after 3s
   }
 
-  updateProgress(100);
-
-  document.getElementById("quiz-step-3").style.display = "none";
-  document.getElementById("onboarding-heading").innerText = "You're ready!";
-  document.getElementById("onboarding-subheading").innerText = "Review and start your habit journey below:";
-  document.getElementById("startBtn").style.display = "inline-block";
-}
 
 
   </script>
