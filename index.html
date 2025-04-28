@@ -360,6 +360,10 @@ input[type="checkbox"] { width: 16px; height: 16px; }
   <div style="position: absolute; top: 10px; right: 20px; display: flex; align-items: center; gap: 12px;">
     <button id="themeToggle" style="background: none; border: none; font-size: 24px; cursor: pointer;">🌙</button>
     <button id="menuButton" style="background: none; border: none; font-size: 28px; cursor: pointer;">☰</button>
+    <div id="menuDropdown" style="display: none; position: absolute; top: 50px; right: 20px; background: white; border-radius: 8px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); overflow: hidden; z-index: 1000;">
+      <button onclick="logoutUser()" style="display: block; width: 100%; padding: 10px; background: none; border: none; text-align: left; cursor: pointer;">🚪 Log Out</button>
+      <button onclick="toggleTheme()" style="display: block; width: 100%; padding: 10px; background: none; border: none; text-align: left; cursor: pointer;">🎨 Toggle Theme</button>
+    </div>
   </div>
   <h1>🌱 Habit Harmony <span id="time-icon">🌞</span></h1>
   <p id="datetime"></p>
