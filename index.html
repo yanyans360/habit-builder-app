@@ -856,16 +856,22 @@ async function goToShortTerm() {
 
 shortTermSection.innerHTML = `
   <p>Pick up to <strong>3 short-term habits</strong> to work on this week:</p>
-  <div id="shortterm-buttons" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-    ${gptSuggestions.map(goal => `<button onclick="toggleShortTerm(this, '${goal.replace(/'/g, "\\'")}')">${goal}</button>`).join('')}
+
+  <div style="margin-bottom: 2rem;">
+    <div id="shortterm-buttons" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+      ${gptSuggestions.map(goal => `<button onclick="toggleShortTerm(this, '${goal.replace(/'/g, "\\'")}')">${goal}</button>`).join('')}
+    </div>
+
+    <input type="text" id="customShortTermInput" placeholder="Or write your own..." style="margin-top: 1rem;" />
+    <button style="margin-top: 0.5rem;" onclick="addCustomShortTermGoal()">➕ Add Custom Goal</button>
   </div>
-  <input type="text" id="customShortTermInput" placeholder="Or write your own..." style="margin-top: 1rem;" />
-  <button style="margin-top: 0.5rem;" onclick="addCustomShortTermGoal()">➕ Add Custom Goal</button>
+
   <div class="button-row">
     <button class="button-back-link" onclick="backToStep2()">⬅️ Back</button>
     <button id="toStartBtn" class="button-primary" style="display: none;" onclick="prepareStart()">Next ➡️</button>
   </div>
 `;
+
 }
 
 
