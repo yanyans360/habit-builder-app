@@ -304,6 +304,7 @@ button:hover {
         <input type="text" id="customMotivationInput" placeholder="Add your own motivation..." style="margin-top: 1rem;" />
         <button style="margin-top: 0.5rem;" onclick="addCustomMotivation()">➕ Add Custom Motivation</button>
         <br />
+         <button style="margin-top: 1rem;" onclick="backToStep1()">⬅️ Back</button>
         <button id="toShortTermBtn" style="display: none; margin-top: 1rem;" onclick="goToShortTerm()">Next</button>
       </div>
 
@@ -773,16 +774,18 @@ async function goToShortTerm() {
     gptSuggestions = [...new Set(gptSuggestions)].slice(0, 5);
   }
 
-  shortTermSection.innerHTML = `
-    <p>Pick up to <strong>3 short-term habits</strong> to work on this week:</p>
-    <div id="shortterm-buttons" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-      ${gptSuggestions.map(goal => `<button onclick="toggleShortTerm(this, '${goal.replace(/'/g, "\\'")}')">${goal}</button>`).join('')}
-    </div>
-    <input type="text" id="customShortTermInput" placeholder="Or write your own..." style="margin-top: 1rem;" />
-    <button style="margin-top: 0.5rem;" onclick="addCustomShortTermGoal()">➕ Add Custom Goal</button>
-    <br />
-    <button id="toStartBtn" style="display: none; margin-top: 1rem;" onclick="prepareStart()">Next</button>
-  `;
+ shortTermSection.innerHTML = `
+  <p>Pick up to <strong>3 short-term habits</strong> to work on this week:</p>
+  <div id="shortterm-buttons" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+    ${gptSuggestions.map(goal => `<button onclick="toggleShortTerm(this, '${goal.replace(/'/g, "\\'")}')">${goal}</button>`).join('')}
+  </div>
+  <input type="text" id="customShortTermInput" placeholder="Or write your own..." style="margin-top: 1rem;" />
+  <button style="margin-top: 0.5rem;" onclick="addCustomShortTermGoal()">➕ Add Custom Goal</button>
+  <br />
+  <button id="toStartBtn" style="display: none; margin-top: 1rem;" onclick="prepareStart()">Next</button>
+  <br />
+  <button style="margin-top: 1rem;" onclick="backToStep2()">⬅️ Back</button>
+`;
 }
 
 
@@ -796,6 +799,22 @@ async function goToShortTerm() {
       document.getElementById("onboarding-subheading").innerText = "Which methods help you stick with your habits?";
 
     }
+    function backToStep1() {
+      updateProgress(33); // Step 1 progress
+      document.getElementById("quiz-step-2").style.display = "none";
+      document.getElementById("quiz-step-1").style.display = "block";
+      document.getElementById("onboarding-heading").innerText = "Hi there!";
+      document.getElementById("onboarding-subheading").innerText = "Let’s make a plan just for you. What’s something you want to build into your life?";
+    }
+    
+    function backToStep2() {
+      updateProgress(66); // Step 2 progress
+      document.getElementById("quiz-step-3").style.display = "none";
+      document.getElementById("quiz-step-2").style.display = "block";
+      document.getElementById("onboarding-heading").innerText = "Let's personalize your journey!";
+      document.getElementById("onboarding-subheading").innerText = "Which methods help you stick with your habits?";
+    }
+
 
     function completeSignup() {
       const nameInput = document.getElementById("auth-name").value.trim();
