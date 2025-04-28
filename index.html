@@ -1386,10 +1386,7 @@ generateCalendar();
 updateStreak();
 
 setInterval(updateDateTime, 60000);
-document.getElementById("settingsMenuButton").addEventListener("click", function() {
-  const dropdown = document.getElementById("settingsDropdown");
-  dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
-});
+
 document.getElementById("menuButton").addEventListener("click", function() {
   const dropdown = document.getElementById("menuDropdown");
   dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
