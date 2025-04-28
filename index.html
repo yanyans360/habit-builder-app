@@ -1182,7 +1182,9 @@ shortTermSection.innerHTML = `
         document.getElementById("onboarding").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
         document.getElementById("dashboard").classList.add("fade-in");
-        document.getElementById("chatbot").style.display = "block";
+        const chatbotEl = document.getElementById("chatbot");
+        if (chatbotEl) chatbotEl.style.display = "block";
+
 
         document.getElementById("displayName").innerText = userName;
         document.getElementById("displayGoal").innerText =
