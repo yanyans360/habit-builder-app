@@ -744,9 +744,36 @@ async function goToShortTerm() {
   shortTermSection.innerHTML = `<p>Loading personalized short-term goals...</p>`;
   document.getElementById("onboarding").appendChild(shortTermSection);
 
-  const gptSuggestions = await getShortTermGoalsFromGPT(selectedGoals);
+  let gptSuggestions = [];
 
-   shortTermSection.innerHTML = `
+  try {
+    gptSuggestions = await getShortTermGoalsFromGPT(selectedGoals);
+  } catch (error) {
+    console.error("Error fetching GPT goals:", error);
+    alert("Could not load personalized goals right now — showing suggested habits instead!");
+
+
+    // 🔥 Fallback: grab default goals manually from your `shortTermGoalsMap`
+    selectedGoals.forEach(goal => {
+      if (shortTermGoalsMap[goal]) {
+        gptSuggestions = gptSuggestions.concat(shortTermGoalsMap[goal].slice(0, 2)); // pick 2 from each category
+      }
+    });
+
+    // If nothing selected, just have some generic habits ready
+    if (gptSuggestions.length === 0) {
+      gptSuggestions = [
+        "🚶 Walk for 10 minutes",
+        "📝 Write down one goal for today",
+        "🛏️ Go to bed 30 minutes earlier"
+      ];
+    }
+
+    // Remove duplicates
+    gptSuggestions = [...new Set(gptSuggestions)].slice(0, 5);
+  }
+
+  shortTermSection.innerHTML = `
     <p>Pick up to <strong>3 short-term habits</strong> to work on this week:</p>
     <div id="shortterm-buttons" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
       ${gptSuggestions.map(goal => `<button onclick="toggleShortTerm(this, '${goal.replace(/'/g, "\\'")}')">${goal}</button>`).join('')}
@@ -756,7 +783,6 @@ async function goToShortTerm() {
     <br />
     <button id="toStartBtn" style="display: none; margin-top: 1rem;" onclick="prepareStart()">Next</button>
   `;
-
 }
 
 
