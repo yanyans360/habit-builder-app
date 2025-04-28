@@ -468,6 +468,18 @@ input::placeholder, select::placeholder {
 header h1 {
   text-align: center;
 }
+.low-light #menuDropdown {
+  background: #353567;
+  color: #f5f5f5;
+}
+
+.low-light #menuDropdown button {
+  color: #f5f5f5;
+}
+
+.low-light #menuDropdown button:hover {
+  background: #4e54c8;
+}
 
 
 
@@ -715,6 +727,36 @@ header h1 {
         </div>
       </div>
     </div>
+  <!-- 🌟 Logout Confirmation Popup -->
+<div id="logoutPopup" style="display: none;" class="fade-in">
+  <div style="
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  ">
+    <div style="
+      background: #f9f7f2;
+      padding: 2rem 3rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 90%;
+      font-family: 'Satoshi', sans-serif;
+    ">
+      <h2 style="color: #4a4a40;">Are you sure?</h2>
+      <p style="color: #6e6b5e; margin-bottom: 1.5rem;">You’re about to log out of Habit Harmony 🌱</p>
+      <div style="display: flex; gap: 1rem; justify-content: center;">
+        <button onclick="confirmLogout()" class="btn">Yes, Log Out</button>
+        <button onclick="closeLogoutPopup()" class="btn" style="background: #ccc; color: #333;">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   </main>
 
   <script>
@@ -1337,32 +1379,32 @@ shortTermSection.innerHTML = `
       }
     }
     function logoutUser() {
-      const confirmLogout = confirm("Are you sure you want to log out?");
-      if (confirmLogout) {
-        localStorage.removeItem("lastUser");
-        userName = "";
-        selectedGoals = [];
-        selectedMotivations = [];
-  1     selectedShortTermGoals = [];
-
-        // You could also clear selected goals if you want:
-        selectedGoals = [];
-        selectedMotivations = [];
-        selectedShortTermGoal = "";
-        selectedLongTermGoal = "";
-    
-        // Hide dashboard, show login
-        document.getElementById("dashboard").style.display = "none";
-        document.getElementById("menuButton").style.display = "none";
-        document.getElementById("userTitle").style.display = "none";
-        document.getElementById("login-section").style.display = "block";
-        document.getElementById("menuDropdown").classList.remove("open");
-        document.getElementById("menuDropdown").style.display = "none";
-
-    
-        showToast("You have been logged out!", "info");
-      }
+      document.getElementById("logoutPopup").style.display = "block";
     }
+    
+    function confirmLogout() {
+      localStorage.removeItem("lastUser");
+      userName = "";
+      selectedGoals = [];
+      selectedMotivations = [];
+      selectedShortTermGoals = [];
+    
+      document.getElementById("dashboard").style.display = "none";
+      document.getElementById("menuButton").style.display = "none";
+      document.getElementById("userTitle").style.display = "none";
+      document.getElementById("login-section").style.display = "block";
+      document.getElementById("menuDropdown").classList.remove("open");
+      document.getElementById("menuDropdown").style.display = "none";
+    
+      document.getElementById("logoutPopup").style.display = "none";
+    
+      showToast("You have been logged out!", "info");
+    }
+    
+    function closeLogoutPopup() {
+      document.getElementById("logoutPopup").style.display = "none";
+    }
+
 
     function clearAllUsers() {
       const confirmClear = confirm("Are you sure you want to delete all users? This cannot be undone.");
