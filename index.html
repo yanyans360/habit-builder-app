@@ -22,6 +22,8 @@
 }
 #onboarding {
   min-height: 600px;
+  max-width: 1000px; /* 🌟 Add this line */
+  width: 90%; /* 🌟 Add this line */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,6 +32,7 @@
   transition: min-height 0.3s ease;
 }
 
+
 #progressBar {
   width: 100%;
   max-width: 600px;
@@ -37,11 +40,12 @@
 }
 #quiz-step-1, #quiz-step-2, #quiz-step-3 {
   width: 100%;
-  max-width: 600px;
+  max-width: 1000px; /* match onboarding width */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 
 
 @font-face {
