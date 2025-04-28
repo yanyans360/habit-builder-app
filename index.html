@@ -460,7 +460,15 @@ input[type="checkbox"] { width: 16px; height: 16px; }
     </div>
 
 <h2>Welcome back! You're doing amazing today 💪</h2>
-<div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
+<div style="position: absolute; top: 20px; right: 20px;">
+  <button id="menuButton" style="background: none; border: none; font-size: 28px; cursor: pointer;">☰</button>
+  <div id="menuDropdown" style="display: none; position: absolute; top: 40px; right: 0; background: white; border-radius: 8px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); overflow: hidden;">
+    <button onclick="logoutUser()" style="display: block; width: 100%; padding: 10px; background: none; border: none; text-align: left; cursor: pointer;">🚪 Log Out</button>
+    <button onclick="toggleTheme()" style="display: block; width: 100%; padding: 10px; background: none; border: none; text-align: left; cursor: pointer;">🎨 Toggle Theme</button>
+  </div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2rem;">
+
 
 <!-- Today's Habits -->
 <div class="card" style="flex: 1 1 300px;">
@@ -508,17 +516,7 @@ input[type="checkbox"] { width: 16px; height: 16px; }
   <div class="text-center text-4xl">✨</div>
   <button class="btn" onclick="location.reload()">Refresh Quote</button>
 </div>
-<div class="card">
-  <h3>Settings ⚙️</h3>
-  <div style="position: relative; text-align: left;">
-    <button class="btn" id="settingsMenuButton">Open Settings</button>
-    <div id="settingsDropdown" style="display: none; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); margin-top: 0.5rem; min-width: 180px; overflow: hidden; z-index: 10;">
-      <button class="btn" style="width: 100%; text-align: left; padding: 0.5rem 1rem;" onclick="logoutUser()">🚪 Log Out</button>
-      <button class="btn" style="width: 100%; text-align: left; padding: 0.5rem 1rem;" onclick="alert('Coming soon!')">🎨 Change Theme</button>
-      <button class="btn" style="width: 100%; text-align: left; padding: 0.5rem 1rem;" onclick="alert('Coming soon!')">🔒 Privacy Settings</button>
-    </div>
-  </div>
-</div>
+
 
    
 
@@ -1392,6 +1390,14 @@ document.getElementById("settingsMenuButton").addEventListener("click", function
   const dropdown = document.getElementById("settingsDropdown");
   dropdown.style.display = dropdown.style.display === "none" ? "block" : "none";
 });
+document.getElementById("menuButton").addEventListener("click", function() {
+  const dropdown = document.getElementById("menuDropdown");
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+});
+
+function toggleTheme() {
+  document.body.classList.toggle("low-light");
+}
 
 </script>
 
