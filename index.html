@@ -1347,6 +1347,9 @@ shortTermSection.innerHTML = `
         document.getElementById("menuButton").style.display = "none";
         document.getElementById("userTitle").style.display = "none";
         document.getElementById("login-section").style.display = "block";
+        document.getElementById("menuDropdown").classList.remove("open");
+        document.getElementById("menuDropdown").style.display = "none";
+
     
         showToast("You have been logged out!", "info");
       }
