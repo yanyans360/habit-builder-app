@@ -1847,11 +1847,19 @@ if (addHabitButton) {
   };
 }
 
+let lastQuoteIndex = -1;
 function updateQuote() {
-  const q = quotes[Math.floor(Math.random() * quotes.length)];
+  let newIndex;
+  do {
+    newIndex = Math.floor(Math.random() * quotes.length);
+  } while (newIndex === lastQuoteIndex && quotes.length > 1); // Avoid repeat if multiple quotes
+  lastQuoteIndex = newIndex;
+
+  const q = quotes[newIndex];
   document.getElementById('quote').textContent = `"${q.text}"`;
   document.getElementById('author').textContent = `– ${q.author}`;
 }
+
 
 function generateCalendar() {
   const now = new Date();
@@ -1953,6 +1961,8 @@ document.addEventListener('DOMContentLoaded', function () {
       selectedShortTermGoals = JSON.parse(localStorage.getItem(`shortterm_${userName}`) || "[]");
       
       // THEN render goals and motivations
+      selectedGoals = JSON.parse(localStorage.getItem(`goals_${userName}`) || "[]");
+
       const goalList = document.getElementById("goal-list");
       goalList.innerHTML = "";
       selectedGoals.forEach(goal => {
@@ -1963,6 +1973,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
         goalList.appendChild(li);
       });
+      
 
 
       const motivationList = document.getElementById("motivation-list");
