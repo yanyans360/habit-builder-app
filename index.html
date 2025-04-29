@@ -727,16 +727,38 @@ header h1 {
     <ul id="goal-list"></ul>
   </div>
 
+  <!-- Motivation Corner -->
+<div class="card" style="flex: 1 1 300px; text-align: center;">
+  <div class="flex justify-center mb-4">
+    🔥 <h3 class="ml-2">Motivation Corner</h3>
+  </div>
+  <p id="quote" class="italic mb-4" style="font-size: 1.2rem;"></p>
+  <p id="author" class="text-sm mb-4" style="color: gray;"></p>
+  <div class="text-4xl mb-4">✨</div>
+  <button class="btn" onclick="refreshQuote()">Refresh Quote</button>
+</div>
+
   <div class="card" data-card-id="motivation">
     🔥 <h3>Motivation</h3>
     <ul id="motivation-list"></ul>
   </div>
 
   <div class="card" data-card-id="today">
-    ✅ <h3>Today's Habits</h3>
-    <h4 id="streak" style="margin-top: 1rem;"></h4>
-    <ul id="habit-list"></ul>
+  ✅ <h3>Today's Habits</h3>
+  <h4 id="streak" style="margin-top: 1rem;"></h4>
+
+  <div class="flex justify-between mb-2">
+    <button class="btn-small" id="show-input">➕</button>
   </div>
+
+  <div id="input-area" class="flex gap-2 mb-2" style="display:none;">
+    <input type="text" id="new-habit" class="input" placeholder="New habit name" />
+    <button class="btn-small" id="add-habit">Add</button>
+  </div>
+
+  <ul id="habit-list"></ul>
+</div>
+
 
   <div class="card" data-card-id="habitbot">
     🤖 <h3>HabitBot Chat</h3>
@@ -749,16 +771,7 @@ header h1 {
   </div>
 </div>
 
-<!-- Motivation Corner -->
-<div class="card" style="flex: 1 1 300px; text-align: center;">
-  <div class="flex justify-center mb-4">
-    🔥 <h3 class="ml-2">Motivation Corner</h3>
-  </div>
-  <p id="quote" class="italic mb-4" style="font-size: 1.2rem;"></p>
-  <p id="author" class="text-sm mb-4" style="color: gray;"></p>
-  <div class="text-4xl mb-4">✨</div>
-  <button class="btn" onclick="refreshQuote()">Refresh Quote</button>
-</div>
+
 
 
    
