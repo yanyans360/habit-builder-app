@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -694,66 +694,31 @@ header h1 {
    <section id="dashboard" style="display: none;">
   
 <h2>Welcome back! You're doing amazing today 💪</h2>
-<div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; margin-top: 2rem;">
-<!-- Goals Card -->
-<!-- Long-Term Goals Card -->
-<div class="card" style="flex: 1 1 300px;">
-  <div class="flex justify-center mb-2">
-    🎯 <h3 class="ml-2">Long-Term Goals</h3>
-  </div>
-  <ul id="goal-list" style="list-style: disc inside; margin-top: 1rem;"></ul>
-</div>
-
-<!-- Motivation Corner -->
-<div class="card" style="flex: 1 1 250px; max-width: 300px;">
-  <div class="flex justify-center mb-2">
-    🔥 <h3 class="ml-2">Motivation</h3>
-  </div>
-  <ul id="motivation-list" style="list-style: disc inside; margin-top: 1rem;"></ul>
-</div>
-
-
-
-
-<!-- Today's Habits -->
-<div class="card" style="flex: 1 1 300px;">
-  <div class="flex justify-between mb-2">
-    <div class="flex items-center">
-      <h3 class="ml-2" id="today-title">Today's Habits</h3>
-    </div>
-    <button class="btn-small" id="show-input">➕</button>
+<div id="dashboard-cards" style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; margin-top: 2rem;">
+<div id="dashboard-cards" style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; margin-top: 2rem;">
+  <div class="card" data-card-id="goals">
+    🎯 <h3>Long-Term Goals</h3>
+    <ul id="goal-list"></ul>
   </div>
 
-  <div id="input-area" class="flex gap-2 mb-2" style="display:none;">
-    <input type="text" id="new-habit" class="input" placeholder="New habit name" />
-    <button class="btn-small" id="add-habit">Add</button>
+  <div class="card" data-card-id="motivation">
+    🔥 <h3>Motivation</h3>
+    <ul id="motivation-list"></ul>
   </div>
 
-  <ul id="habit-list" class="mt-2 space-y-2"></ul>
-</div>
-<div class="card" style="flex: 1 1 300px;">
-  <div class="flex justify-center mb-2">
-    🤖 <h3 class="ml-2">HabitBot Chat</h3>
+  <div class="card" data-card-id="today">
+    ✅ <h3>Today's Habits</h3>
+    <ul id="habit-list"></ul>
   </div>
-  <p>(Placeholder: GPT integration here)</p>
-</div>
 
-<!-- Weekly Progress -->
-<div class="card" style="flex: 1 1 300px;">
-  <div class="flex justify-center mb-2">
-    ✅ <h3 class="ml-2">Weekly Progress</h3>
+  <div class="card" data-card-id="habitbot">
+    🤖 <h3>HabitBot Chat</h3>
+    <p>(Coming soon!)</p>
   </div>
-  <p id="streak" class="text-sm mb-2"></p>
 
-  <div class="bg-white rounded-md p-2 shadow-inner">
-    <table class="w-full text-xs text-center calendar">
-      <thead>
-        <tr>
-          <th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th>
-        </tr>
-      </thead>
-      <tbody id="calendar-body"></tbody>
-    </table>
+  <div class="card" data-card-id="progress">
+    📅 <h3>Weekly Progress</h3>
+    <table id="calendar-body"></table>
   </div>
 </div>
 
@@ -1647,6 +1612,18 @@ shortTermSection.innerHTML = `
   const url = `https://calendar.google.com/calendar/r/eventedit?text=${title}&details=Added+from+Habit+Harmony!`;
   window.open(url, '_blank');
 }
+const dashboard = document.getElementById('dashboard-cards');
+
+new Sortable(dashboard, {
+  animation: 150,
+  onEnd: function () {
+    const order = [];
+    dashboard.querySelectorAll('.card').forEach(card => {
+      order.push(card.getAttribute('data-card-id'));
+    });
+    localStorage.setItem('dashboardOrder', JSON.stringify(order));
+  }
+});
 
 
 
@@ -1680,7 +1657,8 @@ function renderHabits() {
       <input type="checkbox" ${habit.completed ? 'checked' : ''} onchange="toggleHabit(${idx})">
       <span class="ml-2 ${habit.completed ? 'text-line' : ''}">📅 ${habit.name}</span>
     </div>
-    <button class="btn-small" onclick="deleteHabit(${idx})">🗑️</button>`;
+    <button class="btn-small" onclick="addHabitToGoogleCalendar('${habits[idx].name}')">📅</button>
+
 
     list.appendChild(li);
   });
@@ -1695,6 +1673,12 @@ function deleteHabit(index) {
   habits.splice(index, 1);
   renderHabits();
 }
+function addHabitToGoogleCalendar(habitName) {
+  const title = encodeURIComponent(habitName);
+  const url = `https://calendar.google.com/calendar/r/eventedit?text=${title}&details=Added+via+Habit+Harmony`;
+  window.open(url, '_blank');
+}
+
 
 
 document.getElementById('add-habit').onclick = () => {
@@ -1786,6 +1770,14 @@ function toggleTheme() {
 
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById("menuButton").style.display = "none";
+  const savedOrder = JSON.parse(localStorage.getItem('dashboardOrder') || '[]');
+  if (savedOrder.length > 0) {
+    savedOrder.forEach(cardId => {
+      const card = dashboard.querySelector(`.card[data-card-id="${cardId}"]`);
+      if (card) dashboard.appendChild(card);
+    });
+  }
+
   const storedUser = localStorage.getItem("lastUser");
   if (storedUser && localStorage.getItem("hasOnboarded_" + storedUser) === "true") {
       userName = storedUser;
