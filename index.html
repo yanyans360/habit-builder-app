@@ -2028,6 +2028,66 @@ function generateCalendar() {
     tbody.appendChild(row);
   }
 }
+// ✅ SPEECH TO TEXT + HABITBOT SUGGESTIONS + GAS METER MODULES
+
+function startSpeechToText() {
+  const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  recognition.lang = 'en-US';
+  recognition.interimResults = false;
+
+  recognition.onstart = () => showToast("🎤 Listening...", "info");
+
+  recognition.onerror = () => showToast("Mic error or permission denied", "error");
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    const input = document.getElementById("habitbot-input") || document.getElementById("habitbot-dashboard-input");
+    if (input) input.value = transcript;
+  };
+
+  recognition.start();
+}
+
+function injectSpeechButton() {
+  const inputBox = document.getElementById("habitbot-input") || document.getElementById("habitbot-dashboard-input");
+  if (!document.getElementById("speech-btn")) {
+    const btn = document.createElement("button");
+    btn.innerText = "🎙️ Speak";
+    btn.className = "btn-small";
+    btn.id = "speech-btn";
+    btn.onclick = startSpeechToText;
+    inputBox.parentNode.insertBefore(btn, inputBox.nextSibling);
+  }
+}
+
+function renderGasMeters() {
+  const gasContainer = document.createElement("div");
+  gasContainer.className = "card";
+  gasContainer.innerHTML = `<h3>⛽ Goal Progress</h3>`;
+
+  selectedGoals.forEach(goal => {
+    const progress = Math.floor(Math.random() * 100); // You can replace this later with real logic
+    const block = document.createElement("div");
+    block.style.marginBottom = "1rem";
+    block.innerHTML = `
+      <p>${goal}</p>
+      <div style="width: 100%; height: 12px; background: #eee; border-radius: 6px; overflow: hidden;">
+        <div style="width: ${progress}%; height: 100%; background: #7c3aed;"></div>
+      </div>
+    `;
+    gasContainer.appendChild(block);
+  });
+
+  document.getElementById("dashboard-cards").appendChild(gasContainer);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("hasOnboarded_" + userName)) {
+    injectSpeechButton();
+    renderGasMeters();
+  }
+});
+
 
 function updateStreak() {
   document.getElementById('streak').textContent = `You're on a ${Math.max(1, completedDates.length)}-day streak!`;
