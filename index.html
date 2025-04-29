@@ -914,54 +914,52 @@ header h1 {
       document.getElementById('rule-uppercase').textContent = /[A-Z]/.test(password) ? '✅ 1 uppercase letter' : '❌ 1 uppercase letter';
       document.getElementById('rule-number').textContent = /\d/.test(password) ? '✅ 1 number' : '❌ 1 number';
     }
-    async function sendHabitBotMessage() {
-      const input = document.getElementById('habitbot-input');
-      const responseDiv = document.getElementById('habitbot-response');
-      if (!input.value.trim()) {
-        showToast("Please type a message first!", "error");
-        return;
+  async function sendHabitBotMessage() {
+  const input =
+    document.getElementById("habitbot-input") ||
+    document.getElementById("habitbot-dashboard-input");
+
+  const responseDiv = document.getElementById("habitbot-response");
+  if (!input || !input.value.trim()) {
+    showToast("Please type a message first!", "error");
+    return;
+  }
+
+  const userMessage = input.value.trim();
+  input.value = '';
+  responseDiv.innerHTML = '<div class="spinner" style="margin: 1rem auto;"></div>';
+
+  try {
+    const response = await fetch('https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit.dev/habitbot-chat', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: userMessage,
+        goals: selectedGoals
+      })
+    });
+
+    const serverData = await response.json();
+    const fullText = serverData.reply || "Sorry, HabitBot had trouble responding.";
+    responseDiv.innerHTML = '';
+    let idx = 0;
+
+    const typing = setInterval(() => {
+      if (idx < fullText.length) {
+        const char = fullText.charAt(idx);
+        responseDiv.innerHTML += char === '\n' ? '<br>' : char;
+        idx++;
+      } else {
+        clearInterval(typing);
       }
-    
-      const userMessage = input.value.trim();
-      input.value = '';
-      responseDiv.innerHTML = '<div class="spinner" style="margin: 1rem auto;"></div>';
-    
-      try {
-        const response = await fetch('https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit.dev/habitbot-chat', {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            message: userMessage,
-            goals: selectedGoals
-          })
-        });
-    
-     const serverData = await response.json();
-      const fullText = serverData.reply || "Sorry, HabitBot had trouble responding.";
-      responseDiv.innerHTML = '';
-      let idx = 0;
-      
-      const typing = setInterval(() => {
-        if (idx < fullText.length) {
-          const char = fullText.charAt(idx);
-          if (char === '\n') {
-            responseDiv.innerHTML += '<br>';
-          } else {
-            responseDiv.innerHTML += char;
-          }
-          idx++;
-        } else {
-          clearInterval(typing);
-        }
-      }, 30);
+    }, 30);
 
+  } catch (error) {
+    console.error(error);
+    responseDiv.innerText = "HabitBot couldn't reply right now. Try again later!";
+  }
+}
 
-
-      } catch (error) {
-        console.error(error);
-        responseDiv.innerText = "HabitBot couldn't reply right now. Try again later!";
-      }
-    }
 
 
     function togglePassword(id) {
@@ -2044,7 +2042,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (habitBotCard) {
       habitBotCard.innerHTML = `
         🤖 <h3>HabitBot Chat</h3>
-        <textarea id="habitbot-input" class="input" placeholder="What's going well? What's tough?" style="margin-bottom: 0.5rem; width:100%;"></textarea>
+        <textarea id="habitbot-dashboard-input" class="input" placeholder="What's going well? What's tough?" style="margin-bottom: 0.5rem; width:100%;"></textarea>
         <button class="btn-small" onclick="sendHabitBotMessage()">Send</button>
         <div id="habitbot-response" style="margin-top: 1rem; font-style: italic;"></div>
 
