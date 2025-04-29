@@ -74,6 +74,15 @@
   background: #6b21a8;
   color: #1a1a1a; /* <-- dark number color */
 }
+.low-light .completed {
+  background: #8b5cf6; /* soft purple */
+  color: #1a1a1a;
+}
+
+.low-light .upcoming {
+  background: #6b21a8; /* deeper purple */
+  color: #1a1a1a;
+}
 
 .low-light .today {
   background: #a78bfa; /* Softer lilac highlight for today */
@@ -567,6 +576,21 @@ header h1 {
 #menuDropdown {
   transition: max-height 0.4s ease, opacity 0.4s ease, background-color 0.3s ease;
 }
+.spinner {
+  border: 4px solid #eee;
+  border-top: 4px solid #7c3aed;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  animation: spin 0.8s linear infinite;
+  margin: 1rem auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+
 
 
 </style>
@@ -773,9 +797,20 @@ header h1 {
   </div>
 
   <div class="card" data-card-id="progress">
-    📅 <h3>Weekly Progress</h3>
-    <table id="calendar-body"></table>
+  📅 <h3>Weekly Progress</h3>
+  <p id="streak" class="text-sm mb-2" style="margin-top: 1rem;"></p>
+  <div class="bg-white rounded-md p-2 shadow-inner">
+    <table class="w-full text-xs text-center calendar">
+      <thead>
+        <tr>
+          <th>Su</th><th>Mo</th><th>Tu</th><th>We</th><th>Th</th><th>Fr</th><th>Sa</th>
+        </tr>
+      </thead>
+      <tbody id="calendar-body"></tbody>
+    </table>
   </div>
+</div>
+
 </div>
 
 
@@ -885,28 +920,36 @@ header h1 {
     }
 
     async function refreshQuote() {
+      const quoteElement = document.getElementById('quote');
+      const authorElement = document.getElementById('author');
+    
+      // Show spinner while waiting
+      quoteElement.innerHTML = '<div class="spinner"></div>';
+      authorElement.textContent = "";
+    
       try {
-       const response = await fetchWithTimeout("https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit.dev/generate-quote", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ goals: selectedGoals }),
-        timeout: 5000
-      });
-
+        const response = await fetchWithTimeout("https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit.dev/generate-quote", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ goals: selectedGoals }),
+          timeout: 5000
+        });
+    
         const data = await response.json();
-        
+    
         if (data.choices && data.choices.length > 0 && data.choices[0].message) {
           const text = data.choices[0].message.content;
-          document.getElementById('quote').textContent = `"${text}"`;
-          document.getElementById('author').textContent = `— Personalized for you`;
+          quoteElement.textContent = `"${text}"`;
+          authorElement.textContent = `— Personalized for you`;
         } else {
           throw new Error("Bad GPT response");
         }
       } catch (error) {
         console.error("Failed to fetch GPT quote, using fallback.", error);
-        updateQuote(); // fallback to your random local quotes
+        updateQuote(); // fallback to random quotes
       }
     }
+    
 
 
     function handleReset() {
