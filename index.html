@@ -592,8 +592,17 @@ header h1 {
         <h2>Welcome to Habit Builder 👋</h2>
         <p>Create an account to start your journey:</p>
         <input type="text" id="auth-name" placeholder="Username" /><br />
-        <input type="password" id="auth-password" placeholder="Create a password" /><br />
+        <input type="password" id="auth-password" placeholder="Create a password" onkeyup="detectCapsLock(event, 'caps-warning-auth-password')" oninput="validatePasswordRules(this.value')"><br />
+        <button type="button" class="btn-small" onclick="togglePassword('auth-password')">👁️</button>
+        <p id="caps-warning-auth-password" style="color:red;display:none;">⚠️ Caps Lock is ON</p>
+        <ul id="password-rules" style="font-size:0.9rem; color:gray; list-style: none; margin-top: 8px;">
+          <li id="rule-length">❌ 8+ characters</li>
+          <li id="rule-uppercase">❌ 1 uppercase letter</li>
+          <li id="rule-number">❌ 1 number</li>
+        </ul>
         <input type="password" id="auth-confirm-password" placeholder="Confirm your password" /><br />
+        <button type="button" class="btn-small" onclick="togglePassword('auth-confirm-password')">👁️</button>
+        <p id="caps-warning-auth-confirm-password" style="color:red;display:none;">⚠️ Caps Lock is ON</p>
         <select id="security-question">
           <option value="" disabled selected>Select a security question</option>
           <option value="What was your childhood nickname?">What was your childhood nickname?</option>
@@ -622,6 +631,8 @@ header h1 {
         <p>Log in to continue building your habits:</p>
         <input type="text" id="login-name" placeholder="Your name" /><br />
         <input type="password" id="login-password" placeholder="Your password" /><br />
+        <button type="button" class="btn-small" onclick="togglePassword('auth-password')">👁️</button>
+        <p id="caps-warning-new-password" style="color:red;display:none;">⚠️ Caps Lock is ON</p>
         <button class="button-primary" onclick="loginUser()">Log In</button>
         <p style="text-align: center;">
           <a href="#" onclick="showPasswordReset()">Forgot your password?</a>
@@ -639,6 +650,8 @@ header h1 {
         <p id="securityQuestionDisplay" style="font-style: italic; color: #555;"></p>
         <input type="text" id="reset-answer" placeholder="Answer to your security question" style="display: none;" /><br />
         <input type="password" id="new-password" placeholder="New password" style="display: none;" /><br />
+        <button type="button" class="btn-small" onclick="togglePassword('new-password')">👁️</button>
+        <p id="caps-warning-new-password" style="color:red;display:none;">⚠️ Caps Lock is ON</p>
         <button onclick="handleReset()" id="resetActionBtn">Next</button><br />
         <p style="text-align: center;">
           <a href="#" onclick="backToLogin()">Back to login</a>
@@ -721,6 +734,7 @@ header h1 {
 
   <div class="card" data-card-id="today">
     ✅ <h3>Today's Habits</h3>
+    <h4 id="streak" style="margin-top: 1rem;"></h4>
     <ul id="habit-list"></ul>
   </div>
 
@@ -820,6 +834,24 @@ header h1 {
   </main>
 
   <script defer>
+    function validatePasswordRules(password) {
+      document.getElementById('rule-length').textContent = password.length >= 8 ? '✅ 8+ characters' : '❌ 8+ characters';
+      document.getElementById('rule-uppercase').textContent = /[A-Z]/.test(password) ? '✅ 1 uppercase letter' : '❌ 1 uppercase letter';
+      document.getElementById('rule-number').textContent = /\d/.test(password) ? '✅ 1 number' : '❌ 1 number';
+    }
+
+    function togglePassword(id) {
+      const field = document.getElementById(id);
+      if (field.type === "password") {
+        field.type = "text";
+      } else {
+        field.type = "password";
+      }
+    }
+    function detectCapsLock(event, warningId) {
+      const caps = event.getModifierState && event.getModifierState('CapsLock');
+      document.getElementById(warningId).style.display = caps ? 'block' : 'none';
+    }
     async function fetchWithTimeout(resource, options = {}) {
       const { timeout = 5000 } = options;
       const controller = new AbortController();
