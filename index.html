@@ -59,7 +59,6 @@
 
 #progressBar {
   width: 100%;
-  max-width: 600px;
   margin: 1rem auto;
 }
 #quiz-step-1, #quiz-step-2, #quiz-step-3 {
@@ -637,8 +636,11 @@ header h1 {
           <li id="rule-uppercase">❌ 1 uppercase letter</li>
           <li id="rule-number">❌ 1 number</li>
         </ul>
-        <input type="password" id="auth-confirm-password" placeholder="Confirm your password" /><br />
-        <button type="button" class="btn-small" onclick="togglePassword('auth-confirm-password')">👁️</button>
+        <div class="flex gap-2">
+          <input type="password" id="auth-confirm-password" class="input" placeholder="Confirm your password" />
+          <button type="button" class="btn-small" onclick="togglePassword('auth-confirm-password')">👁️</button>
+        </div>
+
         <p id="caps-warning-auth-confirm-password" style="color:red;display:none;">⚠️ Caps Lock is ON</p>
         <select id="security-question">
           <option value="" disabled selected>Select a security question</option>
@@ -1379,7 +1381,7 @@ async function getShortTermGoalsFromGPT(longTermGoals) {
     const raw = await response.text();
     console.log("GPT RAW RESPONSE:", raw);
     const data = JSON.parse(raw);
-    ...
+  
   } catch (err) {
     console.error("Failed to parse GPT response:", err);
   }
