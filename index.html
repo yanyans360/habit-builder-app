@@ -285,7 +285,10 @@ select:focus {
   border-radius: 16px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
   margin-top: 2rem;
+  max-width: 1000px; /* ADD THIS */
+  width: 90%;         /* ADD THIS */
 }
+
 .card {
   background: white;
   border-radius: 16px;
@@ -806,7 +809,7 @@ header h1 {
 
   </main>
 
-  <script>
+  <script defer>
     async function fetchWithTimeout(resource, options = {}) {
       const { timeout = 5000 } = options;
       const controller = new AbortController();
@@ -821,17 +824,13 @@ header h1 {
 
     async function refreshQuote() {
       try {
-        const response = await fetchWithTimeout("https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit.dev/generate-quote", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ goals: selectedGoals }),
-          timeout: 5000 // 5 seconds timeout
-        });
- {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ goals: selectedGoals })
-        });
+       const response = await fetchWithTimeout("https://...", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ goals: selectedGoals }),
+        timeout: 5000
+      });
+
         const data = await response.json();
         
         if (data.choices && data.choices.length > 0 && data.choices[0].message) {
@@ -1646,7 +1645,7 @@ new Sortable(dashboard, {
 
 
   </script>
-  <script>
+  <script defer>
 let habits = [];
 const completedDates = [];
 const quotes = [
