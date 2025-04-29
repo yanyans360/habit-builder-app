@@ -621,6 +621,18 @@ header h1 {
   font-size: 1rem;
   flex-direction: column;
 }
+.card {
+  background: rgba(255, 255, 255, 0.8); /* transparent white */
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+  transition: all 0.3s ease-in-out;
+}
+.low-light .card {
+  background: rgba(53, 53, 103, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid #6b6ba8;
+}
 
 
 
@@ -1006,8 +1018,10 @@ function renderGasMeters() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message: userMessage,
-        goals: selectedGoals
+        goals: selectedGoals,
+        motivations: selectedMotivations
       })
+
     });
 
     const serverData = await response.json();
