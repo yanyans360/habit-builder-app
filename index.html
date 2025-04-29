@@ -633,6 +633,21 @@ header h1 {
   backdrop-filter: blur(10px);
   border: 1px solid #6b6ba8;
 }
+/* 🔍 Enlarge HabitBot & Motivation Corner content */
+.card[data-card-id="habitbot"] h3,
+.card[data-card-id="motivation-corner"] h3 {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.card[data-card-id="habitbot"] textarea,
+.card[data-card-id="motivation-corner"] #quote {
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.card[data-card-id="motivation-corner"] #author {
+  font-size: 1rem;
 
 
 
@@ -1854,7 +1869,10 @@ shortTermSection.innerHTML = `
         });
     
         showToast("All user accounts and session data have been cleared.", "info");
-        location.reload(); // reload page to reset everything
+        document.getElementById("dashboard").style.display = "none";
+        document.getElementById("onboarding").style.display = "block";
+        updateProgress(0);
+
       }
     }
 
