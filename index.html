@@ -1438,6 +1438,10 @@ async function goToShortTerm() {
     // Remove duplicates
     gptSuggestions = [...new Set(gptSuggestions)].slice(0, 5);
   }
+  
+  // CLEAN GPT suggestions to remove "1.", "2.", etc.
+gptSuggestions = gptSuggestions.map(g => g.replace(/^\d+\.\s*/, '').trim());
+
 
 shortTermSection.innerHTML = `
   <p>Pick up to <strong>3 short-term habits</strong> to work on this week:</p>
@@ -1919,15 +1923,15 @@ menuButton.addEventListener("click", function() {
 });
 
 
-
 function toggleTheme() {
   document.body.classList.toggle("low-light");
 
   setTimeout(() => {
-    generateCalendar(); // Rebuild calendar
-    highlightToday(); // <-- NEW LINE TO ADD
+    generateCalendar(); 
+    highlightToday(); // ✅ CALL THIS after rebuild
   }, 100);
 }
+
 function highlightToday() {
   const todayElements = document.querySelectorAll('.today');
   todayElements.forEach(el => {
