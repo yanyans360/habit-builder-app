@@ -809,10 +809,11 @@ header h1 {
 </div>
 
 
-  <div class="card" data-card-id="habitbot">
-    🤖 <h3>HabitBot Chat</h3>
-    <p>(Coming soon!)</p>
-  </div>
+  <div class="card" data-card-id="habitbot" onclick="openHabitbotModal()" style="cursor:pointer;">
+  🤖 <h3>HabitBot Chat</h3>
+  <p>Click to open HabitBot!</p>
+</div>
+
 
   <div class="card" data-card-id="progress">
   📅 <h3>Weekly Progress</h3>
@@ -935,23 +936,25 @@ header h1 {
           })
         });
     
-        const fullText = data.reply || "Sorry, HabitBot had trouble responding.";
-        responseDiv.innerHTML = '';
-        let idx = 0;
-        
-        const typing = setInterval(() => {
-          if (idx < fullText.length) {
-            const char = fullText.charAt(idx);
-            if (char === '\n') {
-              responseDiv.innerHTML += '<br>'; // line breaks!
-            } else {
-              responseDiv.innerHTML += char;
-            }
-            idx++;
+     const serverData = await response.json();
+      const fullText = serverData.reply || "Sorry, HabitBot had trouble responding.";
+      responseDiv.innerHTML = '';
+      let idx = 0;
+      
+      const typing = setInterval(() => {
+        if (idx < fullText.length) {
+          const char = fullText.charAt(idx);
+          if (char === '\n') {
+            responseDiv.innerHTML += '<br>';
           } else {
-            clearInterval(typing);
+            responseDiv.innerHTML += char;
           }
-        }, 30);
+          idx++;
+        } else {
+          clearInterval(typing);
+        }
+      }, 30);
+
 
 
       } catch (error) {
@@ -1775,7 +1778,7 @@ shortTermSection.innerHTML = `
     };
     // 🌙 Theme Toggle
     document.getElementById("themeToggle").addEventListener("click", () => {
-    document.body.classList.toggle("low-light");
+    document..classList.toggle("low-light");
     });
   function prepareStart() {
     if (selectedShortTermGoals.length === 0) {
@@ -1837,6 +1840,12 @@ new Sortable(dashboard, {
     localStorage.setItem(`shortterm_${userName}`, JSON.stringify(selectedShortTermGoals));
   }
 });
+function openHabitbotModal() {
+  document.getElementById('habitbotModal').style.display = 'flex';
+}
+function closeHabitbotModal() {
+  document.getElementById('habitbotModal').style.display = 'none';
+}
 
 
 
@@ -1962,7 +1971,7 @@ function generateCalendar() {
 }
 
 function updateStreak() {
-  document.getElementById('streak').textContent = `You're on a ${completedDates.length}-day streak!`;
+  document.getElementById('streak').textContent = `You're on a ${Math.max(1, completedDates.length)}-day streak!`;
 }
 
 updateDateTime();
@@ -2130,6 +2139,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 </script>
+  <div id="habitbotModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.4); z-index:9999; justify-content:center; align-items:center;">
+  <div style="background:white; padding:2rem; border-radius:12px; max-width:600px; width:90%; box-shadow:0 8px 20px rgba(0,0,0,0.2);">
+    <h3>💬 HabitBot Chat</h3>
+    <textarea id="habitbot-input" class="input" placeholder="What's going well? What's tough?" style="width:100%; margin-bottom:1rem;"></textarea>
+    <button class="btn-small" onclick="sendHabitBotMessage()">Send</button>
+    <div id="habitbot-response" style="margin-top:1rem; font-style:italic;"></div>
+    <br><button class="btn" style="margin-top:1rem;" onclick="closeHabitbotModal()">Close</button>
+  </div>
+</div>
+
 
 </body>
 </html>
