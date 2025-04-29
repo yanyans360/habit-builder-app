@@ -1631,6 +1631,11 @@ shortTermSection.innerHTML = `
       setTimeout(() => document.body.removeChild(toast), 500);
     }, 3000); // Disappear after 3s
   }
+  function addToGoogleCalendar(goal) {
+  const title = encodeURIComponent(goal);
+  const url = `https://calendar.google.com/calendar/r/eventedit?text=${title}&details=Added+from+Habit+Harmony!`;
+  window.open(url, '_blank');
+}
 
 
 
@@ -1759,24 +1764,38 @@ menuButton.addEventListener("click", function() {
 
 
 function toggleTheme() {
-   document.body.classList.toggle("low-light");
-  generateCalendar(); // 🔥 Force refresh the calendar styles!
+  document.body.classList.toggle("low-light");
+
+  // 🌟 Force re-highlight today AFTER dark mode toggle
+  setTimeout(() => {
+    generateCalendar();
+  }, 100);
 }
+
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById("menuButton").style.display = "none";
   const storedUser = localStorage.getItem("lastUser");
   if (storedUser && localStorage.getItem("hasOnboarded_" + storedUser) === "true") {
       userName = storedUser;
       // Fill long-term goals
+     // Load stored goals/motivation/shortterm habits
+      selectedGoals = JSON.parse(localStorage.getItem(`goals_${userName}`) || "[]");
+      selectedMotivations = JSON.parse(localStorage.getItem(`motivations_${userName}`) || "[]");
+      selectedShortTermGoals = JSON.parse(localStorage.getItem(`shortterm_${userName}`) || "[]");
+      
+      // THEN render goals and motivations
       const goalList = document.getElementById("goal-list");
       goalList.innerHTML = "";
       selectedGoals.forEach(goal => {
         const li = document.createElement("li");
-        li.textContent = goal;
+        li.innerHTML = `
+          ${goal}
+          <button onclick="addToGoogleCalendar('${goal}')" class="btn-small" style="margin-left:8px;">📅</button>
+        `;
         goalList.appendChild(li);
       });
-      
-      // Fill motivations
+
+
       const motivationList = document.getElementById("motivation-list");
       motivationList.innerHTML = "";
       selectedMotivations.forEach(motivation => {
@@ -1785,10 +1804,6 @@ document.addEventListener('DOMContentLoaded', function () {
         motivationList.appendChild(li);
       });
 
-    
-      // Load stored goals/motivation/shortterm habits
-      selectedGoals = JSON.parse(localStorage.getItem(`goals_${userName}`) || "[]");
-      selectedMotivations = JSON.parse(localStorage.getItem(`motivations_${userName}`) || "[]");
       selectedShortTermGoals = JSON.parse(localStorage.getItem(`shortterm_${userName}`) || "[]");
       habits.length = 0;
       selectedShortTermGoals.forEach(goal => {
