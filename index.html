@@ -157,6 +157,9 @@ h1 {
 h2, h3 {
   font-weight: 700; /* Mansfield Bold */
 }
+.card, .dashboard, .card * {
+  font-family: 'Satoshi', sans-serif;
+}
 
 
 main {
@@ -1716,7 +1719,6 @@ function updateDateTime() {
   const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   document.getElementById('datetime').textContent = `${date} • ${time} • ${now.getHours() >= 6 && now.getHours() < 18 ? '🌤️ 72°F' : '🌙 72°F'}`;
   document.getElementById('time-icon').textContent = now.getHours() >= 6 && now.getHours() < 18 ? '🌞' : '🌙';
-  document.getElementById('today-title').textContent = `Today's Habits • ${date}`;
 }
 
 function renderHabits() {
