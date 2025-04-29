@@ -1443,18 +1443,18 @@ async function getShortTermGoalsFromGPT(longTermGoals) {
     const raw = await response.text();
     console.log("GPT RAW RESPONSE:", raw);
     const data = JSON.parse(raw);
-  
-  } catch (err) {
-    console.error("Failed to parse GPT response:", err);
-  }
-
-  // ✅ SAFELY CHECK if choices exist
+  // ✅ SAFELY CHECK if choices exist INSIDE try
   if (!data.choices || !data.choices[0] || !data.choices[0].message) {
     throw new Error("Invalid GPT response.");
   }
 
   const text = data.choices[0].message.content;
   return text.split("\n").filter(line => line.trim()).slice(0, 3);
+
+} catch (err) {
+  console.error("Error parsing or using GPT response:", err);
+  throw err; // re-throw so calling function knows it failed
+}
 }
 
 
