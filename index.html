@@ -1777,9 +1777,10 @@ shortTermSection.innerHTML = `
       showToast("⚠️ JS Error: " + msg + " on line " + line, "error");
     };
     // 🌙 Theme Toggle
-    document.getElementById("themeToggle").addEventListener("click", () => {
-    document.classList.toggle("low-light");
-    });
+        document.getElementById("themeToggle").addEventListener("click", () => {
+        document.body.classList.toggle("low-light");
+      });
+
   function prepareStart() {
     if (selectedShortTermGoals.length === 0) {
       showToast("Pick at least one habit to continue!", "error");
