@@ -771,7 +771,7 @@ header h1 {
   </div>
 
   <!-- Motivation Corner -->
-<div class="card" style="flex: 1 1 300px; text-align: center;">
+<div class="card" data-card-id="motivation-corner" style="flex: 1 1 300px; text-align: center;">
   <div class="flex justify-center mb-4">
     🔥 <h3 class="ml-2">Motivation Corner</h3>
   </div>
@@ -929,7 +929,15 @@ header h1 {
         });
     
         const data = await response.json();
-        responseDiv.innerText = data.reply || "Sorry, HabitBot had trouble responding.";
+        const fullText = data.reply || "Sorry, HabitBot had trouble responding.";
+        responseDiv.innerText = '';
+        let idx = 0;
+        const typing = setInterval(() => {
+          responseDiv.innerText += fullText.charAt(idx);
+          idx++;
+          if (idx > fullText.length) clearInterval(typing);
+        }, 30); // type one letter every 30 milliseconds
+
       } catch (error) {
         console.error(error);
         responseDiv.innerText = "HabitBot couldn't reply right now. Try again later!";
