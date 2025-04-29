@@ -906,6 +906,36 @@ header h1 {
       document.getElementById('rule-uppercase').textContent = /[A-Z]/.test(password) ? '✅ 1 uppercase letter' : '❌ 1 uppercase letter';
       document.getElementById('rule-number').textContent = /\d/.test(password) ? '✅ 1 number' : '❌ 1 number';
     }
+    async function sendHabitBotMessage() {
+      const input = document.getElementById('habitbot-input');
+      const responseDiv = document.getElementById('habitbot-response');
+      if (!input.value.trim()) {
+        showToast("Please type a message first!", "error");
+        return;
+      }
+    
+      const userMessage = input.value.trim();
+      input.value = '';
+      responseDiv.innerHTML = '<div class="spinner" style="margin: 1rem auto;"></div>';
+    
+      try {
+        const response = await fetch('https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit.dev/habitbot-chat', {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            message: userMessage,
+            goals: selectedGoals
+          })
+        });
+    
+        const data = await response.json();
+        responseDiv.innerText = data.reply || "Sorry, HabitBot had trouble responding.";
+      } catch (error) {
+        console.error(error);
+        responseDiv.innerText = "HabitBot couldn't reply right now. Try again later!";
+      }
+    }
+
 
     function togglePassword(id) {
       const field = document.getElementById(id);
@@ -1879,6 +1909,7 @@ function generateCalendar() {
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const todayStr = now.toISOString().split('T')[0];
+  highlightToday()
 
   let day = 1;
   const tbody = document.getElementById('calendar-body');
@@ -1930,15 +1961,6 @@ menuButton.addEventListener("click", function() {
 });
 
 
-function toggleTheme() {
-  document.body.classList.toggle("low-light");
-
-  setTimeout(() => {
-    generateCalendar(); 
-    highlightToday(); // ✅ CALL THIS after rebuild
-  }, 100);
-}
-
 function highlightToday() {
   const todayElements = document.querySelectorAll('.today');
   todayElements.forEach(el => {
@@ -1951,6 +1973,15 @@ function highlightToday() {
     }
   });
 }
+function toggleTheme() {
+  document.body.classList.toggle("low-light");
+
+  setTimeout(() => {
+    generateCalendar(); 
+    highlightToday(); // ✅ CALL THIS after rebuild
+  }, 100);
+}
+
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -1965,6 +1996,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const storedUser = localStorage.getItem("lastUser");
   if (storedUser && localStorage.getItem("hasOnboarded_" + storedUser) === "true") {
+    // 🛠 RENDER selected short-term habits into Today's Habits
+    habits.length = 0;
+    selectedShortTermGoals.forEach(goal => {
+      habits.push({ name: goal, completed: false });
+    });
+    renderHabits();
+    
+    // 🛠 SET HabitBot Chat area live
+    const habitBotCard = document.querySelector('[data-card-id="habitbot"]');
+    if (habitBotCard) {
+      habitBotCard.innerHTML = `
+        🤖 <h3>HabitBot Chat</h3>
+        <textarea id="habitbot-input" class="input" placeholder="What's going well? What's tough?" style="margin-bottom: 0.5rem; width:100%;"></textarea>
+        <button class="btn-small" onclick="sendHabitBotMessage()">Send</button>
+        <div id="habitbot-response" style="margin-top: 1rem; font-style: italic; color: #555;"></div>
+      `;
+    }
+
       userName = storedUser;
       // Fill long-term goals
      // Load stored goals/motivation/shortterm habits
