@@ -71,9 +71,10 @@
 }
 
 .low-light .calendar td {
-  background: #6b21a8;
-  color: #1a1a1a; /* <-- dark number color */
+  background: transparent;
+  color: #f5f5f5;
 }
+
 .low-light .completed {
   background: #8b5cf6; /* soft purple */
   color: #1a1a1a;
@@ -483,6 +484,11 @@ h1 {
 h2, p {
   color: #555;
 }
+.low-light .auth-box {
+  background: #2c2c54;
+  color: #f5f5f5;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
 .card {
   background: white;
   border-radius: 16px;
@@ -661,8 +667,10 @@ header h1 {
         <h2>Welcome Back 👋</h2>
         <p>Log in to continue building your habits:</p>
         <input type="text" id="login-name" placeholder="Your name" /><br />
-        <input type="password" id="login-password" placeholder="Your password" /><br />
-        <button type="button" class="btn-small" onclick="togglePassword('auth-password')">👁️</button>
+        <div class="flex gap-2">
+          <input type="password" id="login-password" class="input" placeholder="Your password" />
+          <button type="button" class="btn-small" onclick="togglePassword('login-password')">👁️</button>
+        </div>
         <p id="caps-warning-new-password" style="color:red;display:none;">⚠️ Caps Lock is ON</p>
         <button class="button-primary" onclick="loginUser()">Log In</button>
         <p style="text-align: center;">
@@ -776,7 +784,6 @@ header h1 {
 
   <div class="card" data-card-id="today">
   ✅ <h3>Today's Habits</h3>
-  <h4 id="streak" style="margin-top: 1rem;"></h4>
 
   <div class="flex justify-between mb-2">
     <button class="btn-small" id="show-input">➕</button>
@@ -800,6 +807,7 @@ header h1 {
   📅 <h3>Weekly Progress</h3>
   <p id="streak" class="text-sm mb-2" style="margin-top: 1rem;"></p>
   <div class="bg-white rounded-md p-2 shadow-inner">
+    <p id="streak" class="text-sm mb-2" style="margin-bottom: 1rem;"></p>
     <table class="w-full text-xs text-center calendar">
       <thead>
         <tr>
@@ -1049,6 +1057,8 @@ header h1 {
       }
     
       userName = loginName;
+      selectedGoals = JSON.parse(localStorage.getItem(`goals_${userName}`) || "[]");
+
       if (userName.toLowerCase() === "aiyanna") {
         const clearButton = document.createElement("button");
         clearButton.innerText = "🗑️ Clear All Users";
@@ -1365,7 +1375,14 @@ async function getShortTermGoalsFromGPT(longTermGoals) {
     body: JSON.stringify({ goals: longTermGoals })
   });
 
-  const data = await response.json();
+  try {
+    const raw = await response.text();
+    console.log("GPT RAW RESPONSE:", raw);
+    const data = JSON.parse(raw);
+    ...
+  } catch (err) {
+    console.error("Failed to parse GPT response:", err);
+  }
 
   // ✅ SAFELY CHECK if choices exist
   if (!data.choices || !data.choices[0] || !data.choices[0].message) {
@@ -1927,7 +1944,6 @@ document.addEventListener('DOMContentLoaded', function () {
       userName = storedUser;
       // Fill long-term goals
      // Load stored goals/motivation/shortterm habits
-      selectedGoals = JSON.parse(localStorage.getItem(`goals_${userName}`) || "[]");
       selectedMotivations = JSON.parse(localStorage.getItem(`motivations_${userName}`) || "[]");
       selectedShortTermGoals = JSON.parse(localStorage.getItem(`shortterm_${userName}`) || "[]");
       
