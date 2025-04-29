@@ -929,36 +929,39 @@ header h1 {
       return response;
     }
 
-    async function refreshQuote() {
-      const quoteElement = document.getElementById('quote');
-      const authorElement = document.getElementById('author');
-    
-      // Show spinner while waiting
-      quoteElement.innerHTML = '<div class="spinner"></div>';
-      authorElement.textContent = "";
-    
-      try {
-        const response = await fetchWithTimeout("https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit.dev/generate-quote", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ goals: selectedGoals }),
-          timeout: 5000
-        });
-    
-        const data = await response.json();
-    
-        if (data.choices && data.choices.length > 0 && data.choices[0].message) {
-          const text = data.choices[0].message.content;
-          quoteElement.textContent = `"${text}"`;
-          authorElement.textContent = `— Personalized for you`;
-        } else {
-          throw new Error("Bad GPT response");
-        }
-      } catch (error) {
-        console.error("Failed to fetch GPT quote, using fallback.", error);
-        updateQuote(); // fallback to random quotes
-      }
+   async function refreshQuote() {
+  const quoteElement = document.getElementById('quote');
+  const authorElement = document.getElementById('author');
+
+  // Show spinner while loading
+  quoteElement.innerHTML = '<div class="spinner"></div>';
+  authorElement.textContent = "";
+
+  try {
+    const response = await fetchWithTimeout("https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit.dev/generate-quote", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ goals: selectedGoals }),
+      timeout: 5000
+    });
+
+    const data = await response.json();
+
+    if (data.quote) {
+      // Split quote and author if possible
+      const [quoteText, authorName] = data.quote.split("—").map(str => str.trim());
+
+      quoteElement.textContent = `"${quoteText}"`;
+      authorElement.textContent = authorName ? `— ${authorName}` : "";
+    } else {
+      throw new Error("No quote found");
     }
+  } catch (error) {
+    console.error("Failed to fetch real quote, using fallback.", error);
+    updateQuote(); // fallback quotes
+  }
+}
+
     
 
 
