@@ -1893,13 +1893,21 @@ function updateQuote() {
   let newIndex;
   do {
     newIndex = Math.floor(Math.random() * quotes.length);
-  } while (newIndex === lastQuoteIndex && quotes.length > 1); // Avoid repeat if multiple quotes
+  } while (newIndex === lastQuoteIndex && quotes.length > 1);
   lastQuoteIndex = newIndex;
 
   const q = quotes[newIndex];
-  document.getElementById('quote').textContent = `"${q.text}"`;
-  document.getElementById('author').textContent = `– ${q.author}`;
+  
+  const motivationCard = document.querySelector('[data-card-id="motivation-corner"]'); // ⚡ make sure you give the Motivation Corner card a new ID or data-id="motivation-corner"
+  motivationCard.innerHTML = `
+    <div style="background: url('https://source.unsplash.com/400x200/?motivation,success') center/cover no-repeat; border-radius: 12px; padding: 1rem; min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <p style="font-size: 1.5rem; font-style: italic; color: white; text-shadow: 0px 0px 5px rgba(0,0,0,0.7);">${q.text}</p>
+      <p style="font-size: 1rem; color: #eeeeee; margin-top: 1rem;">– ${q.author}</p>
+    </div>
+    <button class="btn" onclick="refreshQuote()" style="margin-top: 1rem;">Refresh Quote</button>
+  `;
 }
+
 
 
 function generateCalendar() {
@@ -2010,7 +2018,8 @@ document.addEventListener('DOMContentLoaded', function () {
         🤖 <h3>HabitBot Chat</h3>
         <textarea id="habitbot-input" class="input" placeholder="What's going well? What's tough?" style="margin-bottom: 0.5rem; width:100%;"></textarea>
         <button class="btn-small" onclick="sendHabitBotMessage()">Send</button>
-        <div id="habitbot-response" style="margin-top: 1rem; font-style: italic; color: #555;"></div>
+        <div id="habitbot-response" style="margin-top: 1rem; font-style: italic; color: #ddddf7;"></div>
+
       `;
     }
 
