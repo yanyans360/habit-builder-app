@@ -13,6 +13,16 @@
   font-weight: 900;
   font-style: normal;
 }
+.auth-box {
+  background: white;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  max-width: 600px; /* wider */
+  width: 90%;
+  margin: 2rem auto;
+}
+
 
 @font-face {
   font-family: 'Mansfield';
@@ -578,7 +588,7 @@ header h1 {
 
   <main>
     <section id="auth-section">
-      <div class="dashboard">
+      <div class="auth-box">
         <h2>Welcome to Habit Builder 👋</h2>
         <p>Create an account to start your journey:</p>
         <input type="text" id="auth-name" placeholder="Username" /><br />
@@ -607,7 +617,7 @@ header h1 {
     </section>
     
     <section id="login-section" style="display: none;">
-      <div class="dashboard">
+      <div class="auth-box">
         <h2>Welcome Back 👋</h2>
         <p>Log in to continue building your habits:</p>
         <input type="text" id="login-name" placeholder="Your name" /><br />
@@ -623,7 +633,7 @@ header h1 {
     </section>
     
     <section id="reset-section" style="display: none;">
-      <div class="dashboard">
+      <div class="auth-box">
         <h2>Reset Your Password 🔑</h2>
         <input type="text" id="reset-name" placeholder="Your username" /><br />
         <p id="securityQuestionDisplay" style="font-style: italic; color: #555;"></p>
@@ -1701,18 +1711,21 @@ function addHabitToGoogleCalendar(habitName) {
 
 
 
-document.getElementById('add-habit').onclick = () => {
-  const input = document.getElementById('new-habit');
-  if (input.value.trim()) {
-    habits.push({ name: input.value.trim(), completed: false });
-    input.value = '';
-    const inputArea = document.getElementById('input-area');
-    if (inputArea) {
-      inputArea.style.display = 'none';
+const addHabitButton = document.getElementById('add-habit');
+if (addHabitButton) {
+  addHabitButton.onclick = () => {
+    const input = document.getElementById('new-habit');
+    if (input.value.trim()) {
+      habits.push({ name: input.value.trim(), completed: false });
+      input.value = '';
+      const inputArea = document.getElementById('input-area');
+      if (inputArea) {
+        inputArea.style.display = 'none';
+      }
+      renderHabits();
     }
-    renderHabits();
-  }
-};
+  };
+}
 
 function updateQuote() {
   const q = quotes[Math.floor(Math.random() * quotes.length)];
