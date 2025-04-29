@@ -71,9 +71,10 @@
 }
 
 .low-light .calendar td {
-  background: #6b21a8; /* Deeper, stronger purple */
-  color: #f5f5ff; /* Bright white for numbers */
+  background: #6b21a8;
+  color: #1a1a1a; /* <-- dark number color */
 }
+
 .low-light .today {
   background: #a78bfa; /* Softer lilac highlight for today */
   color: #1a1a1a; /* Dark text on light highlight */
@@ -595,8 +596,11 @@ header h1 {
         <h2>Welcome to Habit Builder 👋</h2>
         <p>Create an account to start your journey:</p>
         <input type="text" id="auth-name" placeholder="Username" /><br />
-        <input type="password" id="auth-password" placeholder="Create a password" onkeyup="detectCapsLock(event, 'caps-warning-auth-password')" oninput="validatePasswordRules(this.value')"><br />
-        <button type="button" class="btn-small" onclick="togglePassword('auth-password')">👁️</button>
+        <div class="flex gap-2">
+          <input type="password" id="auth-password" class="input" placeholder="Create a password" onkeyup="detectCapsLock(event, 'caps-warning-auth-password')" oninput="validatePasswordRules(this.value)">
+          <button type="button" class="btn-small" onclick="togglePassword('auth-password')">👁️</button>
+        </div>
+
         <p id="caps-warning-auth-password" style="color:red;display:none;">⚠️ Caps Lock is ON</p>
         <ul id="password-rules" style="font-size:0.9rem; color:gray; list-style: none; margin-top: 8px;">
           <li id="rule-length">❌ 8+ characters</li>
@@ -1597,6 +1601,10 @@ shortTermSection.innerHTML = `
     
     function confirmLogout() {
       localStorage.removeItem("lastUser");
+      localStorage.setItem(`goals_${userName}`, JSON.stringify(selectedGoals));
+      localStorage.setItem(`motivations_${userName}`, JSON.stringify(selectedMotivations));
+      localStorage.setItem(`shortterm_${userName}`, JSON.stringify(selectedShortTermGoals));
+
       userName = "";
       selectedGoals = [];
       selectedMotivations = [];
@@ -1730,7 +1738,7 @@ function renderHabits() {
     li.innerHTML = `
       <div class="flex items-center">
         <input type="checkbox" ${habit.completed ? 'checked' : ''} onchange="toggleHabit(${idx})">
-        <span class="ml-2 ${habit.completed ? 'text-line' : ''}">📅 ${habit.name}</span>
+        <span class="ml-2 ${habit.completed ? 'text-line' : ''}">${habit.name}</span>
         <button class="btn-small" onclick="addHabitToGoogleCalendar('${habits[idx].name}')">📅</button>
       </div>
     `;
