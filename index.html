@@ -1670,11 +1670,14 @@ function renderHabits() {
   habits.forEach((habit, idx) => {
     const li = document.createElement('li');
     li.className = 'flex justify-between items-center';
-   li.innerHTML = `<div class="flex items-center">
-      <input type="checkbox" ${habit.completed ? 'checked' : ''} onchange="toggleHabit(${idx})">
-      <span class="ml-2 ${habit.completed ? 'text-line' : ''}">📅 ${habit.name}</span>
-    </div>
-    <button class="btn-small" onclick="addHabitToGoogleCalendar('${habits[idx].name}')">📅</button>
+    li.innerHTML = `
+      <div class="flex items-center">
+        <input type="checkbox" ${habit.completed ? 'checked' : ''} onchange="toggleHabit(${idx})">
+        <span class="ml-2 ${habit.completed ? 'text-line' : ''}">📅 ${habit.name}</span>
+        <button class="btn-small" onclick="addHabitToGoogleCalendar('${habits[idx].name}')">📅</button>
+      </div>
+    `;
+
 
 
     list.appendChild(li);
