@@ -695,7 +695,6 @@ header h1 {
   
 <h2>Welcome back! You're doing amazing today 💪</h2>
 <div id="dashboard-cards" style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; margin-top: 2rem;">
-<div id="dashboard-cards" style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; margin-top: 2rem;">
   <div class="card" data-card-id="goals">
     🎯 <h3>Long-Term Goals</h3>
     <ul id="goal-list"></ul>
@@ -1762,11 +1761,24 @@ menuButton.addEventListener("click", function() {
 function toggleTheme() {
   document.body.classList.toggle("low-light");
 
-  // 🌟 Force re-highlight today AFTER dark mode toggle
   setTimeout(() => {
-    generateCalendar();
+    generateCalendar(); // Rebuild calendar
+    highlightToday(); // <-- NEW LINE TO ADD
   }, 100);
 }
+function highlightToday() {
+  const todayElements = document.querySelectorAll('.today');
+  todayElements.forEach(el => {
+    if (document.body.classList.contains('low-light')) {
+      el.style.background = '#a78bfa'; // Lilac
+      el.style.color = '#1a1a1a'; // Dark text
+    } else {
+      el.style.background = '#7c3aed'; // Bright purple
+      el.style.color = 'white'; // White text
+    }
+  });
+}
+
 
 document.addEventListener('DOMContentLoaded', function () {
   document.getElementById("menuButton").style.display = "none";
