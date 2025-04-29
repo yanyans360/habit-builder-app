@@ -515,7 +515,15 @@ h2, p {
   font-size: 14px;
   margin-top: 10px;
 }
-.btn-small { padding: 4px 8px; font-size: 12px; }
+.btn-small {
+  font-size: 14px;
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+input, textarea {
+  font-size: 1rem;
+}
+
 .input { border: 1px solid #ccc; padding: 8px; border-radius: 6px; flex: 1; }
 .flex { display: flex; align-items: center; }
 .justify-between { justify-content: space-between; }
@@ -604,6 +612,15 @@ header h1 {
   0% { transform: rotate(0deg);}
   100% { transform: rotate(360deg);}
 }
+#habit-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  line-height: 1.4;
+  font-size: 1rem;
+  flex-direction: column;
+}
 
 
 
@@ -620,6 +637,7 @@ header h1 {
     <button id="menuButton" style="background: none; border: none; font-size: 28px; cursor: pointer;">☰</button>
     <div id="menuDropdown" style="display: none; position: absolute; top: 50px; right: 20px; border-radius: 8px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); overflow: hidden; z-index: 1000;">
       <button onclick="logoutUser()" style="display: block; width: 100%; padding: 10px; background: none; border: none; text-align: left; cursor: pointer;">🚪 Log Out</button>
+      <button onclick="resetGoals()" style="display: block; width: 100%; padding: 10px; background: none; border: none; text-align: left; cursor: pointer;">♻️ Reset Goals</button>
       <button onclick="toggleTheme()" style="display: block; width: 100%; padding: 10px; background: none; border: none; text-align: left; cursor: pointer;">🎨 Toggle Theme</button>
     </div>
   </div>
@@ -967,13 +985,6 @@ function renderGasMeters() {
   document.getElementById("dashboard-cards").appendChild(gasContainer);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem("hasOnboarded_" + userName)) {
-    injectSpeechButton();
-    renderGasMeters();
-  }
-});
-
   async function sendHabitBotMessage() {
   const input =
     document.getElementById("habitbot-input") ||
@@ -1212,6 +1223,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (localStorage.getItem(`goals_${userName}`)) {
         document.getElementById("dashboard").style.display = "block";
         document.getElementById("dashboard").classList.add("fade-in");
+        injectSpeechButton();
+        renderGasMeters();
         document.getElementById("userTitle").innerText = `${userName}'s habits`;
         document.getElementById("userTitle").style.display = "block";
       } else {
@@ -1905,6 +1918,16 @@ function openHabitbotModal() {
 function closeHabitbotModal() {
   document.getElementById('habitbotModal').style.display = 'none';
 }
+function resetGoals() {
+  const confirmReset = confirm("Are you sure you want to reset all your goals? This cannot be undone.");
+  if (confirmReset) {
+    localStorage.removeItem(`goals_${userName}`);
+    localStorage.removeItem(`motivations_${userName}`);
+    localStorage.removeItem(`shortterm_${userName}`);
+    showToast("Goals reset. Restarting onboarding...", "info");
+    location.reload();
+  }
+}
 
 
 
@@ -1936,7 +1959,7 @@ function renderHabits() {
     li.innerHTML = `
       <div class="flex items-center">
         <input type="checkbox" ${habit.completed ? 'checked' : ''} onchange="toggleHabit(${idx})">
-        <span class="ml-2 ${habit.completed ? 'text-line' : ''}">${habit.name}</span>
+        <div class="${habit.completed ? 'text-line' : ''}" style="margin-left: 1rem;">${habit.name}</div>
         <button class="btn-small" onclick="addHabitToGoogleCalendar('${habits[idx].name}')">📅</button>
       </div>
     `;
@@ -2080,13 +2103,6 @@ function renderGasMeters() {
 
   document.getElementById("dashboard-cards").appendChild(gasContainer);
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem("hasOnboarded_" + userName)) {
-    injectSpeechButton();
-    renderGasMeters();
-  }
-});
 
 
 function updateStreak() {
