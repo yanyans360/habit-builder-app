@@ -2078,9 +2078,15 @@ function resetGoals() {
     const custom = document.querySelectorAll('#goal-buttons .selected, #motivation-buttons .selected');
     custom.forEach(btn => btn.remove());
     
-    document.getElementById("toStep2Btn").style.display = "none";
-    document.getElementById("toShortTermBtn").style.display = "none";
-    document.getElementById("toStartBtn").style.display = "none";
+    const step2Btn = document.getElementById("toStep2Btn");
+    if (step2Btn) step2Btn.style.display = "none";
+    
+    const shortTermBtn = document.getElementById("toShortTermBtn");
+    if (shortTermBtn) shortTermBtn.style.display = "none";
+    
+    const startBtn = document.getElementById("toStartBtn");
+    if (startBtn) startBtn.style.display = "none";
+
 
 
   }
