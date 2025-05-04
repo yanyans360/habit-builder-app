@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    docxument.addEventListener("DOMContentLoaded", () => {
       if (localStorage.getItem("darkMode") === "true") {
         document.body.classList.add("low-light");
       }
@@ -256,11 +256,6 @@
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <h1>🌱 Habit Harmony Social Feed</h1>
-      <div class="user-info">Currently logged in as: <strong id="current-user"></strong></div>
-    </div>
-    <div class="header">
       <h1>🌱 Habit Harmony Social Feed</h1>
       <div class="user-info">Currently logged in as: <strong id="current-user"></strong></div>
       <div style="margin-top: 1rem;">
@@ -426,15 +421,12 @@
           showToast('Your post has been shared successfully!', 'success');
         };
         
-       if (imageFile) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          finalizePost(e.target.result);
-        };
+     if (imageFile) {
         reader.readAsDataURL(imageFile);
       } else {
         finalizePost(placeholderImage);
       }
+
 
 
       // Add event listeners to filter buttons
