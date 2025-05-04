@@ -1992,9 +1992,8 @@ shortTermSection.innerHTML = `
       showToast("⚠️ JS Error: " + msg + " on line " + line, "error");
     };
     // 🌙 Theme Toggle
-        document.getElementById("themeToggle").addEventListener("click", () => {
-        document.body.classList.toggle("low-light");
-      });
+    document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+
 
   function prepareStart() {
     if (selectedShortTermGoals.length === 0) {
@@ -2331,13 +2330,15 @@ function renderSocialPreview() {
   });
 }
 function toggleTheme() {
-  document.body.classList.toggle("low-light");
+  const isDark = document.body.classList.toggle("low-light");
+  localStorage.setItem("darkMode", isDark);
 
   setTimeout(() => {
     generateCalendar(); 
-    highlightToday(); // ✅ CALL THIS after rebuild
+    highlightToday();
   }, 100);
 }
+
 
 
 
