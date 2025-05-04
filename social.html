@@ -353,27 +353,18 @@
       // Image preview functionality
       imageFileInput.addEventListener('change', function() {
         const file = this.files[0];
-        if (file) {
-          const reader = new FileReader();
-          if (imageFile) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-              finalizePost(e.target.result);
-            };
-            reader.readAsDataURL(imageFile);
-          } else {
-            // use placeholder AI-generated image
-            const placeholderAIImage = "https://source.unsplash.com/featured/?motivation,habit"; // or your AI gen endpoint
-            finalizePost(placeholderAIImage);
-          }
-            const preview = document.getElementById('image-preview');
-            preview.innerHTML = `
-              <p>Preview:</p>
-              <img src="${e.target.result}" style="max-width: 100%; max-height: 300px; border-radius: 8px;">
-            `;
-          }
-          reader.readAsDataURL(file);
-        }
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const preview = document.getElementById('image-preview');
+        preview.innerHTML = `
+          <p>Preview:</p>
+          <img src="${e.target.result}" style="max-width: 100%; max-height: 300px; border-radius: 8px;">
+        `;
+      };
+  reader.readAsDataURL(file);
+}
+
       });
       
       // Form submission
