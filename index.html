@@ -1069,13 +1069,13 @@ function renderGasMeters() {
   const userMessage = input.value.trim();
   input.value = '';
   const container = document.createElement("div");
-    container.innerHTML = `
+    container.innerHTML = '
       <p style="margin-bottom: 0.5rem;">"${fullText}"</p>
       <div style="display: flex; gap: 8px; justify-content: center; margin-top: 1rem;">
         <button class="btn-small" id="acceptSuggestion">✅ Accept</button>
         <button class="btn-small" id="rejectSuggestion">❌ Reject</button>
       </div>
-    `;
+    ';
 
 responseDiv.innerHTML = '';
 responseDiv.appendChild(container);
@@ -2102,15 +2102,6 @@ function resetGoals() {
 
   }
 }
-function debugDashboardCheck() {
-  const key = `goals_${userName}`;
-  console.log("[DEBUG BUTTON] Checking key:", key, "value:", localStorage.getItem(key));
-  if (localStorage.getItem(key)) {
-    document.getElementById("dashboard").style.display = "block";
-  } else {
-    document.getElementById("onboarding").style.display = "block";
-  }
-}
 
 
 
@@ -2361,7 +2352,15 @@ function toggleTheme() {
 
 
 let selectedShortTermGoals = [];
-
+function debugDashboardCheck() {
+  const key = `goals_${userName}`;
+  console.log("[DEBUG BUTTON] Checking key:", key, "value:", localStorage.getItem(key));
+  if (localStorage.getItem(key)) {
+    document.getElementById("dashboard").style.display = "block";
+  } else {
+    document.getElementById("onboarding").style.display = "block";
+  }
+}
 document.addEventListener('DOMContentLoaded', function () {
   const debugButton = document.getElementById("debug-button");
   if (debugButton) {
