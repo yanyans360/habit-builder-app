@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem("darkMode") === "true") {
+        document.body.classList.add("low-light");
+      }
+    });
+  </script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Habit Harmony - Social Feed</title>
@@ -198,6 +206,28 @@
     .fade-out {
       animation: fadeOut 0.5s ease forwards;
     }
+    body.low-light {
+      background: linear-gradient(to bottom right, #2c2c54, #40407a);
+      color: #f5f5f5;
+    }
+    
+    body.low-light .card,
+    body.low-light input,
+    body.low-light select,
+    body.low-light textarea {
+      background-color: #353567;
+      color: #f5f5f5;
+      border-color: #6666aa;
+    }
+    
+    body.low-light .btn {
+      background: #575fcf;
+    }
+    
+    body.low-light .btn:hover {
+      background: #4e54c8;
+}
+
   </style>
 </head>
 <body>
@@ -388,6 +418,11 @@
       loadAllPosts('all');
       
       // Functions for post management
+      function toggleTheme() {
+        document.body.classList.toggle("low-light");
+        localStorage.setItem("darkMode", document.body.classList.contains("low-light"));
+      }
+
       function renderPost(postData, prepend = false) {
         const post = document.createElement('div');
         post.className = 'post';
