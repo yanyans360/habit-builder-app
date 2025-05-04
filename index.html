@@ -1087,9 +1087,6 @@ function renderGasMeters() {
   const userMessage = input.value.trim();
   input.value = '';
   responseDiv.innerHTML = '<div class="spinner" style="margin: 1rem auto;"></div>';
-  const container = document.createElement("div");
-  container.innerHTML = `
-    <p style="margin-bottom: 0.5rem;">"${fullText}"</p>
     <div style="display: flex; gap: 8px; justify-content: center; margin-top: 1rem;">
       <button class="btn-small" id="acceptSuggestion">✅ Accept</button>
       <button class="btn-small" id="rejectSuggestion">❌ Reject</button>
@@ -1128,6 +1125,10 @@ function renderGasMeters() {
 
     const serverData = await response.json();
     const fullText = serverData.reply || "Sorry, HabitBot had trouble responding.";
+    const container = document.createElement("div");
+    container.innerHTML = `
+      <p style="margin-bottom: 0.5rem;">"${fullText}"</p>
+
     responseDiv.innerHTML = '';
     let idx = 0;
 
@@ -1364,7 +1365,14 @@ async function breakDownGoal(goalName) {
       console.log("[DEBUG] localStorage.getItem(`goals_${userName}`) =", localStorage.getItem(`goals_${userName}`));
       console.log("[DEBUG] localStorage keys =", Object.keys(localStorage));
 
-      if (localStorage.getItem(`goals_${userName}`)) {
+      const goalKey = `goals_${userName}`;
+      const goalData = localStorage.getItem(goalKey);
+      console.log("[DEBUG] loginUser() → key:", goalKey);
+      console.log("[DEBUG] loginUser() → value:", goalData);
+      console.log("[DEBUG] loginUser() → all localStorage keys:", Object.keys(localStorage));
+      
+      if (goalData) {
+        console.log("[DEBUG] Showing dashboard for user:", userName);
         document.getElementById("dashboard").style.display = "block";
         document.getElementById("dashboard").classList.add("fade-in");
         injectSpeechButton();
@@ -1372,9 +1380,11 @@ async function breakDownGoal(goalName) {
         document.getElementById("userTitle").innerText = `${userName}'s habits`;
         document.getElementById("userTitle").style.display = "block";
       } else {
+        console.log("[DEBUG] Showing onboarding. No goals found for user:", userName);
         document.getElementById("onboarding").style.display = "block";
         document.getElementById("onboarding").classList.add("fade-in");
       }
+
       
       document.getElementById("username").value = userName;
       document.getElementById("menuButton").style.display = "block";
@@ -1392,25 +1402,26 @@ async function breakDownGoal(goalName) {
       document.getElementById("auth-section").style.display = "none";
       document.getElementById("login-section").style.display = "none";
     
-      if (localStorage.getItem(`goals_${userName}`)) {
-        // 🧠 If user has goals saved already, skip onboarding
+      const goalKey = `goals_${userName}`;
+      const goalData = localStorage.getItem(goalKey);
+      console.log("[DEBUG] loginUser() → key:", goalKey);
+      console.log("[DEBUG] loginUser() → value:", goalData);
+      console.log("[DEBUG] loginUser() → all localStorage keys:", Object.keys(localStorage));
+      
+      if (goalData) {
+        console.log("[DEBUG] Showing dashboard for user:", userName);
         document.getElementById("dashboard").style.display = "block";
         document.getElementById("dashboard").classList.add("fade-in");
-        const goalList = document.getElementById("goal-list");
-        goalList.innerHTML = "";
-        selectedGoals.forEach(goal => {
-          const li = document.createElement("li");
-          li.textContent = goal;
-          goalList.appendChild(li);
-        });
-
+        injectSpeechButton();
+        renderGasMeters();
         document.getElementById("userTitle").innerText = `${userName}'s habits`;
         document.getElementById("userTitle").style.display = "block";
       } else {
-        // 🧠 No goals saved yet, go through onboarding
+        console.log("[DEBUG] Showing onboarding. No goals found for user:", userName);
         document.getElementById("onboarding").style.display = "block";
         document.getElementById("onboarding").classList.add("fade-in");
       }
+
     
       document.getElementById("username").value = userName;
       document.getElementById("menuButton").style.display = "block";
