@@ -234,7 +234,7 @@
   <div class="container">
     <div class="header">
       <h1>🌱 Habit Harmony Social Feed</h1>
-      <div class="user-info">Currently logged in as: <strong id="current-user">TestUser</strong></div>
+      <div class="user-info">Currently logged in as: <strong id="current-user"></strong></div>
     </div>
     <div style="text-align: right; margin-bottom: 1rem;">
       <a href="index.html">
@@ -250,7 +250,7 @@
         
         <div style="margin: 15px 0;">
           <label for="imageFile">Upload an image:</label>
-          <input type="file" id="imageFile" accept="image/*" required>
+          <input type="file" id="imageFile" accept="image/*">
           <div id="image-preview"></div>
         </div>
         
@@ -288,6 +288,11 @@
     <!-- User Options (for testing) -->
 
   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const currentUser = localStorage.getItem('currentUser') || "Guest";
+      document.getElementById('current-user').textContent = currentUser;
+    });
+
     // Initialize username for testing
     let userName = localStorage.getItem('currentUser') || "TestUser";
     document.getElementById('current-user').textContent = userName;
@@ -354,6 +359,7 @@
         const title = document.getElementById('post-title').value.trim();
         const caption = document.getElementById('post-caption').value.trim();
         const imageFile = imageFileInput.files[0];
+        const placeholderImage = "https://source.unsplash.com/featured/?habit,growth";
         const rating = document.getElementById('post-rating').value;
         
         if (!title || !caption || !rating) {
@@ -391,17 +397,16 @@
           showToast('Your post has been shared successfully!', 'success');
         };
         
-        if (imageFile) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            finalizePost(e.target.result);
-          };
-          reader.readAsDataURL(imageFile);
-        } else {
-          // use placeholder AI-generated image
-          const placeholderAIImage = "https://source.unsplash.com/featured/?motivation,habit"; // or your AI gen endpoint
-          finalizePost(placeholderAIImage);
-        }
+       if (imageFile) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          finalizePost(e.target.result);
+        };
+        reader.readAsDataURL(imageFile);
+      } else {
+        finalizePost(placeholderImage);
+      }
+
 
       // Add event listeners to filter buttons
       document.querySelectorAll('.feed-filter').forEach(btn => {
