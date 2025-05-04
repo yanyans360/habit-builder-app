@@ -436,8 +436,7 @@
         });
       });
       
-      // Initial load of posts
-      loadAllPosts('all');
+
       
       // Functions for post management
       function toggleTheme() {
@@ -509,6 +508,8 @@
             .forEach(post => renderPost(post));
         }
       }
+      loadAllPosts('all');
+
       
       function deletePost(postId) {
         if (confirm('Are you sure you want to delete this post?')) {
