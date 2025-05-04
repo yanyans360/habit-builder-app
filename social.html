@@ -23,6 +23,15 @@
   font-weight: 900;
   font-style: normal;
 }
+#star-rating .star {
+  cursor: pointer;
+  color: #7c3aed;
+  transition: transform 0.2s ease;
+}
+#star-rating .star:hover {
+  transform: scale(1.2);
+}
+
 
 header h1 {
   font-family: 'Mansfield', sans-serif;
@@ -96,7 +105,7 @@ header p {
       box-shadow: 0 12px 28px rgba(0,0,0,0.15);
       padding: 24px;
       margin: 20px auto;
-      max-width: 1000px;
+      max-width: 500px;
       width: 90%;
       transition: all 0.3s ease-in-out;
     }
@@ -395,20 +404,16 @@ body.low-light #no-posts-message {
         </div>
         
         <div>
-          <label for="post-rating">Rate your progress:</label>
-          <select id="post-rating" required>
-            <option value="">--Select Rating--</option>
-            <option value="1">1 - Just starting</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5 - Making progress</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10 - Crushing it!</option>
-          </select>
+         <label>Rate your progress:</label>
+          <div id="star-rating" style="font-size: 1.8rem; margin: 10px 0;">
+            <span class="star" data-value="1">☆</span>
+            <span class="star" data-value="2">☆</span>
+            <span class="star" data-value="3">☆</span>
+            <span class="star" data-value="4">☆</span>
+            <span class="star" data-value="5">☆</span>
+          </div>
+          <input type="hidden" id="post-rating" required />
+
         </div>
         
         <button type="submit">Share Post</button>
@@ -719,6 +724,17 @@ fetch("https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit
         window.addEventListener('error', function(event) {
           showToast(`Error: ${event.message}`, 'error');
         });
+    document.querySelectorAll('.star').forEach(star => {
+  star.addEventListener('click', () => {
+    const rating = star.getAttribute('data-value');
+    document.getElementById('post-rating').value = rating;
+
+    document.querySelectorAll('.star').forEach(s => {
+      s.textContent = s.getAttribute('data-value') <= rating ? '★' : '☆';
+    });
+  });
+});
+
 
   </script>
   <script>
