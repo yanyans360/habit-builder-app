@@ -989,6 +989,9 @@ header h1 {
     </div>
   </div>
 </div>
+<div style="margin-top: 2rem;">
+  <button class="btn-small" onclick="debugDashboardCheck()">🧪 Debug Dashboard Visibility</button>
+</div>
 
   </main>
 
@@ -999,6 +1002,25 @@ header h1 {
       document.getElementById('rule-number').textContent = /\d/.test(password) ? '✅ 1 number' : '❌ 1 number';
     }
   // ✅ SPEECH TO TEXT + HABITBOT SUGGESTIONS + GAS METER MODULES
+
+    function debugDashboardCheck() {
+      const key = `goals_${userName}`;
+      const value = localStorage.getItem(key);
+      console.log("[DEBUG BUTTON] key:", key);
+      console.log("[DEBUG BUTTON] value:", value);
+      console.log("[DEBUG BUTTON] typeof value:", typeof value);
+    
+      if (value) {
+        console.log("[DEBUG BUTTON] ✅ Goals exist. Showing dashboard.");
+        document.getElementById("dashboard").style.display = "block";
+        document.getElementById("onboarding").style.display = "none";
+      } else {
+        console.log("[DEBUG BUTTON] ❌ No goals. Showing onboarding.");
+        document.getElementById("onboarding").style.display = "block";
+        document.getElementById("dashboard").style.display = "none";
+      }
+    }
+
 
 function startSpeechToText() {
   const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
@@ -1337,7 +1359,11 @@ async function breakDownGoal(goalName) {
       setTimeout(() => {
       document.getElementById("welcomePopup").style.display = "none";
       document.getElementById("auth-section").style.display = "none";
-      
+        
+      console.log("[DEBUG] loginUser(): userName =", userName);
+      console.log("[DEBUG] localStorage.getItem(`goals_${userName}`) =", localStorage.getItem(`goals_${userName}`));
+      console.log("[DEBUG] localStorage keys =", Object.keys(localStorage));
+
       if (localStorage.getItem(`goals_${userName}`)) {
         document.getElementById("dashboard").style.display = "block";
         document.getElementById("dashboard").classList.add("fade-in");
@@ -1885,6 +1911,7 @@ shortTermSection.innerHTML = `
           }
 
           localStorage.setItem(`goals_${userName}`, JSON.stringify(selectedGoals));
+          console.log("[DEBUG] Saving goals to:", `goals_${userName}`, selectedGoals);
           localStorage.setItem(`motivations_${userName}`, JSON.stringify(selectedMotivations));
           localStorage.setItem(`shortterm_${userName}`, JSON.stringify(selectedShortTermGoals));
 
@@ -2054,6 +2081,16 @@ function resetGoals() {
 
   }
 }
+function debugDashboardCheck() {
+  const key = `goals_${userName}`;
+  console.log("[DEBUG BUTTON] Checking key:", key, "value:", localStorage.getItem(key));
+  if (localStorage.getItem(key)) {
+    document.getElementById("dashboard").style.display = "block";
+  } else {
+    document.getElementById("onboarding").style.display = "block";
+  }
+}
+
 function renderSocialPreview() {
   const container = document.getElementById("social-preview");
   const posts = JSON.parse(localStorage.getItem("habitPosts") || "[]");
