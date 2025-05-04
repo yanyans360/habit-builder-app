@@ -990,7 +990,7 @@ header h1 {
   </div>
 </div>
 <div style="margin-top: 2rem;">
-  <button class="btn-small" onclick="debugDashboardCheck()">🧪 Debug Dashboard Visibility</button>
+  <button class="btn-small" id="debug-button">🧪 Debug Dashboard Visibility</button>
 </div>
 
   </main>
@@ -1155,11 +1155,11 @@ async function breakDownGoal(goalName) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        message: `Can you break down this habit into small actionable steps: ${goalName}?`,
+        message: 'Can you break down this habit into small actionable steps: ${goalName}?',
         goals: selectedGoals,
         motivations: selectedMotivations
    
-    }
+    })
 
     const data = await response.json();
     const reply = data.reply || "Sorry, couldn't break it down right now.";
@@ -2363,6 +2363,10 @@ function toggleTheme() {
 let selectedShortTermGoals = [];
 
 document.addEventListener('DOMContentLoaded', function () {
+  const debugButton = document.getElementById("debug-button");
+  if (debugButton) {
+    debugButton.addEventListener("click", debugDashboardCheck);
+  }
   document.getElementById("menuButton").style.display = "none";
   const savedOrder = JSON.parse(localStorage.getItem('dashboardOrder') || '[]');
   if (savedOrder.length > 0) {
