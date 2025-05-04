@@ -159,13 +159,17 @@ header p {
     }
     
     .post {
-      background: white;
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-      transition: transform 0.3s ease;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+      padding: 24px;
+      margin: 20px;
+      flex: 1 1 300px;
+      max-width: 360px;
+      transition: all 0.3s ease-in-out;
     }
+
     
     .post:hover {
       transform: scale(1.01);
@@ -416,7 +420,7 @@ body.low-light #no-posts-message {
       <button class="feed-filter" data-filter="mine">My Posts</button>
     </div>
     
-    <div id="social-feed">
+    <div id="social-feed" style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
       <!-- Posts will be inserted here -->
       <p id="no-posts-message" style="text-align: center; display: none;">No posts yet! Be the first to share your journey.</p>
     </div>
