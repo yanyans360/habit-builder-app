@@ -17,6 +17,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Habit Harmony - Social Feed</title>
   <style>
+  @font-face {
+  font-family: 'Mansfield';
+  src: url('fonts/Mansfield-Black-iF66c703e45fe6e.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+header h1 {
+  font-family: 'Mansfield', sans-serif;
+  font-size: 3rem;
+  text-align: center;
+  color: #6b21a8;
+}
+
+header p {
+  font-size: 1.25rem;
+  text-align: center;
+  color: #555;
+}
+
+.low-light header h1 {
+  color: #c4b5fd;
+}
+
+.low-light header p {
+  color: #ddddf7;
+}
+
     
    @font-face {
       font-family: 'Satoshi';
@@ -296,10 +324,14 @@ body.low-light #no-posts-message {
   </style>
 </head>
 <body>
-  <header style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
-    <h1>🌱 Habit Harmony Social Feed</h1>
-  <button id="socialThemeToggle" style="background: none; border: none; font-size: 24px; cursor: pointer;"><span id="theme-icon">🌙</span></button>
-  </header>
+<header>
+  <div style="position: absolute; top: 10px; right: 20px; display: flex; align-items: center; gap: 12px;">
+    <button id="socialThemeToggle" style="background: none; border: none; font-size: 24px; cursor: pointer;"><span id="theme-icon">🌙</span></button>
+  </div>
+  <h1>🌱 Socials @ Harmony! <span id="time-icon">🌞</span></h1>
+  <p id="datetime"></p>
+</header>
+
 
   <div class="container">
      
@@ -638,6 +670,19 @@ body.low-light #no-posts-message {
     });
   });
 </script>
+<script>
+  function updateDateTime() {
+    const now = new Date();
+    const date = now.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+    const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('datetime').textContent = `${date} • ${time} • ${now.getHours() >= 6 && now.getHours() < 18 ? '🌤️ 72°F' : '🌙 72°F'}`;
+    document.getElementById('time-icon').textContent = now.getHours() >= 6 && now.getHours() < 18 ? '🌞' : '🌙';
+  }
+
+  document.addEventListener("DOMContentLoaded", updateDateTime);
+  setInterval(updateDateTime, 60000);
+</script>
+
 
 </body>
 </html>
