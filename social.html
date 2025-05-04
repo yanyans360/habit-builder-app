@@ -7,6 +7,10 @@
         document.body.classList.add("low-light");
       }
     });
+      window.addEventListener('error', function(event) {
+      showToast(`Error: ${event.message}`, 'error');
+    });
+
   </script>
 
   <meta charset="UTF-8">
@@ -418,6 +422,7 @@
         finalizePost(placeholderImage);
       }
 
+      });
 
 
       // Add event listeners to filter buttons
@@ -566,6 +571,10 @@
         showToast('All posts have been cleared', 'success');
       }
     }
+        window.addEventListener('error', function(event) {
+          showToast(`Error: ${event.message}`, 'error');
+        });
+
   </script>
 </body>
 </html>
