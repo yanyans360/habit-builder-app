@@ -517,9 +517,28 @@ body.low-light #no-posts-message {
         
      if (imageFile) {
         reader.readAsDataURL(imageFile);
+      else {
+  fetch("https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit.dev/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ caption })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.imageUrl) {
+        finalizePost(data.imageUrl);
       } else {
-        finalizePost(placeholderImage);
+        finalizePost("https://source.unsplash.com/featured/?habit,growth");
       }
+    })
+    .catch(err => {
+      console.error("❌ Error generating image:", err);
+      finalizePost("https://source.unsplash.com/featured/?habit,growth");
+    });
+}
+
 
       });
 
