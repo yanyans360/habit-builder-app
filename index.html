@@ -1068,14 +1068,18 @@ function renderGasMeters() {
 
   const userMessage = input.value.trim();
   input.value = '';
-  responseDiv.innerHTML = '<div class="spinner" style="margin: 1rem auto;"></div>';
-    <div style="display: flex; gap: 8px; justify-content: center; margin-top: 1rem;">
-      <button class="btn-small" id="acceptSuggestion">✅ Accept</button>
-      <button class="btn-small" id="rejectSuggestion">❌ Reject</button>
-    </div>
-  `;
-  responseDiv.appendChild(container);
-  
+  const container = document.createElement("div");
+    container.innerHTML = `
+      <p style="margin-bottom: 0.5rem;">"${fullText}"</p>
+      <div style="display: flex; gap: 8px; justify-content: center; margin-top: 1rem;">
+        <button class="btn-small" id="acceptSuggestion">✅ Accept</button>
+        <button class="btn-small" id="rejectSuggestion">❌ Reject</button>
+      </div>
+    `;
+
+responseDiv.innerHTML = '';
+responseDiv.appendChild(container);
+
   
   document.getElementById("rejectSuggestion").onclick = () => {
     responseDiv.innerHTML = `<p style="color: gray;">Suggestion dismissed.</p>`;
@@ -2089,6 +2093,19 @@ function resetGoals() {
     document.getElementById("dashboard").style.display = "none";
     document.getElementById("onboarding").style.display = "block";
     updateProgress(0);
+    selectedGoals = [];
+    selectedMotivations = [];
+    selectedShortTermGoals = [];
+    
+    document.querySelectorAll('#goal-buttons button').forEach(btn => btn.classList.remove('selected'));
+    document.querySelectorAll('#motivation-buttons button').forEach(btn => btn.classList.remove('selected'));
+    const custom = document.querySelectorAll('#goal-buttons .selected, #motivation-buttons .selected');
+    custom.forEach(btn => btn.remove());
+    
+    document.getElementById("toStep2Btn").style.display = "none";
+    document.getElementById("toShortTermBtn").style.display = "none";
+    document.getElementById("toStartBtn").style.display = "none";
+
 
   }
 }
@@ -2412,14 +2429,60 @@ document.addEventListener('DOMContentLoaded', function () {
       motivationList.innerHTML = "";
       selectedMotivations.forEach(motivation => {
         const li = document.createElement("li");
+        const tipText = getMotivationTip(motivation);
         li.innerHTML = `
           <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 0.3rem;">✨ ${motivation}</div>
-          <div style="font-size: 0.95rem; color: #555;">${getMotivationTip(motivation)}</div>
+          <div id="tip-${motivation}" style="font-size: 0.95rem; color: #555;">${tipText}</div>
+          <button class="btn-small" onclick="refreshMotivationTip('${motivation}')" style="margin-top: 0.25rem;">🔄 Refresh Tip</button>
           <hr style="margin: 0.75rem 0; border: 0; border-top: 1px solid #ccc;">
         `;
+
         motivationList.appendChild(li);
       });
+      function refreshMotivationTip(m) {
+      const tips = {
+        "Tracking my progress visually": [
+          "Use charts and streaks to track success.",
+          "Create a sticker board or digital badge system.",
+          "Make progress visible with a habit calendar."
+        ],
+        "Accountability from others": [
+          "Check in with a friend weekly.",
+          "Post progress in your social feed.",
+          "Join a challenge group."
+        ],
+        "Clear rewards or milestones": [
+          "Treat yourself to something small each week.",
+          "Celebrate when you hit your streak goal.",
+          "Set a reward for each milestone."
+        ],
+        "Visualizing success": [
+          "Visualize the benefits of completing this habit.",
+          "Picture the person you're becoming.",
+          "Imagine how future-you feels after success."
+        ],
+        "Encouragement and affirmations": [
+          "Write a kind note to future you.",
+          "Post sticky notes with affirmations.",
+          "Say a mantra aloud each morning."
+        ],
+        "Building habits into my routine": [
+          "Anchor habits to another daily task.",
+          "Use time-based reminders (e.g., after lunch).",
+          "Set up automated cues like alarms or smart lights."
+        ],
+        "Still figuring it out": [
+          "Try one new strategy per week.",
+          "Journal what’s working and what’s not.",
+          "Experiment with morning vs night routines."
+        ]
+      };
       
+      const tipList = tips[m] || ["Keep experimenting!"];
+      const newTip = tipList[Math.floor(Math.random() * tipList.length)];
+      document.getElementById(`tip-${m}`).textContent = newTip;
+    }
+
       function getMotivationTip(m) {
         const tips = {
           "Tracking my progress visually": "Use habit streaks, checklists, and charts to stay on track.",
