@@ -862,9 +862,10 @@ header h1 {
 </div>
 
   <div class="card" data-card-id="motivation">
-    🔥 <h3>Motivation</h3>
-    <ul id="motivation-list"></ul>
+    🔥 <h3>Your Motivation Styles!</h3>
+    <ul id="motivation-list" style="list-style: none; padding-left: 0;"></ul>
   </div>
+
 
   <div class="card" data-card-id="today">
   ✅ <h3>Today's Habits</h3>
@@ -1064,6 +1065,32 @@ function renderGasMeters() {
   const userMessage = input.value.trim();
   input.value = '';
   responseDiv.innerHTML = '<div class="spinner" style="margin: 1rem auto;"></div>';
+  const container = document.createElement("div");
+  container.innerHTML = `
+    <p style="margin-bottom: 0.5rem;">"${fullText}"</p>
+    <div style="display: flex; gap: 8px; justify-content: center; margin-top: 1rem;">
+      <button class="btn-small" id="acceptSuggestion">✅ Accept</button>
+      <button class="btn-small" id="rejectSuggestion">❌ Reject</button>
+    </div>
+  `;
+  responseDiv.appendChild(container);
+  
+  document.getElementById("acceptSuggestion").onclick = () => {
+    if (selectedShortTermGoals.length >= 3) {
+      showToast("You already have 3 short-term goals.", "error");
+      return;
+    }
+    const clean = fullText.replace(/"/g, "").trim();
+    selectedShortTermGoals.push(clean);
+    localStorage.setItem(`shortterm_${userName}`, JSON.stringify(selectedShortTermGoals));
+    renderHabits(); // refresh Today’s Habits
+    showToast("Habit added to your short-term goals!", "success");
+  };
+  
+  document.getElementById("rejectSuggestion").onclick = () => {
+    responseDiv.innerHTML = `<p style="color: gray;">Suggestion dismissed.</p>`;
+  };
+
 
   try {
     const response = await fetch('https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit.dev/habitbot-chat', {
@@ -2337,9 +2364,27 @@ document.addEventListener('DOMContentLoaded', function () {
       motivationList.innerHTML = "";
       selectedMotivations.forEach(motivation => {
         const li = document.createElement("li");
-        li.textContent = motivation;
+        li.innerHTML = `
+          <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 0.3rem;">✨ ${motivation}</div>
+          <div style="font-size: 0.95rem; color: #555;">${getMotivationTip(motivation)}</div>
+          <hr style="margin: 0.75rem 0; border: 0; border-top: 1px solid #ccc;">
+        `;
         motivationList.appendChild(li);
       });
+      
+      function getMotivationTip(m) {
+        const tips = {
+          "Tracking my progress visually": "Use habit streaks, checklists, and charts to stay on track.",
+          "Accountability from others": "Tell a friend or share updates in the social feed.",
+          "Clear rewards or milestones": "Set up small rewards for completing habits weekly.",
+          "Visualizing success": "Close your eyes and picture the end result daily.",
+          "Encouragement and affirmations": "Write a morning mantra or self-kindness reminder.",
+          "Building habits into my routine": "Tie your habit to an existing routine (e.g. after brushing teeth).",
+          "Still figuring it out": "Try different strategies and reflect weekly on what helps."
+        };
+        return tips[m] || "Keep experimenting to see what works for you!";
+      }
+
 
       selectedShortTermGoals = JSON.parse(localStorage.getItem(`shortterm_${userName}`) || "[]");
       habits.length = 0;
