@@ -1003,24 +1003,6 @@ header h1 {
     }
   // ✅ SPEECH TO TEXT + HABITBOT SUGGESTIONS + GAS METER MODULES
 
-    function debugDashboardCheck() {
-      const key = `goals_${userName}`;
-      const value = localStorage.getItem(key);
-      console.log("[DEBUG BUTTON] key:", key);
-      console.log("[DEBUG BUTTON] value:", value);
-      console.log("[DEBUG BUTTON] typeof value:", typeof value);
-    
-      if (value) {
-        console.log("[DEBUG BUTTON] ✅ Goals exist. Showing dashboard.");
-        document.getElementById("dashboard").style.display = "block";
-        document.getElementById("onboarding").style.display = "none";
-      } else {
-        console.log("[DEBUG BUTTON] ❌ No goals. Showing onboarding.");
-        document.getElementById("onboarding").style.display = "block";
-        document.getElementById("dashboard").style.display = "none";
-      }
-    }
-
 
 function startSpeechToText() {
   const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
@@ -1094,17 +1076,6 @@ function renderGasMeters() {
   `;
   responseDiv.appendChild(container);
   
-  document.getElementById("acceptSuggestion").onclick = () => {
-    if (selectedShortTermGoals.length >= 3) {
-      showToast("You already have 3 short-term goals.", "error");
-      return;
-    }
-    const clean = fullText.replace(/"/g, "").trim();
-    selectedShortTermGoals.push(clean);
-    localStorage.setItem(`shortterm_${userName}`, JSON.stringify(selectedShortTermGoals));
-    renderHabits(); // refresh Today’s Habits
-    showToast("Habit added to your short-term goals!", "success");
-  };
   
   document.getElementById("rejectSuggestion").onclick = () => {
     responseDiv.innerHTML = `<p style="color: gray;">Suggestion dismissed.</p>`;
@@ -1112,6 +1083,35 @@ function renderGasMeters() {
 
 
   try {
+    const fullText = serverData.reply || "Sorry, HabitBot had trouble responding.";
+
+    const container = document.createElement("div");
+    container.innerHTML = `
+      <p style="margin-bottom: 0.5rem;">"${fullText}"</p>
+      <div style="display: flex; gap: 8px; justify-content: center; margin-top: 1rem;">
+        <button class="btn-small" id="acceptSuggestion">✅ Accept</button>
+        <button class="btn-small" id="rejectSuggestion">❌ Reject</button>
+      </div>
+    `;
+    responseDiv.innerHTML = '';
+    responseDiv.appendChild(container);
+
+    document.getElementById("acceptSuggestion").onclick = () => {
+      if (selectedShortTermGoals.length >= 3) {
+        showToast("You already have 3 short-term goals.", "error");
+        return;
+      }
+      const clean = fullText.replace(/"/g, "").trim();
+      selectedShortTermGoals.push(clean);
+      localStorage.setItem(`shortterm_${userName}`, JSON.stringify(selectedShortTermGoals));
+      renderHabits();
+      showToast("Habit added to your short-term goals!", "success");
+    };
+
+    document.getElementById("rejectSuggestion").onclick = () => {
+      responseDiv.innerHTML = `<p style="color: gray;">Suggestion dismissed.</p>`;
+    };
+
     const response = await fetch('https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit.dev/habitbot-chat', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
