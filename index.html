@@ -2089,6 +2089,9 @@ function resetGoals() {
   }
 }
 
+    window.addEventListener('error', function(event) {
+      showToast(`Error: ${event.message}`, 'error');
+    });
 
 
   </script>
@@ -2534,6 +2537,9 @@ function refreshMotivationTip(m) {
   document.getElementById(`tip-${m}`).textContent = newTip;
 }
 
+    window.addEventListener('error', function(event) {
+      showToast(`Error: ${event.message}`, 'error');
+    });
 
 
 </script>
