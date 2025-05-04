@@ -1069,13 +1069,14 @@ function renderGasMeters() {
   const userMessage = input.value.trim();
   input.value = '';
   const container = document.createElement("div");
-    container.innerHTML = '
+    container.innerHTML = `
       <p style="margin-bottom: 0.5rem;">"${fullText}"</p>
       <div style="display: flex; gap: 8px; justify-content: center; margin-top: 1rem;">
         <button class="btn-small" id="acceptSuggestion">✅ Accept</button>
         <button class="btn-small" id="rejectSuggestion">❌ Reject</button>
       </div>
-    ';
+    `;
+
 
 responseDiv.innerHTML = '';
 responseDiv.appendChild(container);
@@ -1086,13 +1087,13 @@ responseDiv.appendChild(container);
   };
 
 
-    `
+    '
       <p style="margin-bottom: 0.5rem;">"${fullText}"</p>
       <div style="display: flex; gap: 8px; justify-content: center; margin-top: 1rem;">
         <button class="btn-small" id="acceptSuggestion">✅ Accept</button>
         <button class="btn-small" id="rejectSuggestion">❌ Reject</button>
       </div>
-    `;
+    ';
     responseDiv.innerHTML = '';
     responseDiv.appendChild(container);
 
