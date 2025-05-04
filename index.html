@@ -833,6 +833,12 @@ header h1 {
 <h2>Welcome back! You're doing amazing today 💪</h2>
 <h3 id="today-title" style="margin-top: -1rem; font-weight: normal;"></h3>
 <div id="dashboard-cards" style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; margin-top: 2rem;">
+  <div style="text-align: right; margin-top: -1rem;">
+    <a href="social.html">
+      <button class="btn-small">📢 Go to Social Feed</button>
+    </a>
+  </div>
+
   <div class="card" data-card-id="goals">
     🎯 <h3>Long-Term Goals</h3>
     <ul id="goal-list"></ul>
@@ -1308,6 +1314,8 @@ async function breakDownGoal(goalName) {
 
       localStorage.setItem("hasOnboarded_" + userName, "true");
       localStorage.setItem("lastUser", userName);
+      localStorage.setItem("currentUser", userName);
+
 
     
      setTimeout(() => {
