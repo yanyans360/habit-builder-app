@@ -259,8 +259,13 @@
   </style>
 </head>
 <body>
+  <header style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+    <h1>🌱 Habit Harmony Social Feed</h1>
+  <button id="socialThemeToggle" style="background: none; border: none; font-size: 24px; cursor: pointer;"><span id="theme-icon">🌙</span></button>
+  </header>
+
   <div class="container">
-      <h1>🌱 Habit Harmony Social Feed</h1>
+     
       <div class="user-info">Currently logged in as: <strong id="current-user"></strong></div>
       <div style="margin-top: 1rem;">
         <a href="index.html">
@@ -577,5 +582,25 @@
         });
 
   </script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.getElementById("socialThemeToggle");
+    const icon = document.getElementById("theme-icon");
+    const prefersDark = localStorage.getItem("darkMode") === "true";
+
+    if (prefersDark) {
+      document.body.classList.add("low-light");
+      icon.textContent = "🌞";
+    }
+
+    toggleBtn.addEventListener("click", () => {
+      document.body.classList.toggle("low-light");
+      const isDark = document.body.classList.contains("low-light");
+      localStorage.setItem("darkMode", isDark);
+      icon.textContent = isDark ? "🌞" : "🌙";
+    });
+  });
+</script>
+
 </body>
 </html>
