@@ -2421,48 +2421,49 @@ document.addEventListener('DOMContentLoaded', function () {
         motivationList.appendChild(li);
       });
       function refreshMotivationTip(m) {
-      const tips = {
-        "Tracking my progress visually": [
-          "Use charts and streaks to track success.",
-          "Create a sticker board or digital badge system.",
-          "Make progress visible with a habit calendar."
-        ],
-        "Accountability from others": [
-          "Check in with a friend weekly.",
-          "Post progress in your social feed.",
-          "Join a challenge group."
-        ],
-        "Clear rewards or milestones": [
-          "Treat yourself to something small each week.",
-          "Celebrate when you hit your streak goal.",
-          "Set a reward for each milestone."
-        ],
-        "Visualizing success": [
-          "Visualize the benefits of completing this habit.",
-          "Picture the person you're becoming.",
-          "Imagine how future-you feels after success."
-        ],
-        "Encouragement and affirmations": [
-          "Write a kind note to future you.",
-          "Post sticky notes with affirmations.",
-          "Say a mantra aloud each morning."
-        ],
-        "Building habits into my routine": [
-          "Anchor habits to another daily task.",
-          "Use time-based reminders (e.g., after lunch).",
-          "Set up automated cues like alarms or smart lights."
-        ],
-        "Still figuring it out": [
-          "Try one new strategy per week.",
-          "Journal what’s working and what’s not.",
-          "Experiment with morning vs night routines."
-        ]
-      };
-      
-      const tipList = tips[m] || ["Keep experimenting!"];
-      const newTip = tipList[Math.floor(Math.random() * tipList.length)];
-      document.getElementById(`tip-${m}`).textContent = newTip;
-    }
+  const tips = {
+    "Tracking my progress visually": [
+      "Use charts and streaks to track success.",
+      "Create a sticker board or digital badge system.",
+      "Make progress visible with a habit calendar."
+    ],
+    "Accountability from others": [
+      "Check in with a friend weekly.",
+      "Post progress in your social feed.",
+      "Join a challenge group."
+    ],
+    "Clear rewards or milestones": [
+      "Treat yourself to something small each week.",
+      "Celebrate when you hit your streak goal.",
+      "Set a reward for each milestone."
+    ],
+    "Visualizing success": [
+      "Visualize the benefits of completing this habit.",
+      "Picture the person you're becoming.",
+      "Imagine how future-you feels after success."
+    ],
+    "Encouragement and affirmations": [
+      "Write a kind note to future you.",
+      "Post sticky notes with affirmations.",
+      "Say a mantra aloud each morning."
+    ],
+    "Building habits into my routine": [
+      "Anchor habits to another daily task.",
+      "Use time-based reminders (e.g., after lunch).",
+      "Set up automated cues like alarms or smart lights."
+    ],
+    "Still figuring it out": [
+      "Try one new strategy per week.",
+      "Journal what’s working and what’s not.",
+      "Experiment with morning vs night routines."
+    ]
+  };
+
+  const tipList = tips[m] || ["Keep experimenting!"];
+  const newTip = tipList[Math.floor(Math.random() * tipList.length)];
+  document.getElementById(`tip-${m}`).textContent = newTip;
+}
+
 
       function getMotivationTip(m) {
         const tips = {
