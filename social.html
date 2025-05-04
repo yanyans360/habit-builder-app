@@ -256,20 +256,6 @@
     </div>
     
     <!-- User Options (for testing) -->
-    <div class="card" style="margin-top: 40px;">
-      <h3>Testing Options</h3>
-      <div style="margin-bottom: 15px;">
-        <label for="change-username">Change username:</label>
-        <div style="display: flex; gap: 10px;">
-          <input type="text" id="change-username" placeholder="Enter new username">
-          <button onclick="changeUsername()">Update</button>
-        </div>
-      </div>
-      <div>
-        <button onclick="clearAllPosts()" style="background: #dc3545;">Clear All Posts</button>
-      </div>
-    </div>
-  </div>
 
   <script>
     // Initialize username for testing
@@ -281,13 +267,46 @@
       const socialFeed = document.getElementById('social-feed');
       const imageFileInput = document.getElementById('imageFile');
       const noPosts = document.getElementById('no-posts-message');
+
+      function finalizePost(imageData) {
+        const now = new Date();
+        const timestamp = now.toLocaleString();
+        const postId = 'post_' + now.getTime();
       
+        const postData = {
+          id: postId,
+          username: userName,
+          title: document.getElementById('post-title').value.trim(),
+          caption: document.getElementById('post-caption').value.trim(),
+          imageData,
+          rating: document.getElementById('post-rating').value,
+          timestamp
+        };
+      
+        savePost(postData);
+        renderPost(postData, true);
+        document.getElementById('postForm').reset();
+        document.getElementById('image-preview').innerHTML = '';
+        document.getElementById('no-posts-message').style.display = 'none';
+        showToast('Your post has been shared successfully!', 'success');
+      }
+
       // Image preview functionality
       imageFileInput.addEventListener('change', function() {
         const file = this.files[0];
         if (file) {
           const reader = new FileReader();
-          reader.onload = function(e) {
+          if (imageFile) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              finalizePost(e.target.result);
+            };
+            reader.readAsDataURL(imageFile);
+          } else {
+            // use placeholder AI-generated image
+            const placeholderAIImage = "https://source.unsplash.com/featured/?motivation,habit"; // or your AI gen endpoint
+            finalizePost(placeholderAIImage);
+          }
             const preview = document.getElementById('image-preview');
             preview.innerHTML = `
               <p>Preview:</p>
@@ -307,7 +326,7 @@
         const imageFile = imageFileInput.files[0];
         const rating = document.getElementById('post-rating').value;
         
-        if (!title || !caption || !imageFile || !rating) {
+        if (!title || !caption || !rating) {
           showToast('Please fill in all fields and upload an image', 'error');
           return;
         }
@@ -342,9 +361,18 @@
           showToast('Your post has been shared successfully!', 'success');
         };
         
-        reader.readAsDataURL(imageFile);
-      });
-      
+        if (imageFile) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            finalizePost(e.target.result);
+          };
+          reader.readAsDataURL(imageFile);
+        } else {
+          // use placeholder AI-generated image
+          const placeholderAIImage = "https://source.unsplash.com/featured/?motivation,habit"; // or your AI gen endpoint
+          finalizePost(placeholderAIImage);
+        }
+
       // Add event listeners to filter buttons
       document.querySelectorAll('.feed-filter').forEach(btn => {
         btn.addEventListener('click', function() {
