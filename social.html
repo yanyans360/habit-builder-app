@@ -122,6 +122,22 @@ header p {
       font-family: inherit;
       box-sizing: border-box;
     }
+    .btn-small {
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      background: #7c3aed;
+      color: white;
+      transition: background 0.3s ease;
+    }
+    
+    .btn-small:hover {
+      background: #6b21a8;
+    }
+
     
     button {
       background: #7c3aed;
@@ -330,18 +346,19 @@ body.low-light #no-posts-message {
   </div>
   <h1>🌱 Socials @ Harmony! <span id="time-icon">🌞</span></h1>
   <p id="datetime"></p>
+  <div style="position: absolute; top: 10px; left: 20px; display: flex; flex-direction: column; gap: 8px; z-index: 1000;">
+    <div style="background: #6b21a8; color: white; padding: 8px 14px; border-radius: 20px; font-weight: bold; font-size: 0.9rem;">
+      👤 Logged in as: <span id="current-user" style="font-weight: bold;"></span>
+    </div>
+    <a href="index.html">
+      <button class="btn-small" style="background: #a78bfa; color: #1a1a1a;">🏠 Dashboard</button>
+    </a>
+  </div>
+
 </header>
 
 
-  <div class="container">
-     
-      <div class="user-info">Currently logged in as: <strong id="current-user"></strong></div>
-      <div style="margin-top: 1rem;">
-        <a href="index.html">
-          <button class="btn-small">🏠 Back to Dashboard</button>
-        </a>
-      </div>
-    </div>
+ 
     
             
     <div class="card">
