@@ -1991,8 +1991,6 @@ shortTermSection.innerHTML = `
     window.onerror = function (msg, url, line, col, error) {
       showToast("⚠️ JS Error: " + msg + " on line " + line, "error");
     };
-    // 🌙 Theme Toggle
-    document.getElementById("themeToggle").addEventListener("click", toggleTheme);
 
 
   function prepareStart() {
@@ -2339,6 +2337,7 @@ function toggleTheme() {
   }, 100);
 }
 
+document.getElementById("themeToggle").addEventListener("click", toggleTheme);
 
 
 
