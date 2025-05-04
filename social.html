@@ -339,12 +339,16 @@ body.low-light #no-posts-message {
 .low-light p {
   color: #ddddf7;
 }
+#loading-overlay.show {
+  display: flex !important;
+}
+
 
 
   </style>
 </head>
 <body>
-  <div id="loading-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.7); z-index:10000; display:flex; justify-content:center; align-items:center; font-size:2rem; font-weight:bold;">
+<div id="loading-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.7); z-index:10000; justify-content:center; align-items:center; font-size:2rem; font-weight:bold;">
     Loading...
   </div>
 <header>
@@ -478,7 +482,7 @@ body.low-light #no-posts-message {
         event.preventDefault();
         const shareBtn = postForm.querySelector('button[type="submit"]');
         shareBtn.disabled = true;
-        document.getElementById('loading-overlay').style.display = 'flex';
+        document.getElementById('loading-overlay').classList.add('show');
 
         
         const title = document.getElementById('post-title').value.trim();
@@ -520,7 +524,7 @@ body.low-light #no-posts-message {
           noPosts.style.display = 'none';
           
           showToast('Your post has been shared successfully!', 'success');
-          document.getElementById('loading-overlay').style.display = 'none';
+          document.getElementById('loading-overlay').classList.remove('show');
           shareBtn.disabled = false;
 
         };
@@ -543,14 +547,15 @@ fetch("https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit
       } else {
         finalizePost("https://source.unsplash.com/featured/?habit,growth");
       }
-      document.getElementById('loading-overlay').style.display = 'none';
+      document.getElementById('loading-overlay').classList.remove('show');
       shareBtn.disabled = false;
     })
   
     .catch(err => {
       console.error("❌ Error generating image:", err);
       finalizePost("https://source.unsplash.com/featured/?habit,growth");
-      document.getElementById('loading-overlay').style.display = 'none';
+      document.getElementById('loading-overlay').classList.remove('show');
+
     });
 }
 
