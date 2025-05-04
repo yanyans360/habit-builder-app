@@ -1118,8 +1118,7 @@ responseDiv.appendChild(container);
 
     const serverData = await response.json();
     const fullText = serverData.reply || "Sorry, HabitBot had trouble responding.";
-    `
-      <p style="margin-bottom: 0.5rem;">"${fullText}"</p>
+ 
 
     responseDiv.innerHTML = '';
     let idx = 0;
