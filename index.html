@@ -1159,7 +1159,7 @@ async function breakDownGoal(goalName) {
         goals: selectedGoals,
         motivations: selectedMotivations
    
-    });
+    }
 
     const data = await response.json();
     const reply = data.reply || "Sorry, couldn't break it down right now.";
@@ -2116,7 +2116,6 @@ function renderSocialPreview() {
   const container = document.getElementById("social-preview");
   const posts = JSON.parse(localStorage.getItem("habitPosts") || "[]");
 
-  ""; // clear old previews
 
   if (posts.length === 0) {
     container.innerHTML = "<p>No posts yet. Start sharing!</p>";
