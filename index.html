@@ -1055,39 +1055,48 @@ function renderGasMeters() {
   document.getElementById("dashboard-cards").appendChild(gasContainer);
 }
 
-  async function sendHabitBotMessage() {
-  const input =
-    document.getElementById("habitbot-input") ||
-    document.getElementById("habitbot-dashboard-input");
+ async function sendHabitBotMessage() {
+  try {
+    const input =
+      document.getElementById("habitbot-input") ||
+      document.getElementById("habitbot-dashboard-input");
 
-  const responseDiv = document.getElementById("habitbot-response");
-  if (!input || !input.value.trim()) {
-    showToast("Please type a message first!", "error");
-    return;
-  }
+    const responseDiv = document.getElementById("habitbot-response");
+    if (!input || !input.value.trim()) {
+      showToast("Please type a message first!", "error");
+      return;
+    }
 
-  const userMessage = input.value.trim();
-  input.value = '';
-  const container = document.createElement("div");
+    const userMessage = input.value.trim();
+    input.value = '';
+    const container = document.createElement("div");
     container.innerHTML = `
-      <p style="margin-bottom: 0.5rem;">"${fullText}"</p>
+      <p style="margin-bottom: 0.5rem;">"${userMessage}"</p>
       <div style="display: flex; gap: 8px; justify-content: center; margin-top: 1rem;">
         <button class="btn-small" id="acceptSuggestion">✅ Accept</button>
         <button class="btn-small" id="rejectSuggestion">❌ Reject</button>
       </div>
     `;
 
-
-responseDiv.innerHTML = '';
-responseDiv.appendChild(container);
-
-  
-  document.getElementById("rejectSuggestion").onclick = () => {
-    responseDiv.innerHTML = `<p style="color: gray;">Suggestion dismissed.</p>`;
-  };
-
     responseDiv.innerHTML = '';
     responseDiv.appendChild(container);
+
+    const response = await fetch('https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit.dev/habitbot-chat', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: userMessage,
+        goals: selectedGoals,
+        motivations: selectedMotivations
+      })
+    });
+
+    const serverData = await response.json();
+    const fullText = serverData.reply || "Sorry, HabitBot had trouble responding.";
+
+    document.getElementById("rejectSuggestion").onclick = () => {
+      responseDiv.innerHTML = `<p style="color: gray;">Suggestion dismissed.</p>`;
+    };
 
     document.getElementById("acceptSuggestion").onclick = () => {
       if (selectedShortTermGoals.length >= 3) {
@@ -1101,25 +1110,6 @@ responseDiv.appendChild(container);
       showToast("Habit added to your short-term goals!", "success");
     };
 
-    document.getElementById("rejectSuggestion").onclick = () => {
-      responseDiv.innerHTML = `<p style="color: gray;">Suggestion dismissed.</p>`;
-    };
-
-    const response = await fetch('https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit.dev/habitbot-chat', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        message: userMessage,
-        goals: selectedGoals,
-        motivations: selectedMotivations
-      })
-
-    });
-
-    const serverData = await response.json();
-    const fullText = serverData.reply || "Sorry, HabitBot had trouble responding.";
- 
-
     responseDiv.innerHTML = '';
     let idx = 0;
 
@@ -1132,12 +1122,15 @@ responseDiv.appendChild(container);
         clearInterval(typing);
       }
     }, 30);
-
   } catch (error) {
     console.error(error);
-    responseDiv.innerText = "HabitBot couldn't reply right now. Try again later!";
+    const responseDiv = document.getElementById("habitbot-response");
+    if (responseDiv) {
+      responseDiv.innerText = "HabitBot couldn't reply right now. Try again later!";
+    }
   }
 }
+
 async function breakDownGoal(goalName) {
   const responseDiv = document.getElementById("habitbot-response");
   responseDiv.innerHTML = '<div class="spinner"></div>';
