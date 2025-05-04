@@ -1465,6 +1465,7 @@ async function breakDownGoal(goalName) {
 
     let selectedShortTermGoal = "";
     let userName = "";
+    let selectedShortTermGoals = [];
     let selectedGoals = [];
 
     const shortTermGoalsMap = {
@@ -1688,9 +1689,6 @@ async function getShortTermGoalsFromGPT(longTermGoals) {
   throw err; // re-throw so calling function knows it failed
 }
 }
-
-
-let selectedShortTermGoals = [];
 
 async function goToShortTerm() {
   updateProgress(85);
