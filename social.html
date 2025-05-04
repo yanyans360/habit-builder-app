@@ -516,8 +516,9 @@ body.low-light #no-posts-message {
         };
         
      if (imageFile) {
-        reader.readAsDataURL(imageFile);
-      else {
+      reader.readAsDataURL(imageFile);
+    } else {
+
   fetch("https://3796630f-a725-4b25-8ff8-8cdd75c3da82-00-w6gk5ernoe72.spock.replit.dev/", {
     method: "POST",
     headers: {
