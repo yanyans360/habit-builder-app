@@ -2112,30 +2112,6 @@ function debugDashboardCheck() {
   }
 }
 
-function renderSocialPreview() {
-  const container = document.getElementById("social-preview");
-  const posts = JSON.parse(localStorage.getItem("habitPosts") || "[]");
-
-
-  if (posts.length === 0) {
-    container.innerHTML = "<p>No posts yet. Start sharing!</p>";
-    return;
-  }
-
-  const latest = posts.slice(-3).reverse(); // last 3 posts
-  latest.forEach(post => {
-    const div = document.createElement("div");
-    div.style.borderBottom = "1px solid #ddd";
-    div.style.padding = "6px 0";
-    div.innerHTML = `
-      <strong>@${post.username}</strong><br />
-      <span style="font-style: italic;">${post.title}</span><br />
-      <span>${post.caption.slice(0, 60)}${post.caption.length > 60 ? "..." : ""}</span>
-    `;
-    container.appendChild(div);
-  });
-}
-
 
 
   </script>
@@ -2349,6 +2325,29 @@ function highlightToday() {
       el.style.background = '#7c3aed'; // Bright purple
       el.style.color = 'white'; // White text
     }
+  });
+}
+function renderSocialPreview() {
+  const container = document.getElementById("social-preview");
+  const posts = JSON.parse(localStorage.getItem("habitPosts") || "[]");
+
+
+  if (posts.length === 0) {
+    container.innerHTML = "<p>No posts yet. Start sharing!</p>";
+    return;
+  }
+
+  const latest = posts.slice(-3).reverse(); // last 3 posts
+  latest.forEach(post => {
+    const div = document.createElement("div");
+    div.style.borderBottom = "1px solid #ddd";
+    div.style.padding = "6px 0";
+    div.innerHTML = `
+      <strong>@${post.username}</strong><br />
+      <span style="font-style: italic;">${post.title}</span><br />
+      <span>${post.caption.slice(0, 60)}${post.caption.length > 60 ? "..." : ""}</span>
+    `;
+    container.appendChild(div);
   });
 }
 function toggleTheme() {
