@@ -1086,7 +1086,7 @@ responseDiv.appendChild(container);
   };
 
 
-    container.innerHTML = `
+    `
       <p style="margin-bottom: 0.5rem;">"${fullText}"</p>
       <div style="display: flex; gap: 8px; justify-content: center; margin-top: 1rem;">
         <button class="btn-small" id="acceptSuggestion">✅ Accept</button>
@@ -1125,7 +1125,7 @@ responseDiv.appendChild(container);
 
     const serverData = await response.json();
     const fullText = serverData.reply || "Sorry, HabitBot had trouble responding.";
-    container.innerHTML = `
+    `
       <p style="margin-bottom: 0.5rem;">"${fullText}"</p>
 
     responseDiv.innerHTML = '';
@@ -1158,7 +1158,7 @@ async function breakDownGoal(goalName) {
         message: `Can you break down this habit into small actionable steps: ${goalName}?`,
         goals: selectedGoals,
         motivations: selectedMotivations
-      })
+   
     });
 
     const data = await response.json();
@@ -2116,7 +2116,7 @@ function renderSocialPreview() {
   const container = document.getElementById("social-preview");
   const posts = JSON.parse(localStorage.getItem("habitPosts") || "[]");
 
-  container.innerHTML = ""; // clear old previews
+  ""; // clear old previews
 
   if (posts.length === 0) {
     container.innerHTML = "<p>No posts yet. Start sharing!</p>";
