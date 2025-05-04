@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habit Harmony - Social Feed</title>
+  <style>
+    @font-face {
+      font-family: 'Satoshi';
+      src: url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    }
+    
+    body {
+      font-family: 'Satoshi', 'Inter', sans-serif;
+      background: linear-gradient(to bottom right, #cfe0fc, #e2d4f9);
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+      padding: 24px;
+      margin: 20px auto;
+      max-width: 600px;
+      transition: all 0.3s ease-in-out;
+    }
+    
+    h1, h2, h3 {
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #6b21a8;
+    }
+    
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+    
+    button {
+      background: #7c3aed;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-family: inherit;
+      transition: background 0.3s ease;
+    }
+    
+    button:hover {
+      background: #6b21a8;
+    }
+    
+    .post {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      transition: transform 0.3s ease;
+    }
+    
+    .post:hover {
+      transform: scale(1.01);
+    }
+    
+    .post img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin: 10px 0;
+    }
+    
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .delete-post {
+      background: #ff4d4d;
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+    
+    .delete-post:hover {
+      background: #e60000;
+    }
+    
+    .rating-badge {
+      display: inline-block;
+      background-color: #7c3aed;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    
+    .feed-filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+    
+    .feed-filter {
+      padding: 8px 16px;
+      background: #f0f0f0;
+      border-radius: 20px;
+    }
+    
+    .feed-filter.active {
+      background: #7c3aed;
+      color: white;
+    }
+    
+    #image-preview {
+      margin-top: 15px;
+      text-align: center;
+    }
+    
+    .user-info {
+      background: #7c3aed;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      display: inline-block;
+      margin: 0 auto;
+      text-align: center;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: opacity 0.3s ease;
+    }
+    
+    .success-toast {
+      background: #28a745;
+    }
+    
+    .error-toast {
+      background: #dc3545;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px) translateX(-50%); }
+      to { opacity: 1; transform: translateY(0) translateX(-50%); }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+    
+    .fade-out {
+      animation: fadeOut 0.5s ease forwards;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🌱 Habit Harmony Social Feed</h1>
+      <div class="user-info">Currently logged in as: <strong id="current-user">TestUser</strong></div>
+    </div>
+    <div style="text-align: right; margin-bottom: 1rem;">
+      <a href="index.html">
+        <button class="btn-small">🏠 Back to Dashboard</button>
+      </a>
+    </div>
+        
+    <div class="card">
+      <h2>Create a New Post</h2>
+      <form id="postForm">
+        <input type="text" id="post-title" placeholder="Title your post" required>
+        <textarea id="post-caption" placeholder="Share something about your habit journey..." rows="4" required></textarea>
+        
+        <div style="margin: 15px 0;">
+          <label for="imageFile">Upload an image:</label>
+          <input type="file" id="imageFile" accept="image/*" required>
+          <div id="image-preview"></div>
+        </div>
+        
+        <div>
+          <label for="post-rating">Rate your progress:</label>
+          <select id="post-rating" required>
+            <option value="">--Select Rating--</option>
+            <option value="1">1 - Just starting</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5 - Making progress</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10 - Crushing it!</option>
+          </select>
+        </div>
+        
+        <button type="submit">Share Post</button>
+      </form>
+    </div>
+    
+    <div class="feed-filters">
+      <button class="feed-filter active" data-filter="all">All Posts</button>
+      <button class="feed-filter" data-filter="mine">My Posts</button>
+    </div>
+    
+    <div id="social-feed">
+      <!-- Posts will be inserted here -->
+      <p id="no-posts-message" style="text-align: center; display: none;">No posts yet! Be the first to share your journey.</p>
+    </div>
+    
+    <!-- User Options (for testing) -->
+    <div class="card" style="margin-top: 40px;">
+      <h3>Testing Options</h3>
+      <div style="margin-bottom: 15px;">
+        <label for="change-username">Change username:</label>
+        <div style="display: flex; gap: 10px;">
+          <input type="text" id="change-username" placeholder="Enter new username">
+          <button onclick="changeUsername()">Update</button>
+        </div>
+      </div>
+      <div>
+        <button onclick="clearAllPosts()" style="background: #dc3545;">Clear All Posts</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize username for testing
+    let userName = localStorage.getItem('currentUser') || "TestUser";
+    document.getElementById('current-user').textContent = userName;
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const postForm = document.getElementById('postForm');
+      const socialFeed = document.getElementById('social-feed');
+      const imageFileInput = document.getElementById('imageFile');
+      const noPosts = document.getElementById('no-posts-message');
+      
+      // Image preview functionality
+      imageFileInput.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const preview = document.getElementById('image-preview');
+            preview.innerHTML = `
+              <p>Preview:</p>
+              <img src="${e.target.result}" style="max-width: 100%; max-height: 300px; border-radius: 8px;">
+            `;
+          }
+          reader.readAsDataURL(file);
+        }
+      });
+      
+      // Form submission
+      postForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const title = document.getElementById('post-title').value.trim();
+        const caption = document.getElementById('post-caption').value.trim();
+        const imageFile = imageFileInput.files[0];
+        const rating = document.getElementById('post-rating').value;
+        
+        if (!title || !caption || !imageFile || !rating) {
+          showToast('Please fill in all fields and upload an image', 'error');
+          return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const now = new Date();
+          const timestamp = now.toLocaleString();
+          const postId = 'post_' + now.getTime();
+          
+          const postData = {
+            id: postId,
+            username: userName,
+            title,
+            caption,
+            imageData: e.target.result,
+            rating,
+            timestamp
+          };
+          
+          // Save and render the post
+          savePost(postData);
+          renderPost(postData, true);
+          
+          // Reset form and preview
+          postForm.reset();
+          document.getElementById('image-preview').innerHTML = '';
+          
+          // Hide "no posts" message
+          noPosts.style.display = 'none';
+          
+          showToast('Your post has been shared successfully!', 'success');
+        };
+        
+        reader.readAsDataURL(imageFile);
+      });
+      
+      // Add event listeners to filter buttons
+      document.querySelectorAll('.feed-filter').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.feed-filter').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          const filter = this.getAttribute('data-filter');
+          loadAllPosts(filter);
+        });
+      });
+      
+      // Initial load of posts
+      loadAllPosts('all');
+      
+      // Functions for post management
+      function renderPost(postData, prepend = false) {
+        const post = document.createElement('div');
+        post.className = 'post';
+        post.setAttribute('data-post-id', postData.id);
+        post.setAttribute('data-username', postData.username);
+        
+        // Create delete button only for current user's posts
+        const deleteButton = postData.username.toLowerCase() === userName.toLowerCase() ? 
+          `<button class="delete-post" data-id="${postData.id}">🗑️ Delete</button>` : '';
+        
+        post.innerHTML = `
+          <div class="post-header">
+            <h3>${postData.title}</h3>
+            ${deleteButton}
+          </div>
+          <p><strong>@${postData.username}</strong> • ${postData.timestamp}</p>
+          <p>${postData.caption}</p>
+          <img src="${postData.imageData}" alt="User posted image">
+          <p><span class="rating-badge">${postData.rating}/10</span></p>
+        `;
+        
+        if (prepend) {
+          socialFeed.prepend(post);
+        } else {
+          socialFeed.appendChild(post);
+        }
+        
+        // Add event listener to delete button
+        const deleteBtn = post.querySelector('.delete-post');
+        if (deleteBtn) {
+          deleteBtn.addEventListener('click', function() {
+            const postId = this.getAttribute('data-id');
+            deletePost(postId);
+          });
+        }
+      }
+      
+      function savePost(postData) {
+        let allPosts = JSON.parse(localStorage.getItem('habitPosts') || '[]');
+        allPosts.push(postData);
+        localStorage.setItem('habitPosts', JSON.stringify(allPosts));
+      }
+      
+      window.loadAllPosts = function(filter = 'all') {
+        // Clear current posts
+        const posts = socialFeed.querySelectorAll('.post');
+        posts.forEach(post => post.remove());
+        
+        const allPosts = JSON.parse(localStorage.getItem('habitPosts') || '[]');
+        
+        const filteredPosts = filter === 'all' ? 
+          allPosts : 
+          allPosts.filter(post => post.username.toLowerCase() === userName.toLowerCase());
+        
+        if (filteredPosts.length === 0) {
+          noPosts.style.display = 'block';
+        } else {
+          noPosts.style.display = 'none';
+          
+          // Sort posts with newest first
+          filteredPosts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+            .forEach(post => renderPost(post));
+        }
+      }
+      
+      function deletePost(postId) {
+        if (confirm('Are you sure you want to delete this post?')) {
+          let allPosts = JSON.parse(localStorage.getItem('habitPosts') || '[]');
+          allPosts = allPosts.filter(post => post.id !== postId);
+          localStorage.setItem('habitPosts', JSON.stringify(allPosts));
+          
+          // Remove the post from the DOM
+          document.querySelector(`.post[data-post-id="${postId}"]`).remove();
+          
+          // Show message if no posts left
+          if (socialFeed.querySelectorAll('.post').length === 0) {
+            noPosts.style.display = 'block';
+          }
+          
+          showToast('Post deleted successfully!', 'success');
+        }
+      }
+    });
+    
+    function showToast(message, type = 'success') {
+      // Remove any existing toasts
+      const existingToast = document.querySelector('.toast');
+      if (existingToast) {
+        existingToast.remove();
+      }
+      
+      // Create new toast
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}-toast fade-in`;
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      // Remove toast after 3 seconds
+      setTimeout(() => {
+        toast.classList.remove('fade-in');
+        toast.classList.add('fade-out');
+        setTimeout(() => toast.remove(), 500);
+      }, 3000);
+    }
+    
+    function changeUsername() {
+      const newName = document.getElementById('change-username').value.trim();
+      if (newName) {
+        userName = newName;
+        localStorage.setItem('currentUser', userName);
+        document.getElementById('current-user').textContent = userName;
+        document.getElementById('change-username').value = '';
+        loadAllPosts();
+        showToast('Username updated successfully!', 'success');
+      } else {
+        showToast('Please enter a valid username', 'error');
+      }
+    }
+    
+    function clearAllPosts() {
+      if (confirm('Are you sure you want to delete ALL posts? This cannot be undone.')) {
+        localStorage.removeItem('habitPosts');
+        loadAllPosts();
+        showToast('All posts have been cleared', 'success');
+      }
+    }
+  </script>
+</body>
+</html>
