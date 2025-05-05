@@ -610,7 +610,7 @@ fetch("https://b4e26b04-4f0a-4658-a945-371972c74eb3-00-1jkw63le3363s.picard.repl
           </div>
           <p><strong>@${postData.username}</strong> • ${postData.timestamp}</p>
           <p>${postData.caption}</p>
-          <img src="${postData.imageData}" alt="User posted image">
+          <img src="${sessionStorage.getItem(postData.id) || 'https://source.unsplash.com/featured/?habit,growth'}" alt="User posted image">
           <p><span class="rating-badge">${postData.rating}/10</span></p>
         `;
         
@@ -630,12 +630,21 @@ fetch("https://b4e26b04-4f0a-4658-a945-371972c74eb3-00-1jkw63le3363s.picard.repl
         }
       }
       
-      function savePost(postData) {
-        let allPosts = JSON.parse(localStorage.getItem('habitPosts') || '[]');
-        allPosts.push(postData);
-        localStorage.setItem('habitPosts', JSON.stringify(allPosts));
-      }
-      
+    function savePost(postData) {
+      let allPosts = JSON.parse(localStorage.getItem('habitPosts') || '[]');
+    
+      // Clone and strip imageData before saving to localStorage
+      const { imageData, ...rest } = postData;
+      const safePost = { ...rest, imageData: "uploaded" }; // Marker for rendering
+    
+      allPosts.push(safePost);
+      localStorage.setItem('habitPosts', JSON.stringify(allPosts));
+    
+      // Save imageData separately in sessionStorage (if really needed)
+      sessionStorage.setItem(postData.id, imageData);
+    }
+    
+          
       window.loadAllPosts = function(filter = 'all') {
         // Clear current posts
         const posts = socialFeed.querySelectorAll('.post');
